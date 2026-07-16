@@ -166,14 +166,72 @@ section{padding:88px 20px}
   display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;
   color:var(--muted);font-size:12px;letter-spacing:.1em;
   border-bottom:1px solid var(--line);
-  position:relative;
+  position:relative;overflow:hidden;
 }
+.thumb img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transition:transform .5s ease, filter .5s ease;
+  filter:saturate(.9);
+}
+.card:hover .thumb img{transform:scale(1.07);filter:saturate(1.1)}
 .thumb .play{
-  width:46px;height:46px;border-radius:50%;
+  width:52px;height:52px;border-radius:50%;
   border:2px solid var(--accent);color:var(--accent);
-  display:flex;align-items:center;justify-content:center;font-size:16px;
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+  position:relative;z-index:2;
+  background:rgba(15,17,23,.55);backdrop-filter:blur(4px);
+  transition:transform .3s ease, box-shadow .3s ease;
 }
-.thumb.book{aspect-ratio:16/9}
+.card:hover .thumb .play{transform:scale(1.12);box-shadow:0 0 24px rgba(40,208,224,.45)}
+.thumb .badge{
+  position:absolute;top:10px;left:10px;z-index:2;
+  font-size:10.5px;font-weight:700;letter-spacing:.12em;
+  color:var(--accent);background:rgba(15,17,23,.75);backdrop-filter:blur(4px);
+  border:1px solid rgba(40,208,224,.4);border-radius:999px;padding:3px 12px;
+}
+.thumb.reels{
+  background:linear-gradient(135deg,#141926 0%,#0d2b31 45%,#141926 100%);
+  background-size:220% 220%;
+  animation:sheen 8s ease-in-out infinite;
+}
+/* Kindle */
+.kindle-card{
+  display:flex;background:var(--card);border:1px solid var(--line);border-radius:14px;
+  overflow:hidden;max-width:640px;
+  transition:border-color .3s ease, transform .3s ease;
+}
+.kindle-card:hover{border-color:var(--accent);transform:translateY(-4px)}
+.kindle-cover{flex:0 0 168px;position:relative;overflow:hidden;background:#10141f}
+.kindle-cover img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
+.kindle-card:hover .kindle-cover img{transform:scale(1.05)}
+.kindle-body{padding:24px 24px 22px;display:flex;flex-direction:column;gap:10px}
+.kindle-body h4{font-size:17px;font-weight:700;line-height:1.55;font-family:"Zen Kaku Gothic New",sans-serif}
+.kindle-body .meta{color:var(--muted);font-size:13px}
+/* note list */
+.note-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px 20px;counter-reset:noteidx}
+.note-item{
+  display:flex;align-items:baseline;gap:14px;
+  background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:16px 18px;color:var(--text);
+  transition:border-color .3s ease, transform .3s ease;
+  counter-increment:noteidx;position:relative;
+}
+.note-item:hover{border-color:var(--accent);transform:translateX(4px);opacity:1}
+.note-item::before{
+  content:counter(noteidx,decimal-leading-zero);
+  color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.08em;
+  font-family:"Zen Kaku Gothic New",sans-serif;
+}
+.note-item .nt{flex:1;min-width:0}
+.note-item .nt h4{font-size:14px;font-weight:500;line-height:1.6}
+.note-item .nt time{display:block;color:var(--muted);font-size:11px;letter-spacing:.08em;margin-top:4px}
+.note-item .arrow{color:var(--accent);font-size:14px;transition:transform .3s ease}
+.note-item:hover .arrow{transform:translateX(4px)}
+@media (max-width:520px){
+  .kindle-card{flex-direction:column;max-width:none}
+  .kindle-cover{flex:none;height:200px}
+  .kindle-cover img{object-fit:contain;background:#10141f}
+}
 .card-body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
 .card-body h4{font-size:15px;font-weight:700;line-height:1.5}
 .tags{display:flex;flex-wrap:wrap;gap:6px}
@@ -315,28 +373,35 @@ footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;colo
     <h3 class="works-sub fade">ショート動画</h3>
     <div class="card-grid">
       <div class="card fade">
-        <div class="thumb"><span class="play">▶</span><span>YouTube</span></div>
+        <div class="thumb">
+          <img src="https://img.youtube.com/vi/V95p0Y8N4SI/maxresdefault.jpg" alt="YouTube動画サムネイル" loading="lazy">
+          <span class="badge">YOUTUBE</span>
+          <span class="play">▶</span>
+        </div>
         <div class="card-body">
           <h4 class="pending">タイトル準備中</h4>
-          <div class="tags"><span class="tag">ジャンル準備中</span></div>
           <p class="meta">担当: カット・テロップ・BGM</p>
           <a class="card-link" href="https://youtu.be/V95p0Y8N4SI?si=7iO-qr9pOYPA2_Rm" target="_blank" rel="noopener">動画を見る →</a>
         </div>
       </div>
       <div class="card fade">
-        <div class="thumb"><span class="play">▶</span><span>Instagram Reels</span></div>
+        <div class="thumb reels">
+          <span class="badge">INSTAGRAM REELS</span>
+          <span class="play">▶</span>
+        </div>
         <div class="card-body">
           <h4 class="pending">タイトル準備中</h4>
-          <div class="tags"><span class="tag">ジャンル準備中</span></div>
           <p class="meta">担当: 準備中</p>
           <a class="card-link" href="https://www.instagram.com/reel/DG40q2sy8Ws/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" rel="noopener">動画を見る →</a>
         </div>
       </div>
       <div class="card fade">
-        <div class="thumb"><span class="play">▶</span><span>Instagram Reels</span></div>
+        <div class="thumb reels">
+          <span class="badge">INSTAGRAM REELS</span>
+          <span class="play">▶</span>
+        </div>
         <div class="card-body">
           <h4 class="pending">タイトル準備中</h4>
-          <div class="tags"><span class="tag">ジャンル準備中</span></div>
           <p class="meta">担当: 準備中</p>
           <a class="card-link" href="https://www.instagram.com/reel/C5VPDtVLc2Y/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" rel="noopener">動画を見る →</a>
         </div>
@@ -344,33 +409,53 @@ footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;colo
     </div>
 
     <h3 class="works-sub fade">Kindle出版</h3>
-    <div class="card-grid">
-      <div class="card fade" style="max-width:420px">
-        <div class="thumb book"><span class="play">📖</span><span>Kindle</span></div>
-        <div class="card-body">
-          <h4>ぼんやり、いいじゃない: なんでもない日の処方箋</h4>
-          <p class="meta">出版年月: 準備中</p>
-          <a class="card-link" href="https://www.amazon.co.jp/%E3%81%BC%E3%82%93%E3%82%84%E3%82%8A%E3%80%81%E3%81%84%E3%81%84%E3%81%98%E3%82%83%E3%81%AA%E3%81%84-%E3%81%AA%E3%82%93%E3%81%A7%E3%82%82%E3%81%AA%E3%81%84%E6%97%A5%E3%81%AE%E5%87%A6%E6%96%B9%E7%AE%8B-%E3%82%82%E3%82%8A%E3%81%9E%E3%83%BC-ebook/dp/B0DRD3P1L3/" target="_blank" rel="noopener">Amazonで見る →</a>
-        </div>
+    <a class="kindle-card fade" href="https://www.amazon.co.jp/%E3%81%BC%E3%82%93%E3%82%84%E3%82%8A%E3%80%81%E3%81%84%E3%81%84%E3%81%98%E3%82%83%E3%81%AA%E3%81%84-%E3%81%AA%E3%82%93%E3%81%A7%E3%82%82%E3%81%AA%E3%81%84%E6%97%A5%E3%81%AE%E5%87%A6%E6%96%B9%E7%AE%8B-%E3%82%82%E3%82%8A%E3%81%9E%E3%83%BC-ebook/dp/B0DRD3P1L3/" target="_blank" rel="noopener">
+      <div class="kindle-cover">
+        <img src="https://images-na.ssl-images-amazon.com/images/P/B0DRD3P1L3.01.LZZZZZZZ.jpg" alt="『ぼんやり、いいじゃない』書影" loading="lazy">
       </div>
-    </div>
+      <div class="kindle-body">
+        <span class="tag" style="align-self:flex-start">KINDLE</span>
+        <h4>ぼんやり、いいじゃない:<br>なんでもない日の処方箋</h4>
+        <p class="meta">エッセイ集 / Amazon Kindleにて発売中</p>
+        <span class="card-link">Amazonで見る →</span>
+      </div>
+    </a>
 
-    <h3 class="works-sub fade">note</h3>
-    <div class="card-grid">
-      <div class="card fade">
-        <div class="thumb"><span class="play">✎</span><span>note</span></div>
-        <div class="card-body">
-          <h4>主体性は「育てる」ものじゃない</h4>
-          <a class="card-link" href="https://note.com/tasty_bee649/n/nd2757b34e68f" target="_blank" rel="noopener">記事を読む →</a>
-        </div>
-      </div>
-      <div class="card fade">
-        <div class="thumb"><span class="play">✎</span><span>note</span></div>
-        <div class="card-body">
-          <h4>エネルギーの源泉と、僕の地域活動</h4>
-          <a class="card-link" href="https://note.com/tasty_bee649/n/n7626991d2a9f" target="_blank" rel="noopener">記事を読む →</a>
-        </div>
-      </div>
+    <h3 class="works-sub fade">note<span style="color:var(--muted);font-size:13px;font-weight:500;margin-left:8px">全11記事</span></h3>
+    <div class="note-list fade">
+      <a class="note-item" href="https://note.com/tasty_bee649/n/nd2757b34e68f" target="_blank" rel="noopener">
+        <span class="nt"><h4>主体性は「育てる」ものじゃない</h4><time>2026.02.01</time></span><span class="arrow">→</span>
+      </a>
+      <a class="note-item" href="https://note.com/tasty_bee649/n/nd51cf9f99343" target="_blank" rel="noopener">
+        <span class="nt"><h4>内向きな僕が“人との出会い”で見つけた生き方</h4><time>2025.09.02</time></span><span class="arrow">→</span>
+      </a>
+      <a class="note-item" href="https://note.com/tasty_bee649/n/n348dca151a07" target="_blank" rel="noopener">
+        <span class="nt"><h4>挑戦費用は0円！気持ちは「-15歳」！今を生きる道しるべ</h4><time>2025.07.21</time></span><span class="arrow">→</span>
+      </a>
+      <a class="note-item" href="https://note.com/tasty_bee649/n/nf3c8643805fd" target="_blank" rel="noopener">
+        <span class="nt"><h4>人生、楽しんだもん勝ち。～3Cで生きるということ～</h4><time>2025.05.05</time></span><span class="arrow">→</span>
+      </a>
+      <a class="note-item" href="https://note.com/tasty_bee649/n/n7789f877be7d" target="_blank" rel="noopener">
+        <span class="nt"><h4>忙しい時ほど、遊べ。—「心の休養」としてのシャバットという考え方—</h4><time>2025.05.02</time></span><span class="arrow">→</span>
+      </a>
+      <a class="note-item" href="https://note.com/tasty_bee649/n/n6b4671516390" target="_blank" rel="noopener">
+        <span class="nt"><h4>思うは招く、言葉は言霊。</h4><time>2025.04.19</time></span><span class="arrow">→</span>
+      </a>
+      <a class="note-item" href="https://note.com/tasty_bee649/n/n0bf9273864e3" target="_blank" rel="noopener">
+        <span class="nt"><h4>一歩踏み出す勇気──医学生の時間を、どう使うか？</h4><time>2025.04.17</time></span><span class="arrow">→</span>
+      </a>
+      <a class="note-item" href="https://note.com/tasty_bee649/n/nb14d0c05da0d" target="_blank" rel="noopener">
+        <span class="nt"><h4>「何をするか」より「誰とするか」。最強の環境は“利他”から生まれる。</h4><time>2025.04.15</time></span><span class="arrow">→</span>
+      </a>
+      <a class="note-item" href="https://note.com/tasty_bee649/n/n6840f137a2b9" target="_blank" rel="noopener">
+        <span class="nt"><h4>フットワーク軽いヤツと思われたら勝ち</h4><time>2025.04.15</time></span><span class="arrow">→</span>
+      </a>
+      <a class="note-item" href="https://note.com/tasty_bee649/n/n10e5203fa924" target="_blank" rel="noopener">
+        <span class="nt"><h4>時間の生み出し方〜6割完了主義偏〜</h4><time>2025.04.14</time></span><span class="arrow">→</span>
+      </a>
+      <a class="note-item" href="https://note.com/tasty_bee649/n/n7626991d2a9f" target="_blank" rel="noopener">
+        <span class="nt"><h4>エネルギーの源泉と、僕の地域活動</h4><time>2025.04.13</time></span><span class="arrow">→</span>
+      </a>
     </div>
   </div>
 </section>
