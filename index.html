@@ -127,6 +127,15 @@ section{padding:88px 20px}
 .fade.show{opacity:1;transform:none}
 
 /* ---- about ---- */
+.about-flex{display:flex;gap:38px;align-items:center;max-width:860px}
+.about-photo{
+  flex:0 0 200px;width:200px;height:200px;border-radius:18px;object-fit:cover;
+  border:1px solid var(--line);box-shadow:0 0 0 5px var(--accent-dim);
+}
+@media (max-width:560px){
+  .about-flex{flex-direction:column;align-items:flex-start;gap:24px}
+  .about-photo{width:160px;height:160px;flex-basis:auto}
+}
 .about-grid{display:grid;grid-template-columns:1fr;gap:28px;max-width:760px}
 .about-grid p{color:var(--text)}
 .about-note{color:var(--muted);font-size:14px}
@@ -337,11 +346,14 @@ footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;colo
   <div class="wrap">
     <p class="sec-label fade">ABOUT</p>
     <h2 class="sec-title fade">自己紹介</h2>
-    <div class="about-grid fade">
-      <p>
-        医療分野のバックグラウンドを持つ動画編集者・ライター。専門的な内容も正確に、分かりやすく伝えるコンテンツ制作が強み。
-        現在はショート動画(TikTok / Instagram Reels / YouTube Shorts)の編集を中心に、採用・集客・リード獲得を目的とした企業向け動画の制作に取り組んでいる。
-      </p>
+    <div class="about-flex fade">
+      <img class="about-photo" src="assets/profile-photo.webp" alt="森一真のプロフィール写真">
+      <div class="about-grid">
+        <p>
+          医療分野のバックグラウンドを持つ動画編集者・ライター。専門的な内容も正確に、分かりやすく伝えるコンテンツ制作が強み。
+          現在はショート動画(TikTok / Instagram Reels / YouTube Shorts)の編集を中心に、採用・集客・リード獲得を目的とした企業向け動画の制作に取り組んでいる。
+        </p>
+      </div>
     </div>
 
     <div class="intro-card fade" style="margin-top:34px">
