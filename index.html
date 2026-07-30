@@ -255,6 +255,22 @@ section{padding:88px 20px}
 .svc h3{font-size:16.5px;margin-bottom:10px}
 .svc p{color:var(--muted);font-size:14px}
 
+/* ---- profile intro (自己紹介文) ---- */
+.intro-card{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:34px 30px;max-width:760px;
+}
+.intro-card .lead{margin-bottom:6px}
+.intro-card h4{
+  color:var(--accent);font-size:14.5px;letter-spacing:.1em;
+  margin:22px 0 8px;font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;
+}
+.intro-card ul{list-style:none;color:var(--muted);font-size:14.5px}
+.intro-card li{padding-left:1.2em;position:relative;margin-bottom:5px}
+.intro-card li::before{content:"・";position:absolute;left:0;color:var(--accent)}
+.intro-card .closing{color:var(--muted);font-size:14px;margin-top:24px;border-top:1px solid var(--line);padding-top:20px}
+.intro-card .todo-fill{color:#d9a94d;font-size:12px;border:1px dashed rgba(217,169,77,.5);border-radius:6px;padding:1px 8px;margin-left:6px;letter-spacing:.05em}
+
 /* ---- contact ---- */
 .contact-box{
   background:var(--card);border:1px solid var(--line);border-radius:18px;
@@ -327,6 +343,82 @@ footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;colo
         現在はショート動画(TikTok / Instagram Reels / YouTube Shorts)の編集を中心に、採用・集客・リード獲得を目的とした企業向け動画の制作に取り組んでいる。
       </p>
     </div>
+
+    <div class="intro-card fade" style="margin-top:34px">
+      <p class="lead">
+        動画編集者の森一真と申します。<br>
+        医療・ヘルスケア系の知識を活かしたショート動画編集を中心に活動しています。
+      </p>
+
+      <h4>【得意なジャンル】</h4>
+      <ul>
+        <li>医療・ヘルスケア系コンテンツ</li>
+        <li>ショート動画(TikTok / Instagram Reels / YouTube Shorts)</li>
+        <li>エッセイ・ライフスタイル系</li>
+      </ul>
+
+      <h4>【実績】</h4>
+      <ul>
+        <li>YouTubeショート動画の編集(カット・テロップ・BGM)</li>
+        <li>Instagramリール動画の編集</li>
+        <li>Kindle出版『ぼんやり、いいじゃない: なんでもない日の処方箋』</li>
+        <li>note記事執筆(全11記事)</li>
+        <li>ポートフォリオ: <a href="https://kazuma160504-art.github.io/#works">https://kazuma160504-art.github.io/#works</a></li>
+      </ul>
+
+      <h4>【経歴】</h4>
+      <ul>
+        <li>医学部在学中(医療分野の専門知識を保有)</li>
+        <li>動画編集スクールにてショート動画編集・ライティングを学習中</li>
+        <li>電子書籍の執筆・出版、noteでの記事執筆</li>
+      </ul>
+
+      <h4>【資格】</h4>
+      <ul>
+        <li>TOEIC 760</li>
+        <li>TOEFL iBT 4.0/6.0(従来スコア80/120相当・CEFR B2)</li>
+        <li>肝炎コーディネーター</li>
+        <li>BeHelp講習修了</li>
+        <li>BLSプロバイダー</li>
+        <li>ICLSコース修了</li>
+      </ul>
+
+      <h4>【可能な業務】</h4>
+      <ul>
+        <li>YouTube動画(ショート含む)</li>
+        <li>TikTok</li>
+        <li>Instagramのリール</li>
+        <li>シナリオ作成</li>
+      </ul>
+
+      <h4>【使用ツール】</h4>
+      <ul>
+        <li>Adobe Premiere Pro</li>
+        <li>Googleドキュメント</li>
+        <li>Googleスプレッドシート</li>
+      </ul>
+
+      <h4>【作業可能範囲】</h4>
+      <ul>
+        <li>カット</li>
+        <li>テロップ入れ</li>
+        <li>BGM、SE</li>
+        <li>エフェクト</li>
+      </ul>
+
+      <h4>【稼働時間】</h4>
+      <ul>
+        <li>平日: 18:00以降</li>
+        <li>土曜: 午前</li>
+        <li>日曜: 午後</li>
+      </ul>
+      <p style="color:var(--muted);font-size:12.5px;margin-top:6px">※上記は目安です。日程により変動しますので、納期・スケジュールはお気軽にご相談ください。</p>
+
+      <p class="closing">
+        日中は学業があるため返信が遅くなる場合がございますが、必ず24時間以内に返信させていただきます。<br>
+        すぐに対応できる態勢を整えておりますので、お気軽にご連絡ください。
+      </p>
+    </div>
   </div>
 </section>
 
@@ -341,7 +433,7 @@ footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;colo
         <h3>動画編集</h3>
         <ul>
           <li>ショート動画編集(カット、テロップ、BGM・効果音、サムネイル)</li>
-          <li>使用ソフト: 準備中</li>
+          <li>使用ソフト: Adobe Premiere Pro</li>
         </ul>
       </div>
       <div class="skill fade">
@@ -379,30 +471,32 @@ footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;colo
           <span class="play">▶</span>
         </div>
         <div class="card-body">
-          <h4 class="pending">タイトル準備中</h4>
+          <h4>おはようボタンご説明動画</h4>
           <p class="meta">担当: カット・テロップ・BGM</p>
           <a class="card-link" href="https://youtu.be/V95p0Y8N4SI?si=7iO-qr9pOYPA2_Rm" target="_blank" rel="noopener">動画を見る →</a>
         </div>
       </div>
       <div class="card fade">
         <div class="thumb reels">
+          <img src="assets/reel-ttc-2025.svg" alt="卓球部紹介動画2025 サムネイル" loading="lazy">
           <span class="badge">INSTAGRAM REELS</span>
           <span class="play">▶</span>
         </div>
         <div class="card-body">
-          <h4 class="pending">タイトル準備中</h4>
-          <p class="meta">担当: 準備中</p>
+          <h4>卓球部紹介動画2025</h4>
+          <p class="meta">担当: 撮影、動画編集</p>
           <a class="card-link" href="https://www.instagram.com/reel/DG40q2sy8Ws/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" rel="noopener">動画を見る →</a>
         </div>
       </div>
       <div class="card fade">
         <div class="thumb reels">
+          <img src="assets/reel-ttc-2024.svg" alt="卓球部活動紹介2024 サムネイル" loading="lazy">
           <span class="badge">INSTAGRAM REELS</span>
           <span class="play">▶</span>
         </div>
         <div class="card-body">
-          <h4 class="pending">タイトル準備中</h4>
-          <p class="meta">担当: 準備中</p>
+          <h4>卓球部活動紹介2024</h4>
+          <p class="meta">担当: 撮影、動画編集</p>
           <a class="card-link" href="https://www.instagram.com/reel/C5VPDtVLc2Y/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" rel="noopener">動画を見る →</a>
         </div>
       </div>

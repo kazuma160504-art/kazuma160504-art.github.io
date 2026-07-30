@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="'Zen Kaku Gothic New','Yu Gothic','Hiragino Sans','Noto Sans JP',sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1c2130"/>
+      <stop offset="0.55" stop-color="#10141f"/>
+      <stop offset="1" stop-color="#0c2229"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.8" cy="0.3" r="0.6">
+      <stop offset="0" stop-color="#28d0e0" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#28d0e0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#28d0e0" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#28d0e0" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#28d0e0" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <rect width="1280" height="720" fill="url(#glow)"/>
+
+  <!-- 巨大な年号（背景装飾） -->
+  <text x="1225" y="255" text-anchor="end" font-size="235" font-weight="900" letter-spacing="8"
+        fill="none" stroke="#28d0e0" stroke-opacity="0.20" stroke-width="3">2025</text>
+
+  <!-- スピードライン -->
+  <rect x="60" y="120" width="420" height="3" fill="url(#line)"/>
+  <rect x="140" y="160" width="300" height="2" fill="url(#line)" opacity="0.6"/>
+  <rect x="30" y="200" width="240" height="2" fill="url(#line)" opacity="0.4"/>
+
+  <!-- ラケット -->
+  <g transform="translate(1010,430) rotate(-35)">
+    <rect x="-22" y="58" width="44" height="115" rx="20" fill="rgba(40,208,224,0.10)" stroke="#28d0e0" stroke-width="9"/>
+    <circle cx="0" cy="-45" r="105" fill="rgba(40,208,224,0.10)" stroke="#28d0e0" stroke-width="10"/>
+    <circle cx="0" cy="-45" r="72" fill="none" stroke="#28d0e0" stroke-opacity="0.35" stroke-width="3"/>
+  </g>
+
+  <!-- ボールと軌道 -->
+  <path d="M 480 190 Q 660 130 830 265" fill="none" stroke="#28d0e0" stroke-opacity="0.55"
+        stroke-width="5" stroke-dasharray="4 26" stroke-linecap="round"/>
+  <circle cx="852" cy="288" r="21" fill="#28d0e0"/>
+  <circle cx="852" cy="288" r="34" fill="none" stroke="#28d0e0" stroke-opacity="0.35" stroke-width="3"/>
+
+  <!-- テキストブロック -->
+  <text x="78" y="548" font-size="23" font-weight="700" letter-spacing="7" fill="#28d0e0">TABLE TENNIS CLUB / SHORT MOVIE</text>
+  <text x="74" y="634" font-size="80" font-weight="900" fill="#e6e9f2" letter-spacing="4">卓球部紹介動画</text>
+  <rect x="80" y="662" width="130" height="7" rx="3.5" fill="#28d0e0"/>
+  <text x="230" y="670" font-size="26" font-weight="700" letter-spacing="4" fill="#9aa1b5">2025</text>
+</svg>
