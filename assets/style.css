@@ -497,6 +497,16 @@ section{position:relative;overflow:hidden}
 .hub-col h3{display:flex;align-items:center;gap:6px}
 footer .mini{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-bottom:12px}
 footer .mini a{color:var(--muted);font-size:12px}
+.artwork{display:grid;grid-template-columns:minmax(260px,420px) 1fr;gap:40px;align-items:center}
+.art-frame{margin:0;background:#fff;padding:14px;border-radius:6px;box-shadow:0 22px 50px rgba(30,60,20,.18),0 0 0 1px var(--line);transform:rotate(-1deg);transition:transform .4s}
+.art-frame:hover{transform:rotate(0) scale(1.02)}
+.art-frame img{width:100%;display:block;cursor:zoom-in}
+.art-body h3{font-size:clamp(22px,4vw,30px);margin:10px 0 12px;font-family:"Zen Kaku Gothic New",sans-serif}
+.art-body p{color:var(--muted);font-size:14.5px}
+.art-meta{list-style:none;margin-top:16px;display:grid;gap:8px;font-size:13.5px}
+.art-meta li{display:flex;align-items:center;gap:8px}
+.art-meta svg{width:17px;height:17px;color:var(--accent)}
+@media (max-width:720px){.artwork{grid-template-columns:1fr}.art-frame{max-width:380px;margin:0 auto}}
 .theme-grid{grid-template-columns:repeat(4,1fr)}
 /* 数字で見る */
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}

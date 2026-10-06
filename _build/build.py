@@ -127,6 +127,16 @@ section{position:relative;overflow:hidden}
 .hub-col h3{display:flex;align-items:center;gap:6px}
 footer .mini{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-bottom:12px}
 footer .mini a{color:var(--muted);font-size:12px}
+.artwork{display:grid;grid-template-columns:minmax(260px,420px) 1fr;gap:40px;align-items:center}
+.art-frame{margin:0;background:#fff;padding:14px;border-radius:6px;box-shadow:0 22px 50px rgba(30,60,20,.18),0 0 0 1px var(--line);transform:rotate(-1deg);transition:transform .4s}
+.art-frame:hover{transform:rotate(0) scale(1.02)}
+.art-frame img{width:100%;display:block;cursor:zoom-in}
+.art-body h3{font-size:clamp(22px,4vw,30px);margin:10px 0 12px;font-family:"Zen Kaku Gothic New",sans-serif}
+.art-body p{color:var(--muted);font-size:14.5px}
+.art-meta{list-style:none;margin-top:16px;display:grid;gap:8px;font-size:13.5px}
+.art-meta li{display:flex;align-items:center;gap:8px}
+.art-meta svg{width:17px;height:17px;color:var(--accent)}
+@media (max-width:720px){.artwork{grid-template-columns:1fr}.art-frame{max-width:380px;margin:0 auto}}
 .theme-grid{grid-template-columns:repeat(4,1fr)}
 /* 数字で見る */
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
@@ -554,7 +564,22 @@ yr = chart_wrap('bar-chart-3', '年ごとの実績・発表', '日付のわか�
 page('awards', '団体として、個人として。これまでにいただいた評価と支援。', sec(aw) + sec(yr, 'TREND', '実績の推移', alt=True))
 
 # 7 趣味
-page('hobbies', '手を動かし、声を出し、体を動かす。切り絵・詩吟・少林寺拳法・カリンバ・笑い文字。', sec(hobbies, 'HOBBIES', '好きなこと'))
+hobbies = hobbies.replace('<span class="em">✂️</span><h4>切り絵</h4>', '<img class="em" src="assets/photos/kirie-kenuki.webp" alt="切り絵作品" style="object-position:50% 25%"><h4>切り絵</h4>')
+kirie = '''    <div class="artwork fade">
+      <figure class="art-frame"><img src="assets/photos/kirie-kenuki.webp" alt="切り絵作品「歌舞伎十八番 毛抜」" loading="lazy"></figure>
+      <div class="art-body">
+        <span class="tag">KIRIE ／ 切り絵</span>
+        <h3>歌舞伎十八番「毛抜」</h3>
+        <p>歌舞伎十八番のひとつ「毛抜」を題材にした切り絵作品。一枚の黒い紙から、隈取の表情、指先、着物のしわまでを切り出し、背景には花を描いた和紙を、着物の部分には千代紙を重ねて色を添えています。</p>
+        <ul class="art-meta">
+          <li><i data-lucide="scissors"></i>技法:切り絵(黒紙の切り抜き + 和紙・千代紙の色付け)</li>
+          <li><i data-lucide="landmark"></i>佐賀大学美術館での作品展示実績あり</li>
+        </ul>
+      </div>
+    </div>
+'''
+page('hobbies', '手を動かし、声を出し、体を動かす。切り絵・詩吟・少林寺拳法・カリンバ・笑い文字。',
+     sec(kirie, 'ARTWORK', '切り絵作品') + sec(hobbies, 'HOBBIES', '好きなこと', alt=True))
 
 # 8 クリエイティブ
 yt = '''    <div class="yt-card fade">
@@ -615,7 +640,7 @@ video = """    <div class="video fade"><iframe src="https://www.youtube-nocookie
 page('media', 'テレビ・大学の公式発表・地域紙・ラジオで紹介された取り組み。', sec(media, 'MEDIA', '掲載・出演') + sec(video, 'VIDEO', 'サガテレビで紹介されました', alt=True))
 
 all_figs = list(dict.fromkeys(gal_figs + [f'      <figure><img src="assets/photos/{n}.webp" alt="{c}" loading="lazy"><figcaption>{c}</figcaption></figure>' for n, c in
-    [('drv-matsuri-cpr', '夏祭りでCPR体験ブース'), ('drv-matsuri-bp', '夏祭りで血圧測定'), ('drv-matsuri-booth', 'SCSの健康ブース'), ('drv-matsuri-team', '地域の方と'), ('drv-nishiyoka-team', '西与賀小学校にて'),
+    [('kirie-kenuki', '切り絵「歌舞伎十八番 毛抜」'), ('drv-matsuri-cpr', '夏祭りでCPR体験ブース'), ('drv-matsuri-bp', '夏祭りで血圧測定'), ('drv-matsuri-booth', 'SCSの健康ブース'), ('drv-matsuri-team', '地域の方と'), ('drv-nishiyoka-team', '西与賀小学校にて'),
      ('drv-nishiyoka-class', '小学校での授業'), ('ig-johoku-heatstroke', '城北サロンで熱中症の話'), ('ig-johoku-hobby-talk', '城北サロンで趣味紹介'), ('ig-zaimoku-lecture', '公民館で健康講演'),
      ('ig-johoku-cognicise', 'コグニサイズ'), ('ig-kids-place-1', '子どもの居場所'), ('ig-kids-place-2', '子どもの居場所(神社で)'), ('oshibotan-walk', '住民の方と一緒に'), ('oshibotan-salon-talk', '押しボタンPJの説明')]]))
 page('gallery', '団地のサロン、夏祭り、小学校、地域イベント。写真で振り返る活動。', sec('    <div class="gallery fade">\n' + '\n'.join(all_figs) + '\n    </div>\n', 'GALLERY', f'活動の写真 {len(all_figs)}枚'))
@@ -688,7 +713,7 @@ if (window.lucide) lucide.createIcons();
 })();
 (function(){
   var lb=document.getElementById('lightbox'); if(!lb) return; var im=lb.querySelector('img');
-  document.querySelectorAll('.gallery img,.photo-row img,.org-img').forEach(function(el){
+  document.querySelectorAll('.gallery img,.photo-row img,.org-img,.art-frame img').forEach(function(el){
     el.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();im.src=el.src;im.alt=el.alt;lb.classList.add('open');});
   });
   lb.addEventListener('click',function(){lb.classList.remove('open');});

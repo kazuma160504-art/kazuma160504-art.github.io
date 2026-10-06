@@ -10,7 +10,7 @@ if (window.lucide) lucide.createIcons();
 })();
 (function(){
   var lb=document.getElementById('lightbox'); if(!lb) return; var im=lb.querySelector('img');
-  document.querySelectorAll('.gallery img,.photo-row img,.org-img').forEach(function(el){
+  document.querySelectorAll('.gallery img,.photo-row img,.org-img,.art-frame img').forEach(function(el){
     el.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();im.src=el.src;im.alt=el.alt;lb.classList.add('open');});
   });
   lb.addEventListener('click',function(){lb.classList.remove('open');});
