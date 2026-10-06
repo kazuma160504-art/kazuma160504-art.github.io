@@ -431,7 +431,7 @@ def year_line(events):
 # 1 プロフィール
 about2 = (about_inner.replace('<dt>NICKNAME</dt>', '<dt><i data-lucide="smile"></i>NICKNAME</dt>').replace('<dt>AFFILIATION</dt>', '<dt><i data-lucide="school"></i>AFFILIATION</dt>')
           .replace('<dt>ROLE</dt>', '<dt><i data-lucide="badge-check"></i>ROLE</dt>').replace('<dt>STRENGTHS</dt>', '<dt><i data-lucide="sparkles"></i>STRENGTHS</dt>')
-          .replace('<h3>経歴・役職</h3>', '<h3><i data-lucide="briefcase"></i> 経歴・役職</h3>').replace('<h3>資格・段位</h3>', '<h3><i data-lucide="award"></i> 資格・段位</h3>'))
+          .replace('<h3>経歴・役職</h3>', '<h3><i data-lucide="briefcase"></i> 経歴・役職</h3>').replace('<h3>資格・段位</h3>', '<h3><i data-lucide="award"></i> 資格・段位</h3>').replace('<li>少林寺拳法 初段</li>', '<li>少林寺拳法 初段<small>関東高校選抜大会 団体4位・組演武8位</small></li>'))
 lang = '<div class="chart-grid">' + chart_wrap('languages', '語学スコア', '満点に対する到達度', hbars([('TOEIC 760 / 990', 76.8, 'TOEIC 760点(満点990)'), ('TOEFL iBT 80 / 120', 66.7, 'TOEFL iBT 従来スコア80相当(CEFR B2)')], lw=150),
         table([('TOEIC', '760 / 990'), ('TOEFL iBT', '80 / 120 相当')], ['試験', 'スコア'])) + \
     chart_wrap('compass', '活動の広がり', 'いま取り組んでいる5つの領域', hub_svg(('森 一真', 'もりぞう'), [('stethoscope', '医学', '佐賀大学 医学科'), ('bell-ring', '研究', '押しボタンPJ'), ('hand-heart', '地域交流', 'SCS 代表'), ('radio', 'コミュニティ', 'DAO・ラジオ'), ('clapperboard', '発信', 'YouTube・執筆')])) + '</div>'
@@ -524,6 +524,8 @@ page('community', 'スポーツの力で地域課題に挑む。ファンコミ�
      sec(community, 'BALLOONERS DAO', '佐賀バルーナーズDAO'))
 
 # 5 教育・発信
+other_orgs = other_orgs.replace('<p>山形県南陽市立赤湯中学校で出張授業(2024年1月・7月の2回)。</p>',
+    '<p>山形県南陽市の中学校・高校で、子宮頸がんとHPVワクチンの出張授業を担当(2024年1月・7月)。7月は市内3中学校と県立南陽高校で、講師3人のひとりとして授業しました。</p>')
 vcan = re.search(r'      <a class="org fade" href="https://vcan-hpv.org.*?</a>\n', other_orgs, re.S).group(0)
 edu = f'''    <div class="org-grid">
 {vcan}      <div class="org fade">
@@ -556,14 +558,27 @@ page('education', '学んだことを、地域と次の世代へ。授業・講�
 
 # 6 実績
 aw = awards
+aw = aw.rstrip()
+assert aw.endswith('</div>')
+aw = aw[:-len('</div>')] + '''  <div class="award fade">
+        <span class="ic"><i data-lucide="medal"></i></span>
+        <span><span class="when">2021.12 ／ 少林寺拳法</span><h4>関東高等学校少林寺拳法選抜大会 入賞</h4><p>第24回大会(ALSOKぐんま武道館)で、男子団体演武 4位、男子自由組演武 8位。</p></span>
+      </div>
+      <a class="award fade" href="media.html">
+        <span class="ic"><i data-lucide="newspaper"></i></span>
+        <span><span class="when">2024.08 ／ 掲載</span><h4>「市報なんよう」でHPVワクチン出張授業が特集</h4><p>山形県南陽市の広報誌(No.1373)で、Vcanの講師として紹介されました。</p></span>
+      </a>
+    </div>
+'''
 for em, ic in [('💐', 'hand-coins'), ('📰', 'newspaper'), ('🏆', 'trophy'), ('✉️', 'mail-open'), ('🏀', 'medal'), ('🎤', 'presentation'), ('✂️', 'scissors'), ('🌱', 'sprout')]:
     aw = aw.replace(f'<span class="ic">{em}</span>', f'<span class="ic"><i data-lucide="{ic}"></i></span>')
 yr = chart_wrap('bar-chart-3', '年ごとの実績・発表', '日付のわかる実績・表彰・発表の件数(手紙・感謝状・展示は除く)',
-    columns([('2023', 1, '地域みらい創生プロジェクト'), ('2024', 1, '第83回 日本公衆衛生学会'), ('2025', 1, '第84回 日本公衆衛生学会'), ('2026', 5, 'CSO志支援金・ソロプチミスト表彰・プレスリリース・TSUNAGI発表・論文掲載')], unit='件'),
-    table([('2023', '1件'), ('2024', '1件'), ('2025', '1件'), ('2026', '5件')], ['年', '件数']))
+    columns([('2021', 2, '少林寺拳法 関東大会 団体4位・組演武8位'), ('2023', 1, '地域みらい創生プロジェクト'), ('2024', 2, '第83回 日本公衆衛生学会・市報なんよう掲載'), ('2025', 1, '第84回 日本公衆衛生学会'), ('2026', 5, 'CSO志支援金・ソロプチミスト表彰・プレスリリース・TSUNAGI発表・論文掲載')], unit='件'),
+    table([('2021', '2件'), ('2023', '1件'), ('2024', '2件'), ('2025', '1件'), ('2026', '5件')], ['年', '件数']))
 page('awards', '団体として、個人として。これまでにいただいた評価と支援。', sec(aw) + sec(yr, 'TREND', '実績の推移', alt=True))
 
 # 7 趣味
+hobbies = hobbies.replace('<h4>少林寺拳法</h4><span class="badge2">初段</span>', '<h4>少林寺拳法</h4><span class="badge2">初段・関東大会 入賞</span>')
 hobbies = hobbies.replace('<span class="em">✂️</span><h4>切り絵</h4>', '<img class="em" src="assets/photos/kirie-kenuki.webp" alt="切り絵作品" style="object-position:50% 25%"><h4>切り絵</h4>')
 kirie = '''    <div class="artwork fade">
       <figure class="art-frame"><img src="assets/photos/kirie-kenuki.webp" alt="切り絵作品「歌舞伎十八番 毛抜」" loading="lazy"></figure>
@@ -628,6 +643,7 @@ media = """    <div class="mini-grid">
       <a class="mini-card fade" href="https://youtu.be/Bt9TFAmHH0I" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="tv"></i></span><div><h4>サガテレビ 放映</h4><p>2025年3月 ／ 地域での活動が紹介されました</p></div></a>
       <a class="mini-card fade" href="community.html" style="color:inherit"><span class="ki"><i data-lucide="radio"></i></span><div><h4>えびすFM「バルーナーズDAOおとなりさんラジオ」</h4><p>2026年5月〜 ／ パーソナリティとして出演</p></div></a>
       <a class="mini-card fade" href="https://www.suric.saga-u.ac.jp/saga_project_map/" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="map-pin"></i></span><div><h4>佐賀大学 地域連携紹介マップ</h4><p>2024年9月 ／ プロジェクトが掲載</p></div></a>
+      <div class="mini-card fade"><span class="ki"><i data-lucide="book-open"></i></span><div><h4>市報なんよう 2024年8月号(山形県南陽市)</h4><p>特集「知らないまま後悔しないで 子宮頸がんとHPVワクチン」でVcanの出張授業と講師として紹介</p></div></div>
       <div class="mini-card fade"><span class="ki"><i data-lucide="file-image"></i></span><div><h4>地域紙への掲載</h4><p>SCSのサロン活動が地域の新聞で紹介</p></div></div>
     </div>
 """
@@ -687,7 +703,7 @@ index += sec(tiles, 'THEMES', '12のテーマで、森一真を知る', alt=True
              deco='  <img class="nature tr" src="assets/nature/branch.webp" alt="" style="width:min(220px,30vw);opacity:.85">\n').replace('<section class="alt">', '<section id="themes" class="alt">', 1)
 kpis = [('calendar-heart', 10, '年+', '見守りの継続', '2016年から団地で運用'), ('bell-ring', 95, '%+', 'ボタン押下率', '参加者13名全員'),
         ('shield-check', 0, '件', '孤立死', '研究運用の1年11か月'), ('book-open-text', 1, '本', '査読付き論文', 'Am J Cardiol 2026'),
-        ('presentation', 3, '回', '学会・研究発表', '公衆衛生学会ほか'), ('trophy', 8, '件', '実績・表彰', '助成・表彰・掲載'),
+        ('presentation', 3, '回', '学会・研究発表', '公衆衛生学会ほか'), ('trophy', 10, '件', '実績・表彰', '助成・表彰・掲載・入賞'),
         ('users', 27, '名', 'SCSの仲間', '2025年5月時点'), ('pen-line', 11, '本', 'note記事', 'エッセイを発信')]
 kpi_html = '    <div class="stat-grid">\n' + '\n'.join(
     f'      <div class="kpi fade"><span class="ki"><i data-lucide="{ic}"></i></span><span class="kv"><span data-count="{v}">{v}</span><small>{u}</small></span><span class="kl">{l}</span><span class="kd">{d}</span></div>'
