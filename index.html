@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>森 一真 | 動画編集者・ライター ポートフォリオ</title>
-<meta name="description" content="医療知識 × ショート動画編集。動画編集者・ライター 森一真のポートフォリオサイト。TikTok / Instagram Reels / YouTube Shorts の編集、記事執筆・電子書籍制作に対応。">
+<title>森 一真 | 医学生・研究員・動画編集者 — 公式プロフィール</title>
+<meta name="description" content="佐賀大学医学部医学科・押しボタンプロジェクト研究員・SCS代表、動画編集者・ライターの森一真の公式プロフィール。研究・地域活動、制作実績、連絡先・SNSをまとめています。">
 <!-- OGP -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="森 一真 | 動画編集者・ライター ポートフォリオ">
-<meta property="og:description" content="医療知識 × ショート動画編集|伝わる動画を丁寧に制作。採用・集客・リード獲得を目的とした企業向けショート動画の編集に対応します。">
-<meta property="og:site_name" content="森 一真 ポートフォリオ">
+<meta property="og:title" content="森 一真 | 医学生・研究員・動画編集者 — 公式プロフィール">
+<meta property="og:description" content="佐賀大学医学部医学科。高齢者の孤立死を防ぐ「押しボタンプロジェクト」研究員、SCS代表。医療知識を活かした動画編集・ライティングも。">
+<meta property="og:site_name" content="森 一真 公式プロフィール">
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="森 一真 | 動画編集者・ライター ポートフォリオ">
-<meta name="twitter:description" content="医療知識 × ショート動画編集|伝わる動画を丁寧に制作。">
+<meta name="twitter:title" content="森 一真 | 医学生・研究員・動画編集者">
+<meta name="twitter:description" content="佐賀大学医学部医学科・押しボタンプロジェクト研究員・SCS代表。研究・地域活動と制作実績、連絡先。">
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -113,6 +113,7 @@ header{
 .btn-primary:hover{opacity:.9}
 .btn-ghost{border:1px solid var(--line);color:var(--text)}
 .btn-ghost:hover{border-color:var(--accent);color:var(--accent);opacity:1}
+.hero-sub{margin-top:14px;color:var(--muted);font-size:14px;opacity:0;animation:rise .8s ease .5s forwards}
 .scroll-hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);color:var(--muted);font-size:11px;letter-spacing:.3em;opacity:0;animation:rise 1s ease 1.2s forwards}
 
 /* ---- sections ---- */
@@ -280,13 +281,56 @@ section{padding:88px 20px}
 .intro-card .closing{color:var(--muted);font-size:14px;margin-top:24px;border-top:1px solid var(--line);padding-top:20px}
 .intro-card .todo-fill{color:#d9a94d;font-size:12px;border:1px dashed rgba(217,169,77,.5);border-radius:6px;padding:1px 8px;margin-left:6px;letter-spacing:.05em}
 
+/* ---- profile facts ---- */
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:30px;max-width:860px}
+.fact{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.fact dt{color:var(--accent);font-size:11.5px;letter-spacing:.18em;font-weight:700;margin-bottom:4px}
+.fact dd{font-size:14px}
+.fact dd small{display:block;color:var(--muted);font-size:12px;line-height:1.6;margin-top:2px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;max-width:860px}
+.chip{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:3px 12px}
+
+/* ---- activities ---- */
+.act-lead{max-width:760px;margin-bottom:30px}
+.act-lead .role-line{color:var(--accent);font-size:13px;font-weight:700;letter-spacing:.08em;margin-bottom:8px}
+.act-lead p{color:var(--muted);font-size:14.5px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:34px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 22px 20px}
+.stat .v{font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;font-size:clamp(28px,6vw,38px);color:var(--accent);line-height:1.2}
+.stat .k{font-size:13.5px;font-weight:700;margin-top:6px}
+.stat .d{color:var(--muted);font-size:12.5px;margin-top:4px;line-height:1.6}
+.timeline{list-style:none;border-left:2px solid var(--line);margin:0 0 30px 6px;max-width:760px}
+.timeline li{position:relative;padding:0 0 18px 22px}
+.timeline li::before{content:"";position:absolute;left:-7px;top:9px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+.timeline time{display:block;color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.08em}
+.timeline span{font-size:14.5px}
+.pill-links{display:flex;flex-wrap:wrap;gap:10px}
+.pill-links a{font-size:13px;border:1px solid var(--line);border-radius:999px;padding:7px 16px;color:var(--text)}
+.pill-links a:hover{border-color:var(--accent);color:var(--accent);opacity:1}
+.org-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.org{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:8px;color:var(--text);transition:border-color .3s ease, transform .3s ease}
+.org:hover{border-color:var(--accent);transform:translateY(-4px);opacity:1}
+.org .tag{align-self:flex-start}
+.org h4{font-size:16px;font-weight:700}
+.org p{color:var(--muted);font-size:13.5px}
+.org .card-link{color:var(--accent)}
+
+/* ---- link hub ---- */
+.hub{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;max-width:980px;margin:34px auto 0}
+.hub-col{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.hub-col h3{color:var(--accent);font-size:12px;letter-spacing:.24em;margin-bottom:12px}
+.hub-col a{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);color:var(--text);font-size:14px}
+.hub-col a:last-child{border-bottom:none}
+.hub-col a small{color:var(--muted);font-size:12px;text-align:right}
+.hub-col a:hover{color:var(--accent);opacity:1}
+
 /* ---- contact ---- */
 .contact-box{
   background:var(--card);border:1px solid var(--line);border-radius:18px;
   padding:44px 28px;text-align:center;max-width:680px;margin:0 auto;
 }
 .contact-box p{color:var(--muted);font-size:14.5px;margin-bottom:26px}
-.mail{font-size:clamp(15px,4vw,19px);font-weight:700;letter-spacing:.03em;display:inline-block;margin-bottom:26px}
+.mail{font-size:clamp(15px,4vw,19px);font-weight:700;letter-spacing:.03em;display:inline-block;}
 .sns-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
 .sns{
   border:1px solid var(--line);border-radius:999px;padding:8px 20px;font-size:13px;color:var(--text);
@@ -319,6 +363,7 @@ footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;colo
     <a class="logo" href="#top">MORI<span>.</span>KAZUMA</a>
     <ul>
       <li><a href="#about">About</a></li>
+      <li><a href="#activities">Activities</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#works">Works</a></li>
       <li><a href="#services">Services</a></li>
@@ -330,12 +375,14 @@ footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;colo
 <!-- ================= Hero ================= -->
 <section class="hero" id="top">
   <div class="hero-inner">
-    <span class="role">VIDEO EDITOR / WRITER</span>
+    <span class="role">MEDICAL STUDENT / RESEARCHER / VIDEO EDITOR</span>
     <h1>森 一真<span class="kana">MORI KAZUMA — もり かずま</span></h1>
-    <p class="copy">医療知識 × ショート動画編集|伝わる動画を丁寧に制作</p>
+    <p class="copy">「おはよう」でつながる地域を、医療とデータと共感で。</p>
+    <p class="hero-sub">佐賀大学医学部医学科 / 押しボタンプロジェクト 研究員 / SCS 代表 / 動画編集者・ライター</p>
     <div class="cta">
       <a class="btn btn-primary" href="#contact">お問い合わせ</a>
-      <a class="btn btn-ghost" href="#works">実績を見る</a>
+      <a class="btn btn-ghost" href="#activities">活動を見る</a>
+      <a class="btn btn-ghost" href="#works">制作実績</a>
     </div>
   </div>
   <span class="scroll-hint">SCROLL</span>
@@ -350,10 +397,20 @@ footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;colo
       <img class="about-photo" src="assets/profile-photo.webp" alt="森一真のプロフィール写真">
       <div class="about-grid">
         <p>
-          医療分野のバックグラウンドを持つ動画編集者・ライター。専門的な内容も正確に、分かりやすく伝えるコンテンツ制作が強み。
-          現在はショート動画(TikTok / Instagram Reels / YouTube Shorts)の編集を中心に、採用・集客・リード獲得を目的とした企業向け動画の制作に取り組んでいる。
+          佐賀大学医学部医学科の学生。救急医学講座の「押しボタンプロジェクト」で研究員・実施担当を務め、独居高齢者の孤立死を防ぐ見守りの仕組みづくりに取り組んでいる。学生団体SCS(佐賀大学学生地域交流の会)代表。
+          医療分野のバックグラウンドを活かし、動画編集者・ライターとしても活動。専門的な内容を正確に、分かりやすく伝えるコンテンツ制作が強み。
         </p>
       </div>
+    </div>
+
+    <dl class="facts fade">
+      <div class="fact"><dt>NICKNAME</dt><dd>ユメネルギーマン<small>Yumenergy Man</small></dd></div>
+      <div class="fact"><dt>AFFILIATION</dt><dd>佐賀大学 医学部医学科<small>Community Health &amp; Social Isolation Research</small></dd></div>
+      <div class="fact"><dt>STRENGTHS</dt><dd>回復思考・学習欲・共感力<small>Restorative / Learner / Empathy ・ ENFP-A</small></dd></div>
+      <div class="fact"><dt>HOBBIES</dt><dd>切り絵・吟詠・カリンバ・笑い文字<small>Kirie, Gin'ei, Kalimba, Warai Moji</small></dd></div>
+    </dl>
+    <div class="chips fade">
+      <span class="chip">#本音キャッチャー</span><span class="chip">#データ✕共感</span><span class="chip">#医療の枠を超えて</span><span class="chip">#持続可能な"恩送り"</span><span class="chip">#シナジーハンター</span><span class="chip">#プロセス可視化マスター</span><span class="chip">#笑顔の連鎖メーカー</span>
     </div>
 
     <div class="intro-card fade" style="margin-top:34px">
@@ -380,7 +437,9 @@ footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;colo
 
       <h4>【経歴】</h4>
       <ul>
-        <li>医学部在学中(医療分野の専門知識を保有)</li>
+        <li>佐賀大学医学部医学科 在学中</li>
+        <li>押しボタンプロジェクト(佐賀大学医学部附属病院 救急医学講座) 研究員・実施担当</li>
+        <li>SCS(佐賀大学学生地域交流の会) 代表</li>
         <li>動画編集スクールにてショート動画編集・ライティングを学習中</li>
         <li>電子書籍の執筆・出版、noteでの記事執筆</li>
       </ul>
@@ -434,8 +493,66 @@ footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;colo
   </div>
 </section>
 
+<!-- ================= Activities ================= -->
+<section id="activities">
+  <div class="wrap">
+    <p class="sec-label fade">ACTIVITIES</p>
+    <h2 class="sec-title fade">研究・地域活動</h2>
+
+    <h3 class="works-sub fade">押しボタンプロジェクト(おはようボタン)</h3>
+    <div class="act-lead fade">
+      <p class="role-line">佐賀大学医学部附属病院 救急医学講座 × 地域コミュニティ ／ 研究員・実施担当</p>
+      <p>毎朝ボタンを押すだけで安否を知らせる、住民主導の見守りシステム。佐賀市内の県営住宅で2016年から運用が続き、2023年からは研究チームとして毎月の高齢者サロンに参加。住民との対話、記録カレンダーの回収・データ整理、インタビュー調査を担当しています。</p>
+    </div>
+    <div class="stats">
+      <div class="stat fade"><div class="v">95%+</div><div class="k">ボタン押下率</div><div class="d">参加者13名全員が有効日数の95%以上で押下</div></div>
+      <div class="stat fade"><div class="v">0件</div><div class="k">孤立死</div><div class="d">研究運用開始から1年11か月、発生ゼロ</div></div>
+      <div class="stat fade"><div class="v">64%</div><div class="k">生活リズムの形成</div><div class="d">14名中9名で生活リズム・役割意識の形成を確認</div></div>
+      <div class="stat fade"><div class="v">56%</div><div class="k">地域への信頼感が向上</div><div class="d">社会的結束感も56.3%で向上</div></div>
+    </div>
+    <ul class="timeline fade">
+      <li><time>2026.07</time><span>佐賀県庁にて市町行政向けに新型「いろどり+ボタン」を提案</span></li>
+      <li><time>2026.04</time><span>新型「いろどり+ボタン」の実証実験を開始(30台)</span></li>
+      <li><time>2026.03</time><span>佐賀大学として公式プレスリリース／佐賀TSUNAGIコンベンションで成果発表・展示</span></li>
+      <li><time>2025.12</time><span>株式会社永和システムマネジメントと新型ボタンの共同開発に向けて協議</span></li>
+      <li><time>2025.10</time><span>第84回 日本公衆衛生学会総会(静岡)でポスター発表</span></li>
+      <li><time>2025.03</time><span>地域での活動がサガテレビで放映</span></li>
+      <li><time>2024.10</time><span>第83回 日本公衆衛生学会総会(北海道)でポスター・口演発表</span></li>
+      <li><time>2024.09</time><span>佐賀大学 地域連携紹介マップに掲載</span></li>
+      <li><time>2023.10</time><span>研究チームとして毎月のサロン参加を開始</span></li>
+    </ul>
+    <div class="pill-links fade">
+      <a href="https://hope8pa9fs.wixsite.com/mysite" target="_blank" rel="noopener">プロジェクト公式サイト →</a>
+      <a href="https://www.saga-u.ac.jp/koho/%e4%bc%9a%e8%a6%8b/2026033040388" target="_blank" rel="noopener">佐賀大学プレスリリース →</a>
+      <a href="https://youtu.be/V95p0Y8N4SI" target="_blank" rel="noopener">説明動画(公衆衛生学会) →</a>
+      <a href="https://youtu.be/Bt9TFAmHH0I" target="_blank" rel="noopener">サガテレビ放送 →</a>
+      <a href="https://www.suric.saga-u.ac.jp/saga_project_map/" target="_blank" rel="noopener">地域連携紹介マップ →</a>
+    </div>
+
+    <h3 class="works-sub fade" style="margin-top:56px">そのほかの活動</h3>
+    <div class="org-grid">
+      <div class="org fade">
+        <span class="tag">STUDENT ORG</span>
+        <h4>SCS(佐賀大学学生地域交流の会) 代表</h4>
+        <p>医学部生による地域交流ボランティア団体。団地の高齢者サロンへの参加などを通じて、地域と学生をつないでいます。</p>
+      </div>
+      <div class="org fade">
+        <span class="tag">GRANT</span>
+        <h4>地域みらい創生プロジェクト(令和5年度)</h4>
+        <p>「地域に根差した高齢者単独世帯の孤独死・突然死回避のシステム構築」に取り組みました。</p>
+      </div>
+      <a class="org fade" href="https://vcan-hpv.org/activity/post/6709e9d5af78c6f226b2ceae" target="_blank" rel="noopener">
+        <span class="tag">EDUCATION</span>
+        <h4>学生団体Vcan 中高ツアー</h4>
+        <p>山形県南陽市立赤湯中学校で出張授業(2024年1月・7月の2回)。</p>
+        <span class="card-link">活動レポート →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- ================= Skills ================= -->
-<section id="skills">
+<section id="skills" class="alt">
   <div class="wrap">
     <p class="sec-label fade">SKILLS</p>
     <h2 class="sec-title fade">スキル</h2>
@@ -469,7 +586,7 @@ footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;colo
 </section>
 
 <!-- ================= Works ================= -->
-<section id="works" class="alt">
+<section id="works">
   <div class="wrap">
     <p class="sec-label fade">WORKS</p>
     <h2 class="sec-title fade">実績</h2>
@@ -567,7 +684,7 @@ footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;colo
 </section>
 
 <!-- ================= Services ================= -->
-<section id="services">
+<section id="services" class="alt">
   <div class="wrap">
     <p class="sec-label fade">SERVICES</p>
     <h2 class="sec-title fade">対応可能な業務</h2>
@@ -592,31 +709,43 @@ footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;colo
 </section>
 
 <!-- ================= Contact ================= -->
-<section id="contact" class="alt">
+<section id="contact">
   <div class="wrap">
     <p class="sec-label fade">CONTACT</p>
-    <h2 class="sec-title fade">お問い合わせ</h2>
+    <h2 class="sec-title fade">連絡先・リンク</h2>
     <div class="contact-box fade">
-      <p>メールまたはSNSのDMにてお気軽にご連絡ください。<br>24時間以内の返信を心がけています。</p>
+      <p>研究・地域活動のこと、制作のご依頼など、メールまたはSNSのDMにてお気軽にご連絡ください。<br>24時間以内の返信を心がけています。</p>
       <a class="mail" href="mailto:kazuma160504@gmail.com">kazuma160504@gmail.com</a>
-      <div class="sns-row">
-        <a class="sns" href="https://x.com/jYxjTjjL9AqfgIp" target="_blank" rel="noopener">X</a>
-        <a class="sns" href="https://www.threads.com/@grilledsalm0ninf0il" target="_blank" rel="noopener">スレッズ</a>
-        <a class="sns" href="https://note.com/tasty_bee649" target="_blank" rel="noopener">note</a>
+      <p class="affil" style="margin:14px 0 0;font-size:13px">佐賀大学 医学部(〒849-0937 佐賀県佐賀市鍋島5-1-1)<br>TEL <a href="tel:0952-31-6511">0952-31-6511</a></p>
+    </div>
+    <div class="hub">
+      <div class="hub-col fade">
+        <h3>SNS</h3>
+        <a href="https://www.linkedin.com/in/kazuma-mori-942446402/" target="_blank" rel="noopener">LinkedIn<small>Kazuma Mori</small></a>
+        <a href="https://x.com/jYxjTjjL9AqfgIp" target="_blank" rel="noopener">X<small>旧Twitter</small></a>
+        <a href="https://www.instagram.com/grilledsalm0ninf0il" target="_blank" rel="noopener">Instagram<small>@grilledsalm0ninf0il</small></a>
+        <a href="https://www.threads.com/@grilledsalm0ninf0il" target="_blank" rel="noopener">Threads<small>@grilledsalm0ninf0il</small></a>
+        <a href="https://m.facebook.com/profile.php?id=100095053718855" target="_blank" rel="noopener">Facebook<small>森 一真</small></a>
       </div>
-      <div class="link-list">
-        <a href="https://hope8pa9fs.wixsite.com/mysite" target="_blank" rel="noopener">Webサイト</a>
-        <a href="https://www.linkedin.com/in/kazuma-mori-942446402/" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://kazuma160504-art.github.io/" target="_blank" rel="noopener">GitHub Pages</a>
-        <a href="https://my.prairie.cards/u/kazuma2004" target="_blank" rel="noopener">プレーリーカード</a>
-        <a href="https://line.me/S/sticker/25801228" target="_blank" rel="noopener">LINEスタンプ</a>
+      <div class="hub-col fade">
+        <h3>WRITING / WORKS</h3>
+        <a href="https://note.com/tasty_bee649" target="_blank" rel="noopener">note<small>エッセイ 全11記事</small></a>
+        <a href="https://www.amazon.co.jp/dp/B0DRD3P1L3/" target="_blank" rel="noopener">Kindle<small>ぼんやり、いいじゃない</small></a>
+        <a href="https://line.me/S/sticker/25801228" target="_blank" rel="noopener">LINEスタンプ<small>オリジナル</small></a>
+        <a href="#works">動画編集の実績<small>このページ内</small></a>
+      </div>
+      <div class="hub-col fade">
+        <h3>PROJECT / PROFILE</h3>
+        <a href="https://hope8pa9fs.wixsite.com/mysite" target="_blank" rel="noopener">押しボタンプロジェクト<small>公式サイト</small></a>
+        <a href="mailto:oshibotan.info@gmail.com">窓口<small>oshibotan.info@gmail.com</small></a>
+        <a href="https://my.prairie.cards/u/kazuma2004" target="_blank" rel="noopener">プレーリーカード<small>デジタル名刺</small></a>
       </div>
     </div>
   </div>
 </section>
 
 <footer>
-  © 2026 Mori Kazuma — Video Editor / Writer
+  © 2026 Mori Kazuma — Medical Student / Researcher / Video Editor
 </footer>
 
 <script>
