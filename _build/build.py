@@ -520,8 +520,23 @@ page('scs', '団地のサロン、子どもの居場所、公民館。地域の�
      sec(scs_g, 'GALLERY', '活動の様子'))
 
 # 4 コミュニティ
+gabai = """    <div class="org-grid">
+      <div class="org fade">
+        <span class="tag">NEW PROGRAM</span>
+        <h4>「がばいっこ よかよか ラジオ」パーソナリティ</h4>
+        <p>ふだんはえびすFMで番組の裏方(PA)をしている佐賀大学の学生3人(医学部・農学部・芸術地域デザイン学部)で、2026年11月から自分たちの番組をスタート。県外から来た学生だからこそ気づいた佐賀のいいところを、「佐賀の推し活ラジオ」として発信します。</p>
+        <p style="font-size:12px">アプリ「FM++(エフエムプラプラ)」で全国から聴取できます。</p>
+      </div>
+      <div class="org fade">
+        <span class="tag">ON AIR</span>
+        <h4>毎月 第1・第3水曜日 18:00〜18:55</h4>
+        <p>えびすFM 89.6MHz。初回は2026年11月4日(水)。第1水曜日はゲストをお迎えする回、第3水曜日は3人のフリートーク回です。</p>
+      </div>
+    </div>
+"""
 page('community', 'スポーツの力で地域課題に挑む。ファンコミュニティとラジオで、人と人をつなぐ。',
-     sec(community, 'BALLOONERS DAO', '佐賀バルーナーズDAO'))
+     sec(community, 'BALLOONERS DAO', '佐賀バルーナーズDAO') +
+     sec(gabai, 'EBISU FM', 'えびすFM「がばいっこ よかよか ラジオ」', alt=True))
 
 # 5 教育・発信
 other_orgs = other_orgs.replace('<p>山形県南陽市立赤湯中学校で出張授業(2024年1月・7月の2回)。</p>',
@@ -641,6 +656,7 @@ media = """    <div class="mini-grid">
       <a class="mini-card fade" href="https://www.saga-u.ac.jp/koho/%e4%bc%9a%e8%a6%8b/2026033040388" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="newspaper"></i></span><div><h4>佐賀大学 公式プレスリリース</h4><p>2026年3月 ／ 押しボタンプロジェクトを大学として発表</p></div></a>
       <div class="mini-card fade"><span class="ki"><i data-lucide="tv"></i></span><div><h4>サガテレビ 取材</h4><p>2026年2月 ／ 住民向け説明会の様子が取材されました</p></div></div>
       <a class="mini-card fade" href="https://youtu.be/Bt9TFAmHH0I" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="tv"></i></span><div><h4>サガテレビ 放映</h4><p>2025年3月 ／ 地域での活動が紹介されました</p></div></a>
+      <a class="mini-card fade" href="community.html" style="color:inherit"><span class="ki"><i data-lucide="radio"></i></span><div><h4>えびすFM「がばいっこ よかよか ラジオ」</h4><p>2026年11月〜 ／ 学生3人の新番組でパーソナリティ(毎月第1・第3水曜)</p></div></a>
       <a class="mini-card fade" href="community.html" style="color:inherit"><span class="ki"><i data-lucide="radio"></i></span><div><h4>えびすFM「バルーナーズDAOおとなりさんラジオ」</h4><p>2026年5月〜 ／ パーソナリティとして出演</p></div></a>
       <a class="mini-card fade" href="https://www.suric.saga-u.ac.jp/saga_project_map/" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="map-pin"></i></span><div><h4>佐賀大学 地域連携紹介マップ</h4><p>2024年9月 ／ プロジェクトが掲載</p></div></a>
       <div class="mini-card fade"><span class="ki"><i data-lucide="book-open"></i></span><div><h4>市報なんよう 2024年8月号(山形県南陽市)</h4><p>特集「知らないまま後悔しないで 子宮頸がんとHPVワクチン」でVcanの出張授業と講師として紹介</p></div></div>
@@ -681,6 +697,7 @@ tiles = '    <div class="theme-grid">\n' + '\n'.join(
     for n, (k, ic, en, t, d) in enumerate(THEMES, 1)) + '\n    </div>\n'
 
 news = '''    <div class="news fade">
+      <a href="community.html"><time>2026.11</time><span>えびすFMの新番組「がばいっこ よかよか ラジオ」でパーソナリティに(11月4日スタート)</span><i data-lucide="chevron-right"></i></a>
       <a href="publications.html"><time>2026.08</time><span>共著論文が The American Journal of Cardiology に掲載</span><i data-lucide="chevron-right"></i></a>
       <a href="awards.html"><time>2026.07</time><span>SCSとして佐賀県CSO"志"支援金に採択されました</span><i data-lucide="chevron-right"></i></a>
       <a href="community.html"><time>2026.05</time><span>えびすFM「バルーナーズDAOおとなりさんラジオ」パーソナリティに</span><i data-lucide="chevron-right"></i></a>
