@@ -659,6 +659,15 @@ a.orbit-node:hover .orbit-card,a.orbit-node:focus-visible .orbit-card{transform:
 .gp-btn svg{width:18px;height:18px}
 @media (max-width:720px){.game-promo{grid-template-columns:1fr;gap:14px;padding:12px}.gp-tx{padding:0 6px 8px}}
 @media (prefers-reduced-motion:reduce){.gp-play{animation:none}}
+/* エフェクト: スクロールの進み具合・舞う葉っぱ・カードの立体チルト・名前の登場 */
+.scroll-progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:200;pointer-events:none;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,#c5e86c,#8cc63f,#3c9a3f);box-shadow:0 0 8px rgba(140,198,63,.6)}
+.leaf-fx{position:absolute;inset:0;z-index:1;pointer-events:none}
+.page-hero .wrap,.hero-inner{position:relative;z-index:2}
+.fx-tilt:hover{transition:transform .12s ease-out,box-shadow .35s ease,border-color .35s ease}
+.fx-glare{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s ease;z-index:3}
+.hero h1 .ch{display:inline-block;opacity:0;transform:translateY(.45em) rotate(-8deg);animation:ch-in .7s cubic-bezier(.2,.8,.25,1.25) forwards;animation-delay:calc(.35s + var(--i) * .12s)}
+@keyframes ch-in{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.hero h1 .ch{opacity:1;transform:none;animation:none}}
 /* ポッドキャスト(Spotify の埋め込み) */
 .podcast{max-width:760px;border-radius:14px;overflow:hidden;background:#282828}
 .podcast iframe{display:block;width:100%;height:352px;border:0}

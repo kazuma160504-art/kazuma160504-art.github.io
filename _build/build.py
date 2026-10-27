@@ -317,6 +317,15 @@ a.orbit-node:hover .orbit-card,a.orbit-node:focus-visible .orbit-card{transform:
 .gp-btn svg{width:18px;height:18px}
 @media (max-width:720px){.game-promo{grid-template-columns:1fr;gap:14px;padding:12px}.gp-tx{padding:0 6px 8px}}
 @media (prefers-reduced-motion:reduce){.gp-play{animation:none}}
+/* エフェクト: スクロールの進み具合・舞う葉っぱ・カードの立体チルト・名前の登場 */
+.scroll-progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:200;pointer-events:none;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,#c5e86c,#8cc63f,#3c9a3f);box-shadow:0 0 8px rgba(140,198,63,.6)}
+.leaf-fx{position:absolute;inset:0;z-index:1;pointer-events:none}
+.page-hero .wrap,.hero-inner{position:relative;z-index:2}
+.fx-tilt:hover{transition:transform .12s ease-out,box-shadow .35s ease,border-color .35s ease}
+.fx-glare{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s ease;z-index:3}
+.hero h1 .ch{display:inline-block;opacity:0;transform:translateY(.45em) rotate(-8deg);animation:ch-in .7s cubic-bezier(.2,.8,.25,1.25) forwards;animation-delay:calc(.35s + var(--i) * .12s)}
+@keyframes ch-in{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.hero h1 .ch{opacity:1;transform:none;animation:none}}
 /* ポッドキャスト(Spotify の埋め込み) */
 .podcast{max-width:760px;border-radius:14px;overflow:hidden;background:#282828}
 .podcast iframe{display:block;width:100%;height:352px;border:0}
@@ -939,6 +948,7 @@ page('contact', '研究・地域活動、講演・取材、制作のご依頼な
 
 # ---------------------------------------------------------------- トップ
 hero = take('<section class="hero" id="top">', '</section>') + '</section>\n'
+hero = hero.replace('<h1>森 一真<span class="kana">', '<h1><span class="ch" style="--i:0">森</span> <span class="ch" style="--i:1">一</span><span class="ch" style="--i:2">真</span><span class="kana">')
 hero = hero.replace('<section class="hero" id="top">', '<section class="hero" id="top">\n  <img class="nature tl" src="assets/nature/leaves-hanging.webp" alt="">\n  <img class="nature br" src="assets/nature/branch-long.webp" alt="">')
 hero = hero.replace('<a class="btn btn-ghost" href="#activities">活動を見る</a>', '<a class="btn btn-ghost" href="#themes">12のテーマを見る</a>')
 hero = hero.replace('<a class="btn btn-ghost" href="#awards">実績・表彰</a>', '<a class="btn btn-ghost" href="awards.html">実績・表彰</a>\n      <a class="btn btn-game" href="game.html">🎮 ゲームで遊ぶ</a>')
@@ -1096,6 +1106,64 @@ js = '''// 共通スクリプト: メニュー・スクロールフェード・�
 })();
 // 現在のテーマタブを見える位置へ
 (function(){ var on=document.querySelector('.theme-tabs a.on'); if(on) on.scrollIntoView({inline:'center',block:'nearest'}); })();
+// エフェクト(動きを減らす設定の人には、進み具合のバー以外は出さない)
+(function(){
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // ページのどこまで読んだかを上端の細いバーで表示
+  var bar = document.createElement('div'); bar.className = 'scroll-progress'; bar.setAttribute('aria-hidden', 'true'); document.body.appendChild(bar);
+  var pending = false;
+  function progress(){ pending = false; var h = document.documentElement.scrollHeight - innerHeight; bar.style.transform = 'scaleX(' + (h > 0 ? Math.min(1, scrollY / h) : 0) + ')'; }
+  addEventListener('scroll', function(){ if (!pending) { pending = true; requestAnimationFrame(progress); } }, { passive: true });
+  addEventListener('resize', progress); progress();
+  if (reduce) return;
+  // 見出しの背景に、ひらひら舞う葉っぱ(画面に見えている間だけ動かす)
+  var COLORS = ['#8cc63f', '#6db552', '#a6d68f', '#3c9a3f', '#c5e1a5', '#e6c75a'];
+  document.querySelectorAll('.hero, .page-hero').forEach(function(sec){
+    if (!('IntersectionObserver' in window)) return;
+    var cv = document.createElement('canvas'); cv.className = 'leaf-fx'; cv.setAttribute('aria-hidden', 'true'); sec.appendChild(cv);
+    var ctx = cv.getContext('2d'), W = 0, H = 0, dpr = 1, raf = 0, on = false, last = 0, leaves = [];
+    function size(){ var r = sec.getBoundingClientRect(); dpr = Math.min(devicePixelRatio || 1, 2); W = r.width; H = r.height; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+    function spawn(l, first){ l.x = Math.random() * W; l.y = first ? Math.random() * H : -24; l.s = 9 + Math.random() * 10; l.vy = 16 + Math.random() * 22;
+      l.sw = 18 + Math.random() * 30; l.f = 0.4 + Math.random() * 0.8; l.p = Math.random() * 6.3; l.r = Math.random() * 6.3; l.vr = (Math.random() - 0.5) * 1.2;
+      l.c = COLORS[Math.floor(Math.random() * COLORS.length)]; l.a = 0.45 + Math.random() * 0.35; }
+    function draw(l, t){
+      ctx.save(); ctx.translate(l.x + Math.sin(t * l.f + l.p) * l.sw, l.y); ctx.rotate(l.r + Math.sin(t * l.f * 1.3 + l.p) * 0.6);
+      ctx.scale(1, 0.5 + 0.5 * Math.abs(Math.cos(t * l.f + l.p))); ctx.globalAlpha = l.a; ctx.fillStyle = l.c;
+      ctx.beginPath(); ctx.moveTo(0, -l.s); ctx.quadraticCurveTo(l.s * 0.8, 0, 0, l.s); ctx.quadraticCurveTo(-l.s * 0.8, 0, 0, -l.s); ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(0, -l.s * 0.8); ctx.lineTo(0, l.s * 0.9); ctx.stroke(); ctx.restore();
+    }
+    function frame(ts){
+      raf = 0; if (!on) return;
+      var dt = last ? Math.min((ts - last) / 1000, 0.05) : 0, t = ts / 1000; last = ts;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+      leaves.forEach(function(l){ l.y += l.vy * dt; l.r += l.vr * dt; if (l.y > H + 24) spawn(l, false); draw(l, t); });
+      raf = requestAnimationFrame(frame);
+    }
+    function start(){ if (on && !raf) { last = 0; raf = requestAnimationFrame(frame); } }
+    size();
+    var n = Math.max(4, Math.min(12, Math.round(W * H / 70000)));
+    for (var k = 0; k < n; k++) { var l = {}; spawn(l, true); leaves.push(l); }
+    addEventListener('resize', size);
+    new IntersectionObserver(function(es){ on = es[0].isIntersecting && !document.hidden; start(); }).observe(sec);
+    document.addEventListener('visibilitychange', function(){
+      if (document.hidden) { on = false; return; }
+      var r = sec.getBoundingClientRect(); on = r.bottom > 0 && r.top < innerHeight; start();
+    });
+  });
+  // マウスで触れたカードが、立体的に傾いて光る(パソコンのみ)
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  document.querySelectorAll('.theme, a.kpi, .game-promo').forEach(function(el){
+    var glare = document.createElement('span'); glare.className = 'fx-glare'; glare.setAttribute('aria-hidden', 'true');
+    el.appendChild(glare); el.classList.add('fx-tilt');
+    el.addEventListener('pointermove', function(e){
+      var r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      el.style.transform = 'perspective(800px) rotateX(' + ((0.5 - y) * 8).toFixed(2) + 'deg) rotateY(' + ((x - 0.5) * 10).toFixed(2) + 'deg) translateY(-6px)';
+      glare.style.background = 'radial-gradient(circle at ' + (x * 100).toFixed(1) + '% ' + (y * 100).toFixed(1) + '%, rgba(255,255,255,.6), rgba(255,255,255,0) 55%)';
+      glare.style.opacity = '1';
+    });
+    el.addEventListener('pointerleave', function(){ el.style.transform = ''; glare.style.opacity = '0'; });
+  });
+})();
 '''
 io.open(os.path.join(ROOT, 'assets', 'site.js'), 'w', encoding='utf-8', newline='\n').write(js)
 print('built', [t[0] for t in THEMES])
