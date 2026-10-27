@@ -45,7 +45,7 @@ css_old = take('<style>', '</style>', include_start=False)
 about_inner = take('    <div class="about-flex fade">', '  </div>\n</section>')
 research = take('    <div class="act-lead fade">', '    <h3 class="works-sub fade" style="margin-top:56px">そのほかの活動</h3>')
 other_orgs = take('    <h3 class="works-sub fade" style="margin-top:56px">そのほかの活動</h3>', '    <h3 class="works-sub fade" style="margin-top:56px">コミュニティ活動</h3>')
-community = take('    <div class="org-grid">\n      <div class="org fade">\n        <img class="org-img" src="assets/photos/ballooners-dao.webp"', '  </div>\n</section>')
+community = take('    <div class="org-grid">\n      <a class="org fade" href="https://x.com/balloonersdao" target="_blank" rel="noopener">\n        <img class="org-img" src="assets/photos/ballooners-dao.webp"', '  </div>\n</section>')
 awards = take('    <div class="award-list">', '  </div>\n</section>')
 hobbies = take('    <div class="hobby-grid">', '  </div>\n</section>')
 gallery = take('    <div class="gallery fade">', '  </div>\n</section>')
@@ -219,6 +219,13 @@ a.kpi:hover .kgo{opacity:1;transform:translateX(3px)}
 .str-next b{color:var(--muted);font-size:12px;letter-spacing:.06em;margin-right:4px}
 .str-next span{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:8px;padding:3px 10px}
 .str-note{font-size:11.5px;color:var(--muted);margin-top:16px}
+/* 文中リンク・リンク化したカード */
+.il{color:inherit;text-decoration:underline;text-decoration-color:rgba(60,154,63,.45);text-decoration-thickness:1.5px;text-underline-offset:3px}
+.il:hover{color:var(--accent);opacity:1}
+a.hobby{display:block;color:var(--text);transition:border-color .3s ease,transform .3s ease}
+a.hobby:hover{border-color:var(--accent);transform:translateY(-3px);opacity:1}
+a.svc{display:block;color:var(--text)}
+a.svc:hover{opacity:1}
 /* ポッドキャスト(Spotify の埋め込み) */
 .podcast{max-width:760px;border-radius:14px;overflow:hidden;background:#282828}
 .podcast iframe{display:block;width:100%;height:352px;border:0}
@@ -547,7 +554,7 @@ lang = '<div class="chart-grid">' + chart_wrap('languages', '語学スコア', '
         table([('TOEIC', '760 / 990'), ('TOEFL iBT', '80 / 120 相当')], ['試験', 'スコア'])) + \
     chart_wrap('compass', '活動の広がり', 'いま取り組んでいる5つの領域', hub_svg(('森 一真', 'もりぞう'), [('stethoscope', '医学', '佐賀大学 医学科'), ('bell-ring', '研究', '押しボタンPJ'), ('hand-heart', '地域交流', 'SCS 代表'), ('radio', 'コミュニティ', 'DAO・ラジオ'), ('clapperboard', '発信', 'YouTube・執筆')])) + '</div>'
 about2 = about2.replace('回復思考・学習欲・共感力<small>Restorative / Learner / Empathy ・ ENFP-A</small>',
-                        '活発性・ポジティブ・個別化<small>ストレングスファインダー TOP3 ・ ENFP-A</small>')
+                        '<a class="il" href="#strengths">活発性・ポジティブ・個別化</a><small>ストレングスファインダー TOP3 ・ ENFP-A</small>')
 # 強み(CliftonStrengths 34, 2025年3月受検)。レポート本文は転載せず、資質名と活動に結びつけた自分の言葉で書く
 DOMAINS = {'影響力': '#e07b24', '人間関係構築力': '#2f7fc1', '実行力': '#7b3f98', '戦略的思考力': '#2e9e5b'}
 top5 = [('活発性', 'Activator', '影響力', '「まずやってみる」が原動力。企画は話し合いだけで終わらせず、動きながら形にしていきます。'),
@@ -567,7 +574,7 @@ strengths = ('    <p class="str-lead fade">ストレングスファインダー(
     '    <div class="str-next fade"><b>6〜10位</b>' + ''.join(f'<span style="--c:{DOMAINS[dm]}">{n}. {jp}</span>' for n, (jp, dm) in enumerate(next5, 6)) + '</div>\n'
     '    <p class="str-note">2025年3月受検。CliftonStrengths® および34の資質名は Gallup, Inc. の商標です。</p>\n')
 page('profile', '医学生・研究員・地域活動家。データと共感で、人と地域をつなぐ。',
-     sec(about2) + sec(strengths, 'STRENGTHS', '強み — ストレングスファインダー TOP5', alt=True) + sec(lang, 'AT A GLANCE', 'ひと目でわかる森一真'))
+     sec(about2) + sec(strengths, 'STRENGTHS', '強み — ストレングスファインダー TOP5', alt=True).replace('<section class="alt">', '<section id="strengths" class="alt">', 1) + sec(lang, 'AT A GLANCE', 'ひと目でわかる森一真'))
 
 # 2 研究
 research_body = research.replace('    <h3 class="works-sub fade">押しボタンプロジェクト(おはようボタン)</h3>\n', '')
@@ -672,12 +679,13 @@ edu = f'''    <div class="org-grid">
         <p style="font-size:12px">2025年6月は2クラス約65人に実施(事前アンケートをもとに内容を準備)。翌年も同校から依頼をいただき、2026年6月にも実施しました。</p>
         <a class="card-link" href="https://www.scshakyou.jp/welfare/volunteer.html" target="_blank" rel="noopener">佐賀市社会福祉協議会(ボランティア) →</a>
       </div>
-      <div class="org fade">
+      <a class="org fade" href="scs.html">
         <img class="org-img" src="assets/photos/ig-zaimoku-lecture.webp" alt="公民館での健康講演" loading="lazy">
         <span class="tag">LECTURE</span>
         <h4>地域での健康講演</h4>
         <p>公民館や団地のサロンで、熱中症予防やフレイル予防など、医学部で学んだ知識を地域の方へ分かりやすくお伝えしています。</p>
-      </div>
+        <span class="card-link">SCSの活動を見る →</span>
+      </a>
       <div class="org fade">
         <img class="org-img" src="assets/photos/vcan-poster.webp" alt="じぶんごとcaféのチラシ" loading="lazy" style="object-fit:contain;background:#f6f0fa">
         <span class="tag">EVENT</span>
@@ -687,9 +695,9 @@ edu = f'''    <div class="org-grid">
     </div>
     <h3 class="works-sub fade" style="margin-top:56px">学会発表</h3>
     <ul class="timeline fade">
-      <li><time>2026.10</time><span>第85回 日本公衆衛生学会総会(東京) 口演発表(筆頭演者)</span></li>
-      <li><time>2025.10</time><span>第84回 日本公衆衛生学会総会(静岡) ポスター発表</span></li>
-      <li><time>2024.10</time><span>第83回 日本公衆衛生学会総会(北海道) ポスター・口演発表</span></li>
+      <li><time>2026.10</time><span><a class="il" href="publications.html">第85回 日本公衆衛生学会総会(東京) 口演発表(筆頭演者)</a></span></li>
+      <li><time>2025.10</time><span><a class="il" href="publications.html">第84回 日本公衆衛生学会総会(静岡) ポスター発表</a></span></li>
+      <li><time>2024.10</time><span><a class="il" href="publications.html">第83回 日本公衆衛生学会総会(北海道) ポスター・口演発表</a></span></li>
       <li><time>2026.03</time><span>佐賀TSUNAGIコンベンションで研究成果を発表・展示</span></li>
     </ul>
 '''
@@ -733,7 +741,7 @@ kirie = '''    <div class="artwork fade">
     </div>
 '''
 page('hobbies', '手を動かし、声を出し、体を動かす。切り絵・詩吟・少林寺拳法・カリンバ・笑い文字。',
-     sec(kirie, 'ARTWORK', '切り絵作品') + sec(hobbies, 'HOBBIES', '好きなこと', alt=True))
+     sec(kirie, 'ARTWORK', '切り絵作品').replace('<section>', '<section id="artwork">', 1) + sec(hobbies, 'HOBBIES', '好きなこと', alt=True))
 
 # 8 クリエイティブ
 yt = '''    <div class="yt-card fade">
@@ -766,10 +774,10 @@ pub = """    <div class="pub fade">
     </div>
 """
 confs = """    <div class="mini-grid">
-      <div class="mini-card fade"><span class="ki"><i data-lucide="mic"></i></span><div><h4>第85回 日本公衆衛生学会総会(東京)</h4><p>2026年10月30日 ／ 口演(O7-4・筆頭演者) ／ 「高齢者向け押しボタンシステムを活用した災害時安否確認訓練の評価と地域防災への示唆」</p></div></div>
-      <div class="mini-card fade"><span class="ki"><i data-lucide="presentation"></i></span><div><h4>第84回 日本公衆衛生学会総会(静岡)</h4><p>2025年10月 ／ ポスター発表 ／ 押しボタンプロジェクト</p></div></div>
-      <div class="mini-card fade"><span class="ki"><i data-lucide="presentation"></i></span><div><h4>第83回 日本公衆衛生学会総会(北海道)</h4><p>2024年10月 ／ ポスター・口演発表 ／ 押しボタンプロジェクト</p></div></div>
-      <div class="mini-card fade"><span class="ki"><i data-lucide="lightbulb"></i></span><div><h4>佐賀TSUNAGIコンベンション</h4><p>2026年3月 ／ 研究成果の発表・展示</p></div></div>
+      <a class="mini-card fade" href="research.html" style="color:inherit"><span class="ki"><i data-lucide="mic"></i></span><div><h4>第85回 日本公衆衛生学会総会(東京)</h4><p>2026年10月30日 ／ 口演(O7-4・筆頭演者) ／ 「高齢者向け押しボタンシステムを活用した災害時安否確認訓練の評価と地域防災への示唆」</p></div></a>
+      <a class="mini-card fade" href="research.html" style="color:inherit"><span class="ki"><i data-lucide="presentation"></i></span><div><h4>第84回 日本公衆衛生学会総会(静岡)</h4><p>2025年10月 ／ ポスター発表 ／ 押しボタンプロジェクト</p></div></a>
+      <a class="mini-card fade" href="research.html" style="color:inherit"><span class="ki"><i data-lucide="presentation"></i></span><div><h4>第83回 日本公衆衛生学会総会(北海道)</h4><p>2024年10月 ／ ポスター・口演発表 ／ 押しボタンプロジェクト</p></div></a>
+      <a class="mini-card fade" href="research.html" style="color:inherit"><span class="ki"><i data-lucide="lightbulb"></i></span><div><h4>佐賀TSUNAGIコンベンション</h4><p>2026年3月 ／ 研究成果の発表・展示</p></div></a>
       <div class="mini-card fade"><span class="ki"><i data-lucide="users"></i></span><div><h4>佐賀疫学研究会</h4><p>2026年1月 ／ 参加</p></div></div>
     </div>
 """

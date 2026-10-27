@@ -561,6 +561,13 @@ a.kpi:hover .kgo{opacity:1;transform:translateX(3px)}
 .str-next b{color:var(--muted);font-size:12px;letter-spacing:.06em;margin-right:4px}
 .str-next span{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:8px;padding:3px 10px}
 .str-note{font-size:11.5px;color:var(--muted);margin-top:16px}
+/* 文中リンク・リンク化したカード */
+.il{color:inherit;text-decoration:underline;text-decoration-color:rgba(60,154,63,.45);text-decoration-thickness:1.5px;text-underline-offset:3px}
+.il:hover{color:var(--accent);opacity:1}
+a.hobby{display:block;color:var(--text);transition:border-color .3s ease,transform .3s ease}
+a.hobby:hover{border-color:var(--accent);transform:translateY(-3px);opacity:1}
+a.svc{display:block;color:var(--text)}
+a.svc:hover{opacity:1}
 /* ポッドキャスト(Spotify の埋め込み) */
 .podcast{max-width:760px;border-radius:14px;overflow:hidden;background:#282828}
 .podcast iframe{display:block;width:100%;height:352px;border:0}
