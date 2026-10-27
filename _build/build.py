@@ -552,7 +552,7 @@ about2 = (about_inner.replace('<dt>NICKNAME</dt>', '<dt><i data-lucide="smile"><
           .replace('<h3>経歴・役職</h3>', '<h3><i data-lucide="briefcase"></i> 経歴・役職</h3>').replace('<h3>資格・段位</h3>', '<h3><i data-lucide="award"></i> 資格・段位</h3>').replace('<li>少林寺拳法 初段</li>', '<li>少林寺拳法 初段<small>関東高校選抜大会 団体4位・組演武8位</small></li>'))
 lang = '<div class="chart-grid">' + chart_wrap('languages', '語学スコア', '満点に対する到達度', hbars([('TOEIC 760 / 990', 76.8, 'TOEIC 760点(満点990)'), ('TOEFL iBT 80 / 120', 66.7, 'TOEFL iBT 従来スコア80相当(CEFR B2)')], lw=150),
         table([('TOEIC', '760 / 990'), ('TOEFL iBT', '80 / 120 相当')], ['試験', 'スコア'])) + \
-    chart_wrap('compass', '活動の広がり', 'いま取り組んでいる5つの領域', hub_svg(('森 一真', 'もりぞう'), [('stethoscope', '医学', '佐賀大学 医学科'), ('bell-ring', '研究', '押しボタンPJ'), ('hand-heart', '地域交流', 'SCS 代表'), ('radio', 'コミュニティ', 'DAO・ラジオ'), ('clapperboard', '発信', 'YouTube・執筆')])) + '</div>'
+    chart_wrap('compass', '活動の広がり', 'いま取り組んでいる5つの領域', hub_svg(('森 一真', 'もりぞう'), [('stethoscope', '医学', '佐賀大学 医学科'), ('bell-ring', '研究', '押しボタンPJ'), ('hand-heart', '地域交流', 'SCS 代表'), ('radio', 'バルーナーズ', 'DAO・ラジオ'), ('clapperboard', '発信', 'YouTube・執筆')])) + '</div>'
 about2 = about2.replace('回復思考・学習欲・共感力<small>Restorative / Learner / Empathy ・ ENFP-A</small>',
                         '<a class="il" href="#strengths">活発性・ポジティブ・個別化</a><small>ストレングスファインダー TOP3 ・ ENFP-A</small>')
 # 強み(CliftonStrengths 34, 2025年3月受検)。レポート本文は転載せず、資質名と活動に結びつけた自分の言葉で書く
