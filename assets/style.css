@@ -566,3 +566,17 @@ footer .mini a{color:var(--muted);font-size:12px}
 .prof-col h3 svg,.hub-col h3 svg{width:16px;height:16px}
 .fact dt{display:flex;align-items:center;gap:6px}
 .fact dt svg{width:14px;height:14px}
+/* スマホ用メニュー */
+.menu-btn{display:none;align-items:center;justify-content:center;width:40px;height:40px;margin:-6px -8px -6px 0;border:0;border-radius:10px;background:none;color:var(--text);cursor:pointer}
+.menu-btn:hover{background:var(--accent-dim)}
+.menu-btn svg{width:22px;height:22px}
+.menu-btn .i-close,.menu-btn[aria-expanded="true"] .i-open{display:none}
+.menu-btn[aria-expanded="true"] .i-close{display:block}
+.menu{max-width:1080px;margin:0 auto;padding:6px 20px 18px;max-height:calc(100vh - 60px);overflow-y:auto}
+.menu:not([hidden]){display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.menu a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;background:var(--card);border:1px solid var(--line);color:var(--text);font-size:13px;line-height:1.4}
+.menu a svg{flex:0 0 16px;width:16px;height:16px;color:var(--accent)}
+.menu a[aria-current="page"]{border-color:var(--accent);background:var(--accent-dim);font-weight:700}
+.menu .top{grid-column:1/-1}
+@media (max-width:560px){.menu-btn{display:flex}}
+@media (min-width:561px){.menu{display:none!important}}

@@ -3,10 +3,38 @@
 _build/source.html(旧1枚ページ)から各ブロックを切り出し、
 トップ(index.html)+テーマ別8ページを書き出す。共通CSSは assets/style.css。
 """
-import io, os, re
+import io, os, re, json
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SITE = 'https://kazuma160504-art.github.io/'
 src = io.open(os.path.join(ROOT, '_build', 'source.html'), encoding='utf-8').read()
+
+# ---------------------------------------------------------------- アイコン
+# <i data-lucide="名前"> をビルド時にインラインSVGへ置き換える(実行時のCDN読み込みをなくす)。
+# 素材は lucide-static@0.469.0 の icons/*.svg から、使うものだけを _build/icons/ に置いている(ISC License)。
+ICON_DIR = os.path.join(ROOT, '_build', 'icons')
+ICON_ALIASES = {'bar-chart-3': 'chart-column', 'pie-chart': 'chart-pie'}  # lucide の旧名
+_icon_cache = {}
+
+def icon_svg(name, extra=''):
+    if name not in _icon_cache:
+        raw = io.open(os.path.join(ICON_DIR, ICON_ALIASES.get(name, name) + '.svg'), encoding='utf-8').read()
+        inner = re.search(r'<svg[^>]*>(.*)</svg>', raw, re.S).group(1)
+        _icon_cache[name] = ''.join(line.strip() for line in inner.splitlines())
+    cls = f'lucide lucide-{name}'
+    m = re.search(r' class="([^"]*)"', extra)
+    if m:
+        cls += ' ' + m.group(1)
+        extra = extra.replace(m.group(0), '')
+    return ('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" '
+            'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" '
+            f'data-lucide="{name}" class="{cls}" aria-hidden="true"{extra}>{_icon_cache[name]}</svg>')
+
+def inline_icons(html):
+    return re.sub(r'<i data-lucide="([a-z0-9-]+)"([^>]*)></i>', lambda m: icon_svg(m.group(1), m.group(2)), html)
+
+def write(name, html):
+    io.open(os.path.join(ROOT, name), 'w', encoding='utf-8', newline='\n').write(html)
 
 def take(start, end, s=src, include_start=True):
     i = s.index(start)
@@ -196,9 +224,21 @@ footer .mini a{color:var(--muted);font-size:12px}
 .prof-col h3 svg,.hub-col h3 svg{width:16px;height:16px}
 .fact dt{display:flex;align-items:center;gap:6px}
 .fact dt svg{width:14px;height:14px}
+/* スマホ用メニュー */
+.menu-btn{display:none;align-items:center;justify-content:center;width:40px;height:40px;margin:-6px -8px -6px 0;border:0;border-radius:10px;background:none;color:var(--text);cursor:pointer}
+.menu-btn:hover{background:var(--accent-dim)}
+.menu-btn svg{width:22px;height:22px}
+.menu-btn .i-close,.menu-btn[aria-expanded="true"] .i-open{display:none}
+.menu-btn[aria-expanded="true"] .i-close{display:block}
+.menu{max-width:1080px;margin:0 auto;padding:6px 20px 18px;max-height:calc(100vh - 60px);overflow-y:auto}
+.menu:not([hidden]){display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.menu a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;background:var(--card);border:1px solid var(--line);color:var(--text);font-size:13px;line-height:1.4}
+.menu a svg{flex:0 0 16px;width:16px;height:16px;color:var(--accent)}
+.menu a[aria-current="page"]{border-color:var(--accent);background:var(--accent-dim);font-weight:700}
+.menu .top{grid-column:1/-1}
+@media (max-width:560px){.menu-btn{display:flex}}
+@media (min-width:561px){.menu{display:none!important}}
 '''
-
-LUCIDE = '<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>'
 
 THEMES = [
     ('profile',   'user-round',    'PROFILE',   'プロフィール',       '経歴・役職・資格・段位。森一真がどんな人かをひと目で。'),
@@ -215,7 +255,14 @@ THEMES = [
     ('contact',   'mail',          'CONTACT',   '連絡先・SNS',        'メール・SNS・各種サイトへのリンクと、このページのQRコード。'),
 ]
 
-def head(title, desc, rel=''):
+def menu(cur):
+    cur_attr = lambda k: ' aria-current="page"' if k == cur else ''
+    links = [f'<a class="top" href="index.html"{cur_attr("index")}><i data-lucide="house"></i>トップ</a>'] + [
+        f'<a href="{k}.html"{cur_attr(k)}><i data-lucide="{ic}"></i>{t}</a>' for k, ic, _, t, _ in THEMES]
+    return '  <nav class="menu" id="menu" aria-label="サイトメニュー" hidden>\n    ' + '\n    '.join(links) + '\n  </nav>\n'
+
+def head(title, desc, path='', cur='', extra=''):
+    url = SITE + path
     return f'''<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -223,17 +270,28 @@ def head(title, desc, rel=''):
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title}</title>
 <meta name="description" content="{desc}">
+<link rel="canonical" href="{url}">
 <meta property="og:type" content="website">
+<meta property="og:url" content="{url}">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:site_name" content="森 一真 公式プロフィール">
 <meta property="og:locale" content="ja_JP">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="{SITE}assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="森 一真 公式プロフィール — 医学生・研究員・地域活動">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f3f9ec">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
-</head>
+<noscript><style>.fade{{opacity:1;transform:none}}</style></noscript>
+{extra}</head>
 <body>
 <header>
   <nav class="nav">
@@ -244,8 +302,9 @@ def head(title, desc, rel=''):
       <li><a href="index.html#gallery">Gallery</a></li>
       <li><a href="index.html#contact">Contact</a></li>
     </ul>
+    <button class="menu-btn" type="button" aria-label="メニュー" aria-expanded="false" aria-controls="menu"><i data-lucide="menu" class="i-open"></i><i data-lucide="x" class="i-close"></i></button>
   </nav>
-</header>
+{menu(cur)}</header>
 '''
 
 FOOT = '''<footer>
@@ -253,7 +312,6 @@ FOOT = '''<footer>
   © 2026 Mori Kazuma — Medical Student / Researcher / Community
 </footer>
 <div class="lightbox" id="lightbox"><img alt=""></div>
-''' + LUCIDE + '''
 <script src="assets/site.js"></script>
 </body>
 </html>
@@ -267,7 +325,7 @@ def page(key, lead, body):
     idx = [t[0] for t in THEMES].index(key)
     k, ic, en, title, desc = THEMES[idx]
     prev = THEMES[idx - 1]; nxt = THEMES[(idx + 1) % len(THEMES)]
-    html = head(f'{title} | 森 一真', desc)
+    html = head(f'{title} | 森 一真', desc, f'{key}.html', key)
     html += f'''<section class="page-hero">
   <img class="nature tr" src="assets/nature/leaves-hanging.webp" alt="">
   <div class="wrap">
@@ -291,7 +349,7 @@ def page(key, lead, body):
   </div>
 </section>
 ''' + FOOT
-    io.open(os.path.join(ROOT, f'{key}.html'), 'w', encoding='utf-8', newline='\n').write(html)
+    write(f'{key}.html', inline_icons(html))
 
 def sec(inner, label='', title='', alt=False, deco=''):
     h = f'<section{" class=\"alt\"" if alt else ""}>\n{deco}  <div class="wrap">\n'
@@ -696,8 +754,22 @@ hub_new = hub.replace('<h3>SNS</h3>', '<h3><i data-lucide="share-2"></i>SNS</h3>
 hub_new = hub_new.replace('<a href="#works">動画編集の実績<small>このページ内</small></a>', '<a href="creative.html">動画編集の実績<small>CREATIVE</small></a>')
 hub_new = hub_new.replace('        <a href="https://scs-website-ten.vercel.app/contacts"', '        <a href="https://www.instagram.com/scs.official2025/" target="_blank" rel="noopener">SCS Instagram<small>@scs.official2025</small></a>\n        <a href="https://scs-website-ten.vercel.app/contacts"')
 
-index = head('森 一真 | 医学生・研究員 — 公式プロフィール',
-             '佐賀大学医学部医学科・押しボタンプロジェクト研究員・SCS代表、森一真の公式プロフィール。研究・地域活動、実績、趣味、制作、連絡先を12のテーマでまとめています。')
+index_desc = '佐賀大学医学部医学科・押しボタンプロジェクト研究員・SCS代表、森一真の公式プロフィール。研究・地域活動、実績、趣味、制作、連絡先を12のテーマでまとめています。'
+# 検索エンジン向けの人物情報(schema.org Person)
+person = {
+    '@context': 'https://schema.org', '@type': 'Person',
+    'name': '森 一真', 'alternateName': ['Mori Kazuma', 'Kazuma Mori', 'もり かずま'],
+    'url': SITE, 'image': SITE + 'assets/profile-photo.webp', 'description': index_desc,
+    'jobTitle': '医学生・研究員',
+    'affiliation': [{'@type': 'CollegeOrUniversity', 'name': '佐賀大学医学部医学科'},
+                    {'@type': 'Organization', 'name': 'SCS(佐賀大学学生地域交流の会)', 'url': 'https://scs-website-ten.vercel.app/'}],
+    'sameAs': ['https://www.linkedin.com/in/kazuma-mori-942446402/', 'https://x.com/jYxjTjjL9AqfgIp',
+               'https://www.instagram.com/grilledsalm0ninf0il', 'https://www.threads.com/@grilledsalm0ninf0il',
+               'https://www.facebook.com/profile.php?id=100095053718855', 'https://www.youtube.com/@GREENVIBESch',
+               'https://note.com/tasty_bee649', 'https://my.prairie.cards/u/kazuma2004'],
+}
+ld = '<script type="application/ld+json">' + json.dumps(person, ensure_ascii=False) + '</script>\n'
+index = head('森 一真 | 医学生・研究員 — 公式プロフィール', index_desc, '', 'index', ld)
 index += hero + '\n'
 index += sec(tiles, 'THEMES', '12のテーマで、森一真を知る', alt=True,
              deco='  <img class="nature tr" src="assets/nature/branch.webp" alt="" style="width:min(220px,30vw);opacity:.85">\n').replace('<section class="alt">', '<section id="themes" class="alt">', 1)
@@ -714,11 +786,24 @@ index += sec(gal_top.replace('href="scs.html">SCSの活動をもっと見る', '
 index += sec(contact_box + hub_new, 'CONTACT', '連絡先・リンク',
              alt=True, deco='  <img class="nature bl" src="assets/nature/sprout.webp" alt="">\n').replace('<section class="alt">', '<section id="contact" class="alt">', 1)
 index += FOOT
-io.open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8', newline='\n').write(index)
+write('index.html', inline_icons(index))
+
+# 検索エンジン向け: サイトマップと robots.txt
+write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+      ''.join(f'  <url><loc>{SITE}{p}</loc></url>\n' for p in [''] + [f'{t[0]}.html' for t in THEMES]) + '</urlset>\n')
+write('robots.txt', f'User-agent: *\nAllow: /\n\nSitemap: {SITE}sitemap.xml\n')
 
 io.open(os.path.join(ROOT, 'assets', 'style.css'), 'w', encoding='utf-8', newline='\n').write(css_new.strip() + '\n')
-js = '''// 共通スクリプト: アイコン描画・スクロールフェード・写真の拡大表示
-if (window.lucide) lucide.createIcons();
+js = '''// 共通スクリプト: メニュー・スクロールフェード・写真の拡大表示
+// スマホ用メニューの開閉
+(function(){
+  var btn=document.querySelector('.menu-btn'), menu=document.getElementById('menu'); if(!btn||!menu) return;
+  function set(open){ menu.hidden=!open; btn.setAttribute('aria-expanded', open); }
+  btn.addEventListener('click',function(e){ e.stopPropagation(); set(menu.hidden); });
+  menu.addEventListener('click',function(e){ if(e.target.closest('a')) set(false); });
+  document.addEventListener('click',function(e){ if(!menu.hidden && !menu.contains(e.target)) set(false); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape' && !menu.hidden){ set(false); btn.focus(); } });
+})();
 (function(){
   var els = document.querySelectorAll('.fade');
   if(!('IntersectionObserver' in window)){ els.forEach(function(el){ el.classList.add('show'); }); return; }
