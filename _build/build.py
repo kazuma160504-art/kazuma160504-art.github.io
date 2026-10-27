@@ -898,6 +898,22 @@ edu = f'''    <div class="org-grid">
         <p>SCSの防煙教室の第2弾(第1弾は北川副小学校)。タバコが体に与える影響を、スライドや教材を使って医学生ならではの視点で、小学生に分かりやすく伝えました。</p>
         <span class="card-link">SCSの活動レポート →</span>
       </a>
+      <a class="org fade" href="https://www.med.saga-u.ac.jp/litlit/retreat2025/abstract.html" target="_blank" rel="noopener" style="padding-top:26px">
+        <span class="tag">RESEARCH</span>
+        <h4>Student Researcher 研究発表会で発表(2025年)</h4>
+        <p>医学科3年のとき、佐賀大学医学部の研究発表会で「エピゲノム年齢と喫煙量の関係」を発表。研究の内容とあわせて、1年生に向けて「未来の自分に時間を投資する」という大学生活のメッセージも伝えました。</p>
+        <span class="card-link">発表の抄録ページ →</span>
+      </a>
+      <div class="org fade" style="padding-top:26px">
+        <span class="tag">HIGH SCHOOL</span>
+        <h4>「医療人へのとびら」で高校生とディスカッション(2024年10月)</h4>
+        <p>佐賀大学医学部の高大連携プログラム「医療人へのとびら」で、医師・看護師を目指す高校生とのディスカッションに医学生として参加しました。</p>
+      </div>
+      <div class="org fade" style="padding-top:26px">
+        <span class="tag">KIDS</span>
+        <h4>佐賀子どもメディカルラリー(2026年2月)</h4>
+        <p>第4回 佐賀子どもメディカルラリーにスタッフとして参加。子どもたちが、救急や災害の現場での医療を体験しながら学ぶイベントです。</p>
+      </div>
       <a class="org fade" href="https://scs-website-ten.vercel.app/blog/2025-06-25-honjo-elementary-inquiry" target="_blank" rel="noopener" style="padding-top:26px">
         <span class="tag">SCHOOL</span>
         <h4>本庄小学校・BEYOND本庄での授業</h4>
@@ -999,6 +1015,7 @@ confs = """    <div class="mini-grid">
       <a class="mini-card fade" href="research.html" style="color:inherit"><span class="ki"><i data-lucide="mic"></i></span><div><h4>第85回 日本公衆衛生学会総会(東京)</h4><p>2026年10月30日 ／ 口演(O7-4・筆頭演者) ／ 「高齢者向け押しボタンシステムを活用した災害時安否確認訓練の評価と地域防災への示唆」</p></div></a>
       <a class="mini-card fade" href="research.html" style="color:inherit"><span class="ki"><i data-lucide="presentation"></i></span><div><h4>第84回 日本公衆衛生学会総会(静岡)</h4><p>2025年10月 ／ ポスター発表 ／ 押しボタンプロジェクト</p></div></a>
       <a class="mini-card fade" href="https://plaza.umin.ac.jp/jsph83/" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="presentation"></i></span><div><h4>第83回 日本公衆衛生学会総会(北海道)</h4><p>2024年10月 ／ 口演(O13-2-4・筆頭演者)「災害時の避難意向に関する世帯の特徴：佐賀市における横断的研究」 ／ 押しボタンPJのポスター(P08-67)「無線式呼び出し機を活用した住民主体の独居高齢者の見守りシステムの効果と今後の展望」</p></div></a>
+      <a class="mini-card fade" href="https://www.med.saga-u.ac.jp/litlit/retreat2025/abstract.html" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="mic"></i></span><div><h4>佐賀大学医学部 Student Researcher 研究発表会</h4><p>2025年 ／ 口演 ／ エピゲノム年齢と喫煙量の関係</p></div></a>
       <a class="mini-card fade" href="https://www.suric.saga-u.ac.jp/event/contents-12075/" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="lightbulb"></i></span><div><h4>佐賀TSUNAGIコンベンション</h4><p>2026年3月 ／ 研究成果の発表・展示</p></div></a>
       <a class="mini-card fade" href="https://joint-jea-ieawpr2026.jp/home_jp/" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="users"></i></span><div><h4>第36回 日本疫学会学術総会(長崎)</h4><p>2026年1月 ／ 参加 ／ 国際疫学会 西太平洋地域との合同学術集会</p></div></a>
     </div>
@@ -1007,7 +1024,7 @@ confs = """    <div class="mini-grid">
 RESEARCH = [('heart-pulse', '心臓血管外科', '冠動脈バイパスの長期開存', '#e05264', ['冠動脈バイパス術後の長期開存率']),
             ('pill', '感染症', '尿路感染症とホスホマイシン', '#2f7fc1', ['尿路感染症とホスホマイシン']),
             ('microscope', '肝臓', 'ICI後の非代償化', '#c9862b', ['免疫チェックポイント阻害薬(ICI)投与後の、肝臓の非代償化']),
-            ('users', '公衆衛生', 'エピゲノム年齢・災害時避難', '#3c9a3f', ['エピゲノム年齢と喫煙量の関係', '災害時の避難意向調査(自主防災組織)']),
+            ('users', '公衆衛生', 'エピゲノム年齢・災害時避難', '#3c9a3f', ['<a class="il" href="https://www.med.saga-u.ac.jp/litlit/retreat2025/abstract.html" target="_blank" rel="noopener">エピゲノム年齢と喫煙量の関係</a>(Student Researcher 研究発表会で発表)', '災害時の避難意向調査(自主防災組織)']),
             ('siren', '救急', '見守りボタン・安否確認', '#8e44ad', ['<a class="il" href="research.html">「いろどり+ボタン」を使った見守りシステムと、災害時の安否確認</a>'])]
 fields = chart_wrap('network', '研究のフィールド', '心臓血管外科・感染症・肝臓・公衆衛生・救急の5分野', orbit_html(('研究', 'Research'),
     [(ic, f, sub, 'research.html' if f == '救急' else None, c) for ic, f, sub, c, _ in RESEARCH]))
@@ -1115,7 +1132,7 @@ index += sec(tiles, 'THEMES', '12のテーマで、森一真を知る', alt=True
              deco='  <img class="nature tr" src="assets/nature/branch.webp" alt="" style="width:min(220px,30vw);opacity:.85">\n').replace('<section class="alt">', '<section id="themes" class="alt">', 1)
 kpis = [('calendar-heart', 10, '年+', '見守りの継続', '2016年から団地で運用', 'research'), ('bell-ring', 95, '%+', 'ボタン押下率', '参加者13名全員', 'research'),
         ('shield-check', 0, '件', '孤立死', '研究運用の1年11か月', 'research'), ('book-open-text', 1, '本', '査読付き論文', 'Am J Cardiol 2026', 'publications'),
-        ('presentation', 4, '回', '学会・研究発表', '公衆衛生学会ほか', 'publications'), ('trophy', 11, '件', '実績・表彰', '助成・表彰・掲載・大会', 'awards'),
+        ('presentation', 5, '回', '学会・研究発表', '公衆衛生学会ほか', 'publications'), ('trophy', 11, '件', '実績・表彰', '助成・表彰・掲載・大会', 'awards'),
         ('users', 27, '名', 'SCSの仲間', '2025年5月時点', 'scs'), ('pen-line', 11, '本', 'note記事', 'エッセイを発信', 'creative')]
 kpi_html = '    <div class="stat-grid">\n' + '\n'.join(
     f'      <a class="kpi fade" href="{k}.html"><span class="ki"><i data-lucide="{ic}"></i></span><i data-lucide="arrow-right" class="kgo"></i><span class="kv"><span data-count="{v}">{v}</span><small>{u}</small></span><span class="kl">{l}</span><span class="kd">{d}</span></a>'
