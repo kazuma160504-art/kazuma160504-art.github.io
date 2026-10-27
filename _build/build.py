@@ -779,6 +779,7 @@ page('publications', '査読付き国際誌への共著論文と、学会での�
 
 media = """    <div class="mini-grid">
       <a class="mini-card fade" href="https://www.saga-u.ac.jp/koho/%e4%bc%9a%e8%a6%8b/2026033040388" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="newspaper"></i></span><div><h4>佐賀大学 公式プレスリリース</h4><p>2026年3月 ／ 押しボタンプロジェクトを大学として発表</p></div></a>
+      <a class="mini-card fade" href="https://www.saga-s.co.jp/articles/-/1659890" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="newspaper"></i></span><div><h4>佐賀新聞 掲載</h4><p>SCSの国際ソロプチミスト佐賀有明からの表彰(2026年2月)が紹介されました</p></div></a>
       <div class="mini-card fade"><span class="ki"><i data-lucide="tv"></i></span><div><h4>サガテレビ 取材</h4><p>2026年2月 ／ 住民向け説明会の様子が取材されました</p></div></div>
       <a class="mini-card fade" href="https://youtu.be/Bt9TFAmHH0I" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="tv"></i></span><div><h4>サガテレビ 放映</h4><p>2025年3月 ／ 地域での活動が紹介されました</p></div></a>
       <a class="mini-card fade" href="community.html" style="color:inherit"><span class="ki"><i data-lucide="radio"></i></span><div><h4>えびすFM「バルーナーズDAOおとなりさんラジオ」</h4><p>2026年5月〜 ／ パーソナリティとして出演・Spotify でも配信</p></div></a>
