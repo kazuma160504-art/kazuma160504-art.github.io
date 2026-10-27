@@ -257,7 +257,7 @@ a.svc:hover{opacity:1}
   background:linear-gradient(150deg,rgba(255,255,255,.98),rgba(255,255,255,.84));border:1px solid #fff;
   box-shadow:0 18px 30px -18px var(--c),0 4px 12px rgba(30,51,34,.08),inset 0 -3px 0 rgba(0,0,0,.05);
   -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:transform .35s ease,box-shadow .35s ease}
-.orbit-node:hover .orbit-card,.orbit-node:focus-visible .orbit-card{transform:translateY(-6px) scale(1.04);box-shadow:0 26px 36px -18px var(--c),0 8px 20px rgba(30,51,34,.12),inset 0 -3px 0 rgba(0,0,0,.05)}
+a.orbit-node:hover .orbit-card,a.orbit-node:focus-visible .orbit-card{transform:translateY(-6px) scale(1.04);box-shadow:0 26px 36px -18px var(--c),0 8px 20px rgba(30,51,34,.12),inset 0 -3px 0 rgba(0,0,0,.05)}
 .orbit-ic{flex:none;width:42px;height:42px;border-radius:13px;display:grid;place-items:center;color:#fff;background:var(--c);
   background:linear-gradient(145deg,color-mix(in srgb,var(--c) 55%,#fff),var(--c) 58%,color-mix(in srgb,var(--c) 78%,#000));
   box-shadow:inset 0 2px 3px rgba(255,255,255,.45),inset 0 -3px 6px rgba(0,0,0,.18),0 8px 14px -6px var(--c)}
@@ -267,9 +267,23 @@ a.svc:hover{opacity:1}
 .orbit-tx small{display:block;font-size:11.5px;color:var(--muted);line-height:1.4;margin-top:2px}
 .orbit-go{position:absolute;right:11px;top:50%;margin-top:-.75em;line-height:1.5;color:var(--c);font-weight:700;opacity:.35;transition:opacity .3s ease,transform .3s ease}
 .orbit-node:hover .orbit-go{opacity:1;transform:translateX(3px)}
+.orbit-node.nolink .orbit-card{padding-right:14px}
 .bm-m{display:none}
+@media (max-width:720px){
+  .orbit.stack{aspect-ratio:auto;height:var(--mh);--cy:var(--mcy)}
+  .orbit.stack .orbit-node{left:calc(var(--mx) * 1%);top:calc(var(--my) * 1%)}
+  .orbit.stack .orbit-card{padding:9px 11px 9px 10px;gap:8px;border-radius:14px}
+  .orbit.stack .orbit-ic{width:32px;height:32px;border-radius:10px}
+  .orbit.stack .orbit-ic svg{width:17px;height:17px}
+  .orbit.stack .orbit-tx b{font-size:13px}
+  .orbit.stack .orbit-tx small{font-size:10.5px}
+  .orbit.stack .orbit-go{display:none}
+  .orbit.stack .ring.r1{width:40%}.orbit.stack .ring.r2{width:66%}.orbit.stack .ring.r3{width:94%}
+  .orbit.stack .orbit-floor{width:100%}
+  .orbit.stack .bm-d{display:none}.orbit.stack .bm-m{display:block}
+}
 @media (max-width:640px){
-  .orbit{aspect-ratio:1/1.22;--cy:56%}
+  .orbit:not(.stack){aspect-ratio:1/1.22;--cy:56%}
   .orbit-node{left:calc(var(--mx) * 1%);top:calc(var(--my) * 1%)}
   .orbit-card{padding:9px 11px 9px 10px;gap:8px;border-radius:14px}
   .orbit-ic{width:32px;height:32px;border-radius:10px}
@@ -484,7 +498,7 @@ def table(rows, head):
             ''.join('<tr>' + ''.join(f'<td{" class=\"n\"" if i else ""}>{c}</td>' for i, c in enumerate(r)) + '</tr>' for r in rows) + '</table></details>')
 
 def chart_wrap(icon, title, sub, svg, extra=''):
-    wide = ' wide' if ('hub-svg' in svg or 'class="orbit"' in svg) else ''
+    wide = ' wide' if 'class="orbit' in svg else ''
     return f'<div class="chart fade{wide}"><h3><i data-lucide="{icon}"></i>{title}</h3><p class="sub">{sub}</p>{svg}{extra}</div>\n'
 
 def hbars(items, maxv=100, unit='%', w=520, lw=170):
@@ -561,41 +575,41 @@ def flow_svg():
     out.append('</svg>')
     return '<div style="overflow-x:auto"><div style="min-width:760px">' + ''.join(out) + '</div></div>'
 
-def hub_svg(center, spokes):
-    """中心から放射状に広がる図。spokes=[(icon,label,sub)]"""
-    import math
-    w, h = 760, 430; cx, cy = w / 2, h / 2; R = 160
-    out = [f'<svg class="viz" viewBox="0 0 {w} {h}" role="img">']
-    pts = []
-    for i in range(len(spokes)):
-        a = -math.pi / 2 + 2 * math.pi * i / len(spokes)
-        pts.append((cx + R * 1.45 * math.cos(a), cy + R * math.sin(a)))
-    for x, y in pts:
-        out.append(f'<line x1="{cx}" y1="{cy}" x2="{x:.1f}" y2="{y:.1f}" stroke="#cfe6bb" stroke-width="2"/>')
-    out.append(f'<circle cx="{cx}" cy="{cy}" r="62" fill="#3c9a3f"/><text x="{cx}" y="{cy-2}" text-anchor="middle" font-size="22" font-weight="900" fill="#fff" font-family="Zen Kaku Gothic New">{center[0]}</text><text x="{cx}" y="{cy+20}" text-anchor="middle" font-size="11.5" fill="#e9f6dc">{center[1]}</text>')
-    for (x, y), (ic, lab, sub) in zip(pts, spokes):
-        out.append(f'<g data-tip="{esc(lab)}:{esc(sub)}"><rect x="{x-82:.1f}" y="{y-30:.1f}" width="164" height="60" rx="14" fill="#fff" stroke="#d2e6c2"/>'
-                   f'<foreignObject x="{x-72:.1f}" y="{y-12:.1f}" width="24" height="24"><i data-lucide="{ic}" style="color:#3c9a3f;width:22px;height:22px"></i></foreignObject>'
-                   f'<text x="{x-42:.1f}" y="{y-3:.1f}" font-size="13.5" font-weight="700" fill="{INK}">{esc(lab)}</text>'
-                   f'<text x="{x-42:.1f}" y="{y+15:.1f}" font-size="11" fill="{MUTED}">{esc(sub)}</text></g>')
-    out.append('</svg>')
-    return '<div class="hub-svg" style="overflow-x:auto"><div style="min-width:600px;max-width:860px;margin:0 auto">' + ''.join(out) + '</div></div>'
-
 def orbit_html(center, nodes):
-    """立体的な軌道の図。nodes=[(icon,label,sub,href,color)]。PCは中心のまわりに楕円配置、スマホは上下に振り分け"""
+    """立体的な軌道の図。nodes=[(icon,label,sub,href,color)](href=None ならリンクなし)。
+    PCは中心のまわりに楕円配置。スマホは5項目で短い文字なら上下に振り分け、それ以外は縦のジグザグに並べる"""
     import math
-    pc = [(50 + 36 * math.cos(a), 50 + 37 * math.sin(a)) for a in (-math.pi / 2 + 2 * math.pi * i / len(nodes) for i in range(len(nodes)))]
-    sp = [(50, 9), (76, 33), (74, 85), (26, 85), (24, 33)]  # スマホ用(上・右上・右下・左下・左上)
-    beams = lambda pts, cy, cls: (f'<svg class="orbit-beams {cls}" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' +
-        ''.join(f'<line x1="50" y1="{cy}" x2="{x:.1f}" y2="{y:.1f}" style="--c:{n[4]}"/>' for (x, y), n in zip(pts, nodes)) + '</svg>')
-    out = ['<div class="orbit">', '<span class="orbit-floor" aria-hidden="true"></span>',
+    n = len(nodes)
+    pc = [(50 + 36 * math.cos(a), 50 + 37 * math.sin(a)) for a in (-math.pi / 2 + 2 * math.pi * i / n for i in range(n))]
+    em = lambda t: sum(1 if ord(c) > 0x2000 else 0.55 for c in t)  # 全角1・半角0.55として文字幅を数える
+    card_w = max(61 + max(em(lab) * 13, em(sub) * 10.5) for _, lab, sub, _, _ in nodes)  # スマホでのカード幅の目安(px)
+    stack = not (n == 5 and card_w <= 150)
+    if stack:
+        top, gap, core_y = 160, 66, 70
+        mh = top + (n - 1) * gap + 48
+        mcy = core_y / mh * 100
+        sp = [(40 if i % 2 == 0 else 60, round((top + i * gap) / mh * 100, 1)) for i in range(n)]
+        # 中心 → 1つ目 → 2つ目 … と、たどる道のように結ぶ
+        chain = [(50, mcy)] + sp
+        beams_m = (f'<svg class="orbit-beams bm-m" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' +
+                   ''.join(f'<line x1="{x1}" y1="{y1:.1f}" x2="{x2}" y2="{y2:.1f}" style="--c:{nd[4]}"/>' for (x1, y1), (x2, y2), nd in zip(chain, chain[1:], nodes)) + '</svg>')
+        cls, extra = 'orbit stack', f' style="--mh:{mh}px;--mcy:{mcy:.1f}%"'
+    else:
+        sp = [(50, 9), (76, 33), (74, 85), (26, 85), (24, 33)]  # 上・右上・右下・左下・左上
+        beams_m = ('<svg class="orbit-beams bm-m" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' +
+                   ''.join(f'<line x1="50" y1="56" x2="{x}" y2="{y}" style="--c:{nd[4]}"/>' for (x, y), nd in zip(sp, nodes)) + '</svg>')
+        cls, extra = 'orbit', ''
+    beams_d = ('<svg class="orbit-beams bm-d" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' +
+               ''.join(f'<line x1="50" y1="50" x2="{x:.1f}" y2="{y:.1f}" style="--c:{nd[4]}"/>' for (x, y), nd in zip(pc, nodes)) + '</svg>')
+    out = [f'<div class="{cls}"{extra}>', '<span class="orbit-floor" aria-hidden="true"></span>',
            '<span class="ring r1" aria-hidden="true"></span><span class="ring r2" aria-hidden="true"></span><span class="ring r3" aria-hidden="true"></span>',
-           beams(pc, 50, 'bm-d'), beams(sp, 56, 'bm-m'),
+           beams_d, beams_m,
            f'<div class="orbit-core" aria-hidden="true"><span class="core-shadow"></span><span class="core-ball"><b>{center[0]}</b><small>{center[1]}</small></span></div>']
     for i, ((ic, lab, sub, href, col), (x, y), (mx, my)) in enumerate(zip(nodes, pc, sp)):
-        out.append(f'<a class="orbit-node" href="{href}" style="--x:{x:.1f};--y:{y:.1f};--mx:{mx};--my:{my};--c:{col};--d:{-i * 1.2:.1f}s">'
+        tag, attrs, go = ('a', f' href="{href}"', '<span class="orbit-go" aria-hidden="true">→</span>') if href else ('div', '', '')
+        out.append(f'<{tag} class="orbit-node{"" if href else " nolink"}"{attrs} style="--x:{x:.1f};--y:{y:.1f};--mx:{mx};--my:{my};--c:{col};--d:{-i * 1.2:.1f}s">'
                    f'<span class="orbit-float"><span class="orbit-card"><span class="orbit-ic"><i data-lucide="{ic}"></i></span>'
-                   f'<span class="orbit-tx"><b>{esc(lab)}</b><small>{esc(sub)}</small></span><span class="orbit-go" aria-hidden="true">→</span></span></span></a>')
+                   f'<span class="orbit-tx"><b>{esc(lab)}</b><small>{esc(sub)}</small></span>{go}</span></span></{tag}>')
     out.append('</div>')
     return ''.join(out)
 
@@ -719,9 +733,10 @@ matsuri = '''    <p class="creative-lead fade" style="margin-top:-18px">地域�
     </div>
 '''
 scs_g = '    <div class="gallery fade">\n' + '\n'.join(f for f in gal_figs if any(x in f for x in ['scs-', 'salon-', 'balloon-art', 'kids-tanabata'])) + '\n    </div>\n'
-scs_map = '<div class="chart-grid">' + chart_wrap('map', 'SCSの活動フィールド', '地域のさまざまな場所へ出向いています', hub_svg(('SCS', '学生地域交流の会'),
-        [('armchair', '団地サロン', '健康講話・体操・脳トレ'), ('baby', '子どもの居場所', '宿題サポート・遊び'), ('mic', '健康講演', '公民館で熱中症予防など'),
-         ('tent', '夏祭り', '血圧測定・CPR体験'), ('school', '小学校', '性教育の授業'), ('heart-handshake', '地域イベント', 'バルーン・交流')])) + \
+scs_map = '<div class="chart-grid">' + chart_wrap('map', 'SCSの活動フィールド', '地域のさまざまな場所へ出向いています', orbit_html(('SCS', '学生地域交流の会'),
+        [('armchair', '団地サロン', '健康講話・体操・脳トレ', None, '#3c9a3f'), ('baby', '子どもの居場所', '宿題サポート・遊び', None, '#e07b24'),
+         ('mic', '健康講演', '公民館で熱中症予防など', None, '#2a9d8f'), ('tent', '夏祭り', '血圧測定・CPR体験', None, '#e05264'),
+         ('school', '小学校', '性教育の授業', 'education.html', '#2f7fc1'), ('heart-handshake', '地域イベント', 'バルーン・交流', 'gallery.html', '#8e44ad')])) + \
     chart_wrap('pie-chart', 'メンバー構成', '2025年5月時点・総勢27名', donut([('医学生', 23, G), ('薬学部・理工学部', 4, B)], '27', '名') +
         '<div class="legend" style="justify-content:center"><span><i style="background:#3c9a3f"></i>医学生 23名</span><span><i style="background:#4a6fd1"></i>薬学部・理工学部 4名</span></div>' +
         table([('医学生', '23名'), ('薬学部・理工学部', '4名')], ['所属', '人数'])) + '</div>'
@@ -834,7 +849,7 @@ page('creative', '医療の知識を活かして、伝わる動画と文章を�
      sec(services, 'SERVICES', '対応可能な業務') +
      sec('<div class="chart-grid">' + chart_wrap('pen-line', 'note の執筆本数', '年ごとの公開記事数(全11記事)', columns([('2025', 10, '2025年: 10記事'), ('2026', 1, '2026年: 1記事')], w=360, unit='本'),
          table([('2025', '10本'), ('2026', '1本')], ['年', '本数'])) +
-         chart_wrap('layers', 'できること', '制作の流れ', hub_svg(('制作', '医療×伝わる'), [('scissors', 'カット', '不要部分を整理'), ('type', 'テロップ', '読みやすく'), ('music', 'BGM・SE', '雰囲気づくり'), ('wand-sparkles', 'エフェクト', '印象に残す'), ('file-text', '構成・台本', 'シナリオ作成')])) + '</div>', 'DATA', '数字と図で見る', alt=True))
+         chart_wrap('layers', 'できること', '制作の流れ', orbit_html(('制作', '医療×伝わる'), [('scissors', 'カット', '不要部分を整理', None, '#3c9a3f'), ('type', 'テロップ', '読みやすく', None, '#2f7fc1'), ('music', 'BGM・SE', '雰囲気づくり', None, '#e07b24'), ('wand-sparkles', 'エフェクト', '印象に残す', None, '#8e44ad'), ('file-text', '構成・台本', 'シナリオ作成', None, '#2a9d8f')])) + '</div>', 'DATA', '数字と図で見る', alt=True))
 
 pub = """    <div class="pub fade">
       <span class="pi"><i data-lucide="file-text"></i></span>
@@ -856,8 +871,9 @@ confs = """    <div class="mini-grid">
       <a class="mini-card fade" href="https://joint-jea-ieawpr2026.jp/home_jp/" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="users"></i></span><div><h4>第36回 日本疫学会学術総会(長崎)</h4><p>2026年1月 ／ 参加 ／ 国際疫学会 西太平洋地域との合同学術集会</p></div></a>
     </div>
 """
-fields = chart_wrap('network', '研究のフィールド', '地域の見守りから、肝臓・循環器の臨床研究まで', hub_svg(('研究', 'Research'),
-    [('bell-ring', '地域見守り', '押しボタンPJ'), ('users', '社会疫学', 'ソーシャルキャピタル'), ('activity', '肝臓・代謝', 'MASLD'), ('heart-pulse', '循環器', '心血管リスク予測'), ('siren', '救急医学', '孤立死・突然死の回避')]))
+fields = chart_wrap('network', '研究のフィールド', '地域の見守りから、肝臓・循環器の臨床研究まで', orbit_html(('研究', 'Research'),
+    [('bell-ring', '地域見守り', '押しボタンPJ', 'research.html', '#3c9a3f'), ('users', '社会疫学', 'ソーシャルキャピタル', None, '#2f7fc1'), ('activity', '肝臓・代謝', 'MASLD', None, '#c9862b'),
+     ('heart-pulse', '循環器', '心血管リスク予測', None, '#e05264'), ('siren', '救急医学', '孤立死・突然死の回避', None, '#8e44ad')]))
 page('publications', '査読付き国際誌への共著論文と、学会での研究発表。', sec(pub, 'PAPER', '論文') + sec(confs, 'CONFERENCE', '学会・研究会発表', alt=True) + sec(fields, 'FIELDS', '研究の広がり'))
 
 media = """    <div class="mini-grid">
