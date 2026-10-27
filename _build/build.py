@@ -219,6 +219,9 @@ a.kpi:hover .kgo{opacity:1;transform:translateX(3px)}
 .str-next b{color:var(--muted);font-size:12px;letter-spacing:.06em;margin-right:4px}
 .str-next span{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:8px;padding:3px 10px}
 .str-note{font-size:11.5px;color:var(--muted);margin-top:16px}
+/* ポッドキャスト(Spotify の埋め込み) */
+.podcast{max-width:760px;border-radius:14px;overflow:hidden;background:#282828}
+.podcast iframe{display:block;width:100%;height:352px;border:0}
 /* ギャラリー: 写真を小さめに(スマホ2列・PC5列)、拡大時に説明文 */
 .gallery{columns:5 150px;column-gap:12px}
 .gallery figure{margin:0 0 12px}
@@ -649,8 +652,12 @@ page('scs', '団地のサロン、子どもの居場所、公民館。地域の�
      sec(scs_g, 'GALLERY', '活動の様子'))
 
 # 4 コミュニティ
+podcast = """    <p class="fade" style="color:var(--muted);font-size:14px;margin-bottom:18px">えびすFMで放送した回を、Spotify のポッドキャストで配信しています。</p>
+    <div class="podcast fade"><iframe src="https://open.spotify.com/embed/show/033UwsWpxAEcai2mrsEVtm" title="バルーナーズDAO おとなりさんラジオ(Spotify)" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
+    <p style="margin-top:16px"><a class="btn btn-ghost" href="https://open.spotify.com/show/033UwsWpxAEcai2mrsEVtm" target="_blank" rel="noopener">Spotify で開く</a></p>
+"""
 page('community', 'スポーツの力で地域課題に挑む。ファンコミュニティとラジオで、人と人をつなぐ。',
-     sec(community, 'BALLOONERS DAO', '佐賀バルーナーズDAO'))
+     sec(community, 'BALLOONERS DAO', '佐賀バルーナーズDAO') + sec(podcast, 'PODCAST', 'おとなりさんラジオを聴く', alt=True))
 
 # 5 教育・発信
 other_orgs = other_orgs.replace('<p>山形県南陽市立赤湯中学校で出張授業(2024年1月・7月の2回)。</p>',
@@ -772,7 +779,7 @@ media = """    <div class="mini-grid">
       <a class="mini-card fade" href="https://www.saga-u.ac.jp/koho/%e4%bc%9a%e8%a6%8b/2026033040388" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="newspaper"></i></span><div><h4>佐賀大学 公式プレスリリース</h4><p>2026年3月 ／ 押しボタンプロジェクトを大学として発表</p></div></a>
       <div class="mini-card fade"><span class="ki"><i data-lucide="tv"></i></span><div><h4>サガテレビ 取材</h4><p>2026年2月 ／ 住民向け説明会の様子が取材されました</p></div></div>
       <a class="mini-card fade" href="https://youtu.be/Bt9TFAmHH0I" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="tv"></i></span><div><h4>サガテレビ 放映</h4><p>2025年3月 ／ 地域での活動が紹介されました</p></div></a>
-      <a class="mini-card fade" href="community.html" style="color:inherit"><span class="ki"><i data-lucide="radio"></i></span><div><h4>えびすFM「バルーナーズDAOおとなりさんラジオ」</h4><p>2026年5月〜 ／ パーソナリティとして出演</p></div></a>
+      <a class="mini-card fade" href="community.html" style="color:inherit"><span class="ki"><i data-lucide="radio"></i></span><div><h4>えびすFM「バルーナーズDAOおとなりさんラジオ」</h4><p>2026年5月〜 ／ パーソナリティとして出演・Spotify でも配信</p></div></a>
       <a class="mini-card fade" href="https://www.suric.saga-u.ac.jp/saga_project_map/" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="map-pin"></i></span><div><h4>佐賀大学 地域連携紹介マップ</h4><p>2024年9月 ／ プロジェクトが掲載</p></div></a>
       <div class="mini-card fade"><span class="ki"><i data-lucide="book-open"></i></span><div><h4>市報なんよう 2024年8月号(山形県南陽市)</h4><p>特集「知らないまま後悔しないで 子宮頸がんとHPVワクチン」でVcanの出張授業と講師として紹介</p></div></div>
       <div class="mini-card fade"><span class="ki"><i data-lucide="file-image"></i></span><div><h4>地域紙への掲載</h4><p>SCSのサロン活動が地域の新聞で紹介</p></div></div>
