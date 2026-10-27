@@ -187,6 +187,17 @@ footer .mini a{color:var(--muted);font-size:12px}
 .kpi .kv small{font-size:.45em;color:var(--muted);margin-left:2px;font-weight:700}
 .kpi .kl{font-size:13px;font-weight:700}
 .kpi .kd{font-size:11.5px;color:var(--muted);line-height:1.6}
+a.kpi{color:var(--text);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease}
+a.kpi:hover{transform:translateY(-4px);box-shadow:0 14px 28px rgba(40,90,30,.12);border-color:var(--accent);opacity:1}
+.kpi .kgo{position:absolute;top:20px;right:18px;width:18px;height:18px;color:var(--accent);opacity:.5;transition:opacity .3s,transform .3s}
+a.kpi:hover .kgo{opacity:1;transform:translateX(3px)}
+/* ギャラリー: 写真を小さめに(スマホ2列・PC5列)、拡大時に説明文 */
+.gallery{columns:5 150px;column-gap:12px}
+.gallery figure{margin:0 0 12px}
+.lightbox figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:12px;max-width:100%}
+.lightbox img{max-height:82vh}
+.lightbox figcaption{color:#fff;font-size:13.5px;text-align:center;line-height:1.6}
+.lightbox figcaption:empty{display:none}
 /* チャート共通 */
 .chart{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 24px;margin-bottom:22px}
 .chart h3{font-size:16px;display:flex;align-items:center;gap:8px}
@@ -322,7 +333,7 @@ FOOT = '''<footer>
   <div class="mini">''' + ''.join(f'<a href="{k}.html">{t}</a>' for k, _, _, t, _ in THEMES) + '''</div>
   © 2026 Mori Kazuma — Medical Student / Researcher / Community
 </footer>
-<div class="lightbox" id="lightbox"><img alt=""></div>
+<div class="lightbox" id="lightbox"><figure><img alt=""><figcaption></figcaption></figure></div>
 <script src="assets/site.js"></script>
 </body>
 </html>
@@ -785,13 +796,13 @@ index = head('森 一真 | 医学生・研究員 — 公式プロフィール', 
 index += hero + '\n'
 index += sec(tiles, 'THEMES', '12のテーマで、森一真を知る', alt=True,
              deco='  <img class="nature tr" src="assets/nature/branch.webp" alt="" style="width:min(220px,30vw);opacity:.85">\n').replace('<section class="alt">', '<section id="themes" class="alt">', 1)
-kpis = [('calendar-heart', 10, '年+', '見守りの継続', '2016年から団地で運用'), ('bell-ring', 95, '%+', 'ボタン押下率', '参加者13名全員'),
-        ('shield-check', 0, '件', '孤立死', '研究運用の1年11か月'), ('book-open-text', 1, '本', '査読付き論文', 'Am J Cardiol 2026'),
-        ('presentation', 3, '回', '学会・研究発表', '公衆衛生学会ほか'), ('trophy', 10, '件', '実績・表彰', '助成・表彰・掲載・入賞'),
-        ('users', 27, '名', 'SCSの仲間', '2025年5月時点'), ('pen-line', 11, '本', 'note記事', 'エッセイを発信')]
+kpis = [('calendar-heart', 10, '年+', '見守りの継続', '2016年から団地で運用', 'research'), ('bell-ring', 95, '%+', 'ボタン押下率', '参加者13名全員', 'research'),
+        ('shield-check', 0, '件', '孤立死', '研究運用の1年11か月', 'research'), ('book-open-text', 1, '本', '査読付き論文', 'Am J Cardiol 2026', 'publications'),
+        ('presentation', 3, '回', '学会・研究発表', '公衆衛生学会ほか', 'publications'), ('trophy', 10, '件', '実績・表彰', '助成・表彰・掲載・入賞', 'awards'),
+        ('users', 27, '名', 'SCSの仲間', '2025年5月時点', 'scs'), ('pen-line', 11, '本', 'note記事', 'エッセイを発信', 'creative')]
 kpi_html = '    <div class="stat-grid">\n' + '\n'.join(
-    f'      <div class="kpi fade"><span class="ki"><i data-lucide="{ic}"></i></span><span class="kv"><span data-count="{v}">{v}</span><small>{u}</small></span><span class="kl">{l}</span><span class="kd">{d}</span></div>'
-    for ic, v, u, l, d in kpis) + '\n    </div>\n'
+    f'      <a class="kpi fade" href="{k}.html"><span class="ki"><i data-lucide="{ic}"></i></span><i data-lucide="arrow-right" class="kgo"></i><span class="kv"><span data-count="{v}">{v}</span><small>{u}</small></span><span class="kl">{l}</span><span class="kd">{d}</span></a>'
+    for ic, v, u, l, d, k in kpis) + '\n    </div>\n'
 index += sec(kpi_html, 'NUMBERS', '数字で見る森一真').replace('<section>', '<section id="numbers">', 1)
 index += sec(news, 'HIGHLIGHTS', '最近のできごと', alt=True).replace('<section class="alt">', '<section id="news" class="alt">', 1)
 index += sec(gal_top.replace('href="scs.html">SCSの活動をもっと見る', 'href="gallery.html">写真をもっと見る'), 'GALLERY', '活動の様子').replace('<section>', '<section id="gallery">', 1)
@@ -819,15 +830,18 @@ js = '''// 共通スクリプト: メニュー・スクロールフェード・�
 (function(){
   var els = document.querySelectorAll('.fade');
   if(!('IntersectionObserver' in window)){ els.forEach(function(el){ el.classList.add('show'); }); return; }
+  // threshold は 0(少しでも画面に入ったら表示)。割合で判定すると、画面より縦に長い要素(ギャラリー等)が表示されないことがある
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); } });
-  }, {threshold:.12, rootMargin:'0px 0px -40px 0px'});
+  }, {threshold:0, rootMargin:'0px 0px -40px 0px'});
   els.forEach(function(el){ io.observe(el); });
 })();
 (function(){
-  var lb=document.getElementById('lightbox'); if(!lb) return; var im=lb.querySelector('img');
+  var lb=document.getElementById('lightbox'); if(!lb) return; var im=lb.querySelector('img'), cap=lb.querySelector('figcaption');
   document.querySelectorAll('.gallery img,.photo-row img,.org-img,.art-frame img').forEach(function(el){
-    el.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();im.src=el.src;im.alt=el.alt;lb.classList.add('open');});
+    el.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();im.src=el.src;im.alt=el.alt;
+      var fc=el.closest('figure')&&el.closest('figure').querySelector('figcaption'); cap.textContent=fc?fc.textContent:el.alt;
+      lb.classList.add('open');});
   });
   lb.addEventListener('click',function(){lb.classList.remove('open');});
   document.addEventListener('keydown',function(e){if(e.key==='Escape')lb.classList.remove('open');});

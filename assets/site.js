@@ -11,15 +11,18 @@
 (function(){
   var els = document.querySelectorAll('.fade');
   if(!('IntersectionObserver' in window)){ els.forEach(function(el){ el.classList.add('show'); }); return; }
+  // threshold は 0(少しでも画面に入ったら表示)。割合で判定すると、画面より縦に長い要素(ギャラリー等)が表示されないことがある
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); } });
-  }, {threshold:.12, rootMargin:'0px 0px -40px 0px'});
+  }, {threshold:0, rootMargin:'0px 0px -40px 0px'});
   els.forEach(function(el){ io.observe(el); });
 })();
 (function(){
-  var lb=document.getElementById('lightbox'); if(!lb) return; var im=lb.querySelector('img');
+  var lb=document.getElementById('lightbox'); if(!lb) return; var im=lb.querySelector('img'), cap=lb.querySelector('figcaption');
   document.querySelectorAll('.gallery img,.photo-row img,.org-img,.art-frame img').forEach(function(el){
-    el.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();im.src=el.src;im.alt=el.alt;lb.classList.add('open');});
+    el.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();im.src=el.src;im.alt=el.alt;
+      var fc=el.closest('figure')&&el.closest('figure').querySelector('figcaption'); cap.textContent=fc?fc.textContent:el.alt;
+      lb.classList.add('open');});
   });
   lb.addEventListener('click',function(){lb.classList.remove('open');});
   document.addEventListener('keydown',function(e){if(e.key==='Escape')lb.classList.remove('open');});

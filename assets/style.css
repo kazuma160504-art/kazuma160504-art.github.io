@@ -529,6 +529,17 @@ footer .mini a{color:var(--muted);font-size:12px}
 .kpi .kv small{font-size:.45em;color:var(--muted);margin-left:2px;font-weight:700}
 .kpi .kl{font-size:13px;font-weight:700}
 .kpi .kd{font-size:11.5px;color:var(--muted);line-height:1.6}
+a.kpi{color:var(--text);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease}
+a.kpi:hover{transform:translateY(-4px);box-shadow:0 14px 28px rgba(40,90,30,.12);border-color:var(--accent);opacity:1}
+.kpi .kgo{position:absolute;top:20px;right:18px;width:18px;height:18px;color:var(--accent);opacity:.5;transition:opacity .3s,transform .3s}
+a.kpi:hover .kgo{opacity:1;transform:translateX(3px)}
+/* ギャラリー: 写真を小さめに(スマホ2列・PC5列)、拡大時に説明文 */
+.gallery{columns:5 150px;column-gap:12px}
+.gallery figure{margin:0 0 12px}
+.lightbox figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:12px;max-width:100%}
+.lightbox img{max-height:82vh}
+.lightbox figcaption{color:#fff;font-size:13.5px;text-align:center;line-height:1.6}
+.lightbox figcaption:empty{display:none}
 /* チャート共通 */
 .chart{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 24px;margin-bottom:22px}
 .chart h3{font-size:16px;display:flex;align-items:center;gap:8px}
