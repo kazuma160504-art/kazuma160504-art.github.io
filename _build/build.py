@@ -591,7 +591,7 @@ charts = (chart_wrap('workflow', '見守りの流れ', 'ボタン1つで、本�
     chart_wrap('heart-pulse', '生活の質(QOL)', 'EQ-5D-5L 平均スコア 0.898(SD 0.060)。地域在住高齢者として良好な水準', gauge(0.898, label='平均 0.898 / SD 0.060')) +
     chart_wrap('calendar-range', '10年の歩み', '2016年の運用開始から、研究・共同開発・行政への提案へ',
                year_line([(2016, '団地で運用開始'), (2023, 'R5 地域みらい'), (2023, '研究チーム参加'), (2024, '倫理承認・研究開始'), (2024, '公衆衛生学会 発表'),
-                          (2025, 'サガテレビ放映'), (2025, '公衆衛生学会 発表'), (2025, '永和システムと協議'), (2026, 'プレスリリース'), (2026, 'いろどり+実証'), (2026, '県庁で提案')])))
+                          (2025, 'サガテレビ放映'), (2025, '公衆衛生学会 発表'), (2025, '永和システムと協議'), (2026, 'プレスリリース'), (2026, 'いろどり+実証'), (2026, '県庁で提案'), (2026, '公衆衛生学会 口演')])))
 page('research', '佐賀大学医学部附属病院 救急医学講座 × 地域コミュニティ。「おはよう」でつながる見守りの輪。',
      sec(research_body + grant, 'OSHIBOTAN PROJECT', '押しボタンプロジェクト(おはようボタン)') +
      sec(charts, 'DATA', 'データで見る押しボタン', alt=True))
@@ -678,6 +678,7 @@ edu = f'''    <div class="org-grid">
     </div>
     <h3 class="works-sub fade" style="margin-top:56px">学会発表</h3>
     <ul class="timeline fade">
+      <li><time>2026.10</time><span>第85回 日本公衆衛生学会総会(東京) 口演発表(筆頭演者)</span></li>
       <li><time>2025.10</time><span>第84回 日本公衆衛生学会総会(静岡) ポスター発表</span></li>
       <li><time>2024.10</time><span>第83回 日本公衆衛生学会総会(北海道) ポスター・口演発表</span></li>
       <li><time>2026.03</time><span>佐賀TSUNAGIコンベンションで研究成果を発表・展示</span></li>
@@ -702,8 +703,8 @@ aw = aw[:-len('</div>')] + '''  <div class="award fade">
 for em, ic in [('💐', 'hand-coins'), ('📰', 'newspaper'), ('🏆', 'trophy'), ('✉️', 'mail-open'), ('🏀', 'medal'), ('🎤', 'presentation'), ('✂️', 'scissors'), ('🌱', 'sprout')]:
     aw = aw.replace(f'<span class="ic">{em}</span>', f'<span class="ic"><i data-lucide="{ic}"></i></span>')
 yr = chart_wrap('bar-chart-3', '年ごとの実績・発表', '日付のわかる実績・表彰・発表の件数(手紙・感謝状・展示は除く)',
-    columns([('2021', 2, '少林寺拳法 関東大会 団体4位・組演武8位'), ('2023', 1, '地域みらい創生プロジェクト'), ('2024', 2, '第83回 日本公衆衛生学会・市報なんよう掲載'), ('2025', 1, '第84回 日本公衆衛生学会'), ('2026', 5, 'CSO志支援金・ソロプチミスト表彰・プレスリリース・TSUNAGI発表・論文掲載')], unit='件'),
-    table([('2021', '2件'), ('2023', '1件'), ('2024', '2件'), ('2025', '1件'), ('2026', '5件')], ['年', '件数']))
+    columns([('2021', 2, '少林寺拳法 関東大会 団体4位・組演武8位'), ('2023', 1, '地域みらい創生プロジェクト'), ('2024', 2, '第83回 日本公衆衛生学会・市報なんよう掲載'), ('2025', 1, '第84回 日本公衆衛生学会'), ('2026', 6, 'CSO志支援金・ソロプチミスト表彰・プレスリリース・TSUNAGI発表・論文掲載・公衆衛生学会口演')], unit='件'),
+    table([('2021', '2件'), ('2023', '1件'), ('2024', '2件'), ('2025', '1件'), ('2026', '6件')], ['年', '件数']))
 page('awards', '団体として、個人として。これまでにいただいた評価と支援。', sec(aw) + sec(yr, 'TREND', '実績の推移', alt=True))
 
 # 7 趣味
@@ -756,6 +757,7 @@ pub = """    <div class="pub fade">
     </div>
 """
 confs = """    <div class="mini-grid">
+      <div class="mini-card fade"><span class="ki"><i data-lucide="mic"></i></span><div><h4>第85回 日本公衆衛生学会総会(東京)</h4><p>2026年10月30日 ／ 口演(O7-4・筆頭演者) ／ 「高齢者向け押しボタンシステムを活用した災害時安否確認訓練の評価と地域防災への示唆」</p></div></div>
       <div class="mini-card fade"><span class="ki"><i data-lucide="presentation"></i></span><div><h4>第84回 日本公衆衛生学会総会(静岡)</h4><p>2025年10月 ／ ポスター発表 ／ 押しボタンプロジェクト</p></div></div>
       <div class="mini-card fade"><span class="ki"><i data-lucide="presentation"></i></span><div><h4>第83回 日本公衆衛生学会総会(北海道)</h4><p>2024年10月 ／ ポスター・口演発表 ／ 押しボタンプロジェクト</p></div></div>
       <div class="mini-card fade"><span class="ki"><i data-lucide="lightbulb"></i></span><div><h4>佐賀TSUNAGIコンベンション</h4><p>2026年3月 ／ 研究成果の発表・展示</p></div></div>
@@ -810,6 +812,7 @@ tiles = '    <div class="theme-grid">\n' + '\n'.join(
     for n, (k, ic, en, t, d) in enumerate(THEMES, 1)) + '\n    </div>\n'
 
 news = '''    <div class="news fade">
+      <a href="publications.html"><time>2026.10</time><span>第85回日本公衆衛生学会総会で、押しボタンを使った災害時の安否確認訓練について口演発表(10月30日)</span><i data-lucide="chevron-right"></i></a>
       <a href="publications.html"><time>2026.08</time><span>共著論文が The American Journal of Cardiology に掲載</span><i data-lucide="chevron-right"></i></a>
       <a href="awards.html"><time>2026.07</time><span>SCSとして佐賀県CSO"志"支援金に採択されました</span><i data-lucide="chevron-right"></i></a>
       <a href="community.html"><time>2026.05</time><span>えびすFM「バルーナーズDAOおとなりさんラジオ」パーソナリティに</span><i data-lucide="chevron-right"></i></a>
@@ -847,7 +850,7 @@ index += sec(tiles, 'THEMES', '12のテーマで、森一真を知る', alt=True
              deco='  <img class="nature tr" src="assets/nature/branch.webp" alt="" style="width:min(220px,30vw);opacity:.85">\n').replace('<section class="alt">', '<section id="themes" class="alt">', 1)
 kpis = [('calendar-heart', 10, '年+', '見守りの継続', '2016年から団地で運用', 'research'), ('bell-ring', 95, '%+', 'ボタン押下率', '参加者13名全員', 'research'),
         ('shield-check', 0, '件', '孤立死', '研究運用の1年11か月', 'research'), ('book-open-text', 1, '本', '査読付き論文', 'Am J Cardiol 2026', 'publications'),
-        ('presentation', 3, '回', '学会・研究発表', '公衆衛生学会ほか', 'publications'), ('trophy', 10, '件', '実績・表彰', '助成・表彰・掲載・入賞', 'awards'),
+        ('presentation', 4, '回', '学会・研究発表', '公衆衛生学会ほか', 'publications'), ('trophy', 10, '件', '実績・表彰', '助成・表彰・掲載・入賞', 'awards'),
         ('users', 27, '名', 'SCSの仲間', '2025年5月時点', 'scs'), ('pen-line', 11, '本', 'note記事', 'エッセイを発信', 'creative')]
 kpi_html = '    <div class="stat-grid">\n' + '\n'.join(
     f'      <a class="kpi fade" href="{k}.html"><span class="ki"><i data-lucide="{ic}"></i></span><i data-lucide="arrow-right" class="kgo"></i><span class="kv"><span data-count="{v}">{v}</span><small>{u}</small></span><span class="kl">{l}</span><span class="kd">{d}</span></a>'
