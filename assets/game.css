@@ -1,0 +1,55 @@
+/* もりぞうクエスト(game.html)専用のスタイル */
+.game-sec{padding:40px 16px 64px}
+.game{position:relative;max-width:1000px;margin:0 auto;border-radius:20px;overflow:hidden;border:1px solid var(--line);
+  box-shadow:0 14px 34px rgba(30,51,34,.14);background:#a9dbff;touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+.game.running{touch-action:none;cursor:pointer}
+.game canvas{display:block}
+.gm-hud{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;gap:6px;padding:8px;pointer-events:none}
+.gm-hud .pill{background:rgba(255,255,255,.88);border-radius:999px;padding:4px 10px;font-size:12.5px;font-weight:700;color:var(--text);white-space:nowrap;line-height:1.5}
+.gm-hud .stage{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;text-align:center}
+.game.idle .gm-hud{visibility:hidden}
+.gm-pause{pointer-events:auto;border:0;background:rgba(255,255,255,.88);border-radius:999px;width:32px;height:32px;font-size:13px;cursor:pointer;flex:none}
+.gm-toast{position:absolute;left:50%;bottom:6px;transform:translate(-50%,8px);opacity:0;transition:opacity .25s ease,transform .25s ease;
+  background:rgba(30,51,34,.9);color:#fff;border-radius:12px;padding:7px 12px;font-size:13px;font-weight:700;max-width:92%;width:max-content;text-align:center;pointer-events:none}
+.gm-toast.on{opacity:1;transform:translate(-50%,0)}
+.gm-start{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:16px;text-align:center;background:rgba(243,249,236,.66)}
+.gm-start[hidden]{display:none}
+.gm-start h2{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:clamp(26px,6vw,44px);color:var(--accent);line-height:1.15;
+  text-shadow:0 2px 0 #fff,0 0 12px rgba(255,255,255,.9)}
+.gm-start .btn{border:0;cursor:pointer;font-size:16px;padding:12px 30px;border-radius:999px;box-shadow:0 6px 16px rgba(60,154,63,.35)}
+.gm-kicker{font-size:12.5px;font-weight:700;letter-spacing:.12em;color:var(--accent)}
+.gm-best{font-size:12.5px;color:var(--text);font-weight:500;background:rgba(255,255,255,.8);border-radius:999px;padding:3px 12px}
+@media (max-width:560px){
+  .gm-hud{padding:6px;gap:4px}
+  .gm-hud .pill{font-size:11px;padding:2px 8px}
+  .gm-pause{width:26px;height:26px;font-size:11px}
+  .gm-toast{font-size:12px;padding:5px 10px}
+  .gm-start{gap:8px}
+}
+.gm-help{max-width:1000px;margin:18px auto 0;display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));list-style:none;padding:0}
+.gm-help li{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:13.5px;color:var(--muted)}
+.gm-help b{display:block;color:var(--text);font-size:14px;margin-bottom:2px}
+/* 結果・ふりかえりのダイアログ */
+.gm-modal{position:fixed;inset:0;z-index:300;background:rgba(20,35,24,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+.gm-modal[hidden]{display:none}
+.gm-card{position:relative;background:#fff;border-radius:20px;width:100%;max-width:560px;max-height:88vh;overflow:auto;padding:24px 20px 0;box-shadow:0 20px 50px rgba(0,0,0,.25);overscroll-behavior:contain}
+.gm-card h2{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:22px;line-height:1.4;margin:4px 0 6px}
+.gm-card h3{font-size:14px;margin:20px 0 0;color:var(--accent)}
+.gm-card .gm-album{font-size:17px;color:var(--text);border-top:1px solid var(--line);padding-top:18px}
+.gm-sub{font-size:14px;color:var(--muted);line-height:1.8}
+.gm-sub b{color:var(--accent);font-size:17px}
+.gm-list{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:10px}
+.gm-list li{display:flex;gap:12px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--bg)}
+.gm-list .e{font-size:28px;line-height:1.1;flex:none;width:34px;text-align:center}
+.gm-list time{font-size:12px;color:var(--accent);font-weight:700}
+.gm-list b{display:block;font-size:14.5px;line-height:1.5}
+.gm-list p{font-size:13px;color:var(--muted);margin:2px 0 4px;line-height:1.65}
+.gm-list a{font-size:12.5px;font-weight:700;color:var(--accent)}
+.gm-list li.miss{background:#f4f6f3;opacity:.7}
+.gm-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:16px 0 20px}
+.gm-btns .btn{border:0;cursor:pointer;font-family:inherit;border-radius:999px}
+.gm-btns .btn-ghost{border:1px solid var(--line);background:#fff}
+.gm-btns.sticky{position:sticky;bottom:0;background:linear-gradient(rgba(255,255,255,0),#fff 30%);margin-top:4px}
+.gm-score{display:flex;align-items:baseline;justify-content:center;gap:8px;margin:14px 0 2px;color:var(--muted);font-weight:700}
+.gm-score b{font-size:46px;color:var(--accent);font-family:'Zen Kaku Gothic New',sans-serif;line-height:1}
+.gm-rank{text-align:center;font-weight:700;font-size:15px}

@@ -882,6 +882,37 @@ index += sec(contact_box + hub_new, 'CONTACT', '連絡先・リンク',
 index += FOOT
 write('index.html', inline_icons(index))
 
+# ---------------------------------------------------------------- ゲーム(もりぞうクエスト)
+game_desc = 'ゲームで振り返る 森一真のあゆみ。ジャンプで思い出アイテムを集めながら、2026年10月の学会発表をめざす横スクロールゲーム。'
+game = head('もりぞうクエスト | 森 一真', game_desc, 'game.html', 'game', '<link rel="stylesheet" href="assets/game.css">\n')
+game += '''<section class="page-hero">
+  <img class="nature tr" src="assets/nature/leaves-hanging.webp" alt="">
+  <div class="wrap">
+    <span class="ti"><i data-lucide="gamepad-2"></i></span>
+    <div>
+      <p class="crumb"><a href="index.html">トップ</a> / GAME</p>
+      <h1>もりぞうクエスト</h1>
+      <p>ゲームで振り返る、森一真のあゆみ。少林寺拳法の修行から、2026年の学会発表まで。</p>
+    </div>
+  </div>
+</section>
+<section class="game-sec">
+  <div class="game" id="game">
+    <canvas role="img" aria-label="もりぞうクエストのゲーム画面"></canvas>
+    <div class="gm-hud"><span class="pill" id="gm-hearts"></span><span class="pill stage" id="gm-stage"></span><span class="pill" id="gm-count"></span><button class="gm-pause" id="gm-pause" type="button" aria-label="一時停止">⏸</button></div>
+    <div class="gm-toast" id="gm-toast" role="status" aria-live="polite"></div>
+    <div class="gm-start" id="gm-start"></div>
+  </div>
+  <ul class="gm-help">
+    <li><b>あそびかた</b>画面をタップ(パソコンはスペースキー)でジャンプ。空中でもう1回ジャンプできます。</li>
+    <li><b>思い出アイテム</b>浮かんでいる丸いアイテムが、森一真の実際のできごと。集めると年ごとに振り返れます。</li>
+    <li><b>障害物とハート</b>締切や教科書にぶつかるとハートが減ります。💖でハート回復。ゴールは2026年10月の学会発表!</li>
+  </ul>
+</section>
+<div class="gm-modal" id="gm-modal" hidden><div class="gm-card" id="gm-card" role="dialog" aria-modal="true" aria-label="ふりかえり"></div></div>
+''' + FOOT.replace('<script src="assets/site.js"></script>', '<script src="assets/site.js"></script>\n<script src="assets/game.js"></script>')
+write('game.html', inline_icons(game))
+
 # 検索エンジン向け: サイトマップと robots.txt
 write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
       ''.join(f'  <url><loc>{SITE}{p}</loc></url>\n' for p in [''] + [f'{t[0]}.html' for t in THEMES]) + '</urlset>\n')
