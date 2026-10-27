@@ -638,6 +638,27 @@ a.orbit-node:hover .orbit-card,a.orbit-node:focus-visible .orbit-card{transform:
   .bm-d{display:none}.bm-m{display:block}
 }
 @media (prefers-reduced-motion:reduce){.ring,.core-ball,.core-shadow,.orbit-float,.orbit-beams line{animation:none}}
+/* トップのゲーム入口 */
+.game-band{position:relative;padding:34px 20px 8px}
+.game-promo{display:grid;grid-template-columns:1.25fr 1fr;align-items:center;gap:28px;max-width:1000px;margin:0 auto;padding:18px;border-radius:24px;color:var(--text);
+  background:linear-gradient(135deg,#ffffff,#eef8e4);border:1px solid var(--line);box-shadow:0 18px 40px -22px rgba(30,90,35,.45);transition:transform .35s ease,box-shadow .35s ease}
+.game-promo:hover{opacity:1;transform:translateY(-4px);box-shadow:0 26px 48px -22px rgba(30,90,35,.55)}
+.gp-img{position:relative;display:block;border-radius:16px;overflow:hidden;aspect-ratio:960/436}
+.gp-img img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.game-promo:hover .gp-img img{transform:scale(1.04)}
+.gp-play{position:absolute;left:50%;top:50%;width:62px;height:62px;margin:-31px 0 0 -31px;padding-left:4px;border-radius:50%;display:grid;place-items:center;font-size:22px;color:#fff;
+  background:rgba(60,154,63,.92);box-shadow:0 0 0 8px rgba(255,255,255,.55),0 10px 24px rgba(30,90,35,.4);animation:gp-pulse 2.4s ease-in-out infinite}
+@keyframes gp-pulse{50%{box-shadow:0 0 0 15px rgba(255,255,255,.2),0 10px 24px rgba(30,90,35,.4)}}
+.gp-tx{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.gp-kick{font-size:11.5px;font-weight:700;letter-spacing:.2em;color:#fff;background:linear-gradient(90deg,#e07b24,#f0a43a);border-radius:999px;padding:3px 12px}
+.gp-tx b{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:clamp(26px,3.2vw,34px);color:var(--accent);line-height:1.25}
+.gp-lead{font-size:14px;color:var(--muted);line-height:1.8}
+.btn-game{color:#fff;background:linear-gradient(90deg,#e07b24,#f0a43a);box-shadow:0 8px 18px -8px rgba(224,123,36,.7)}
+.btn-game:hover{opacity:.92}
+.gp-btn{display:inline-flex;align-items:center;gap:8px;margin-top:6px;border-radius:999px}
+.gp-btn svg{width:18px;height:18px}
+@media (max-width:720px){.game-promo{grid-template-columns:1fr;gap:14px;padding:12px}.gp-tx{padding:0 6px 8px}}
+@media (prefers-reduced-motion:reduce){.gp-play{animation:none}}
 /* ポッドキャスト(Spotify の埋め込み) */
 .podcast{max-width:760px;border-radius:14px;overflow:hidden;background:#282828}
 .podcast iframe{display:block;width:100%;height:352px;border:0}

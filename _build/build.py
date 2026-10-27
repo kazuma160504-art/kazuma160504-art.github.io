@@ -296,6 +296,27 @@ a.orbit-node:hover .orbit-card,a.orbit-node:focus-visible .orbit-card{transform:
   .bm-d{display:none}.bm-m{display:block}
 }
 @media (prefers-reduced-motion:reduce){.ring,.core-ball,.core-shadow,.orbit-float,.orbit-beams line{animation:none}}
+/* トップのゲーム入口 */
+.game-band{position:relative;padding:34px 20px 8px}
+.game-promo{display:grid;grid-template-columns:1.25fr 1fr;align-items:center;gap:28px;max-width:1000px;margin:0 auto;padding:18px;border-radius:24px;color:var(--text);
+  background:linear-gradient(135deg,#ffffff,#eef8e4);border:1px solid var(--line);box-shadow:0 18px 40px -22px rgba(30,90,35,.45);transition:transform .35s ease,box-shadow .35s ease}
+.game-promo:hover{opacity:1;transform:translateY(-4px);box-shadow:0 26px 48px -22px rgba(30,90,35,.55)}
+.gp-img{position:relative;display:block;border-radius:16px;overflow:hidden;aspect-ratio:960/436}
+.gp-img img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.game-promo:hover .gp-img img{transform:scale(1.04)}
+.gp-play{position:absolute;left:50%;top:50%;width:62px;height:62px;margin:-31px 0 0 -31px;padding-left:4px;border-radius:50%;display:grid;place-items:center;font-size:22px;color:#fff;
+  background:rgba(60,154,63,.92);box-shadow:0 0 0 8px rgba(255,255,255,.55),0 10px 24px rgba(30,90,35,.4);animation:gp-pulse 2.4s ease-in-out infinite}
+@keyframes gp-pulse{50%{box-shadow:0 0 0 15px rgba(255,255,255,.2),0 10px 24px rgba(30,90,35,.4)}}
+.gp-tx{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.gp-kick{font-size:11.5px;font-weight:700;letter-spacing:.2em;color:#fff;background:linear-gradient(90deg,#e07b24,#f0a43a);border-radius:999px;padding:3px 12px}
+.gp-tx b{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:clamp(26px,3.2vw,34px);color:var(--accent);line-height:1.25}
+.gp-lead{font-size:14px;color:var(--muted);line-height:1.8}
+.btn-game{color:#fff;background:linear-gradient(90deg,#e07b24,#f0a43a);box-shadow:0 8px 18px -8px rgba(224,123,36,.7)}
+.btn-game:hover{opacity:.92}
+.gp-btn{display:inline-flex;align-items:center;gap:8px;margin-top:6px;border-radius:999px}
+.gp-btn svg{width:18px;height:18px}
+@media (max-width:720px){.game-promo{grid-template-columns:1fr;gap:14px;padding:12px}.gp-tx{padding:0 6px 8px}}
+@media (prefers-reduced-motion:reduce){.gp-play{animation:none}}
 /* ポッドキャスト(Spotify の埋め込み) */
 .podcast{max-width:760px;border-radius:14px;overflow:hidden;background:#282828}
 .podcast iframe{display:block;width:100%;height:352px;border:0}
@@ -387,7 +408,8 @@ THEMES = [
 
 def menu(cur):
     cur_attr = lambda k: ' aria-current="page"' if k == cur else ''
-    links = [f'<a class="top" href="index.html"{cur_attr("index")}><i data-lucide="house"></i>トップ</a>'] + [
+    links = [f'<a class="top" href="index.html"{cur_attr("index")}><i data-lucide="house"></i>トップ</a>',
+             f'<a href="game.html"{cur_attr("game")}><i data-lucide="gamepad-2"></i>ゲームで遊ぶ</a>'] + [
         f'<a href="{k}.html"{cur_attr(k)}><i data-lucide="{ic}"></i>{t}</a>' for k, ic, _, t, _ in THEMES]
     return '  <nav class="menu" id="menu" aria-label="サイトメニュー" hidden>\n    ' + '\n    '.join(links) + '\n  </nav>\n'
 
@@ -431,6 +453,7 @@ def head(title, desc, path='', cur='', extra=''):
       <li><a href="awards.html">Awards</a></li>
       <li><a href="index.html#gallery">Gallery</a></li>
       <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="game.html">Game</a></li>
     </ul>
     <button class="menu-btn" type="button" aria-label="メニュー" aria-expanded="false" aria-controls="menu"><i data-lucide="menu" class="i-open"></i><i data-lucide="x" class="i-close"></i></button>
   </nav>
@@ -438,7 +461,7 @@ def head(title, desc, path='', cur='', extra=''):
 '''
 
 FOOT = '''<footer>
-  <div class="mini">''' + ''.join(f'<a href="{k}.html">{t}</a>' for k, _, _, t, _ in THEMES) + '''</div>
+  <div class="mini">''' + ''.join(f'<a href="{k}.html">{t}</a>' for k, _, _, t, _ in THEMES) + '''<a href="game.html">ゲーム</a></div>
   © 2026 Mori Kazuma — Medical Student / Researcher / Community
 </footer>
 <div class="lightbox" id="lightbox"><figure><img alt=""><figcaption></figcaption></figure></div>
@@ -914,7 +937,7 @@ page('contact', '研究・地域活動、講演・取材、制作のご依頼な
 hero = take('<section class="hero" id="top">', '</section>') + '</section>\n'
 hero = hero.replace('<section class="hero" id="top">', '<section class="hero" id="top">\n  <img class="nature tl" src="assets/nature/leaves-hanging.webp" alt="">\n  <img class="nature br" src="assets/nature/branch-long.webp" alt="">')
 hero = hero.replace('<a class="btn btn-ghost" href="#activities">活動を見る</a>', '<a class="btn btn-ghost" href="#themes">12のテーマを見る</a>')
-hero = hero.replace('<a class="btn btn-ghost" href="#awards">実績・表彰</a>', '<a class="btn btn-ghost" href="awards.html">実績・表彰</a>')
+hero = hero.replace('<a class="btn btn-ghost" href="#awards">実績・表彰</a>', '<a class="btn btn-ghost" href="awards.html">実績・表彰</a>\n      <a class="btn btn-game" href="game.html">🎮 ゲームで遊ぶ</a>')
 
 tiles = '    <div class="theme-grid">\n' + '\n'.join(
     f'''      <a class="theme fade" href="{k}.html"><span class="ti"><i data-lucide="{ic}"></i></span><span class="tn">{n:02d} {en}</span><h3>{t}</h3><p>{d}</p><span class="go">くわしく見る<i data-lucide="arrow-right"></i></span></a>'''
@@ -955,6 +978,18 @@ ld = '<script type="application/ld+json">' + json.dumps(person, ensure_ascii=Fal
 gsc = '<meta name="google-site-verification" content="QcdspnUW68llJaSAl-r3WHO57CO5bSkfWSJb63lbNmo">\n'  # Google Search Console の所有権確認(消さない)
 index = head('森 一真 | 医学生・研究員 — 公式プロフィール', index_desc, '', 'index', gsc + ld)
 index += hero + '\n'
+index += '''<section class="game-band">
+  <a class="game-promo fade" href="game.html">
+    <span class="gp-img"><img src="assets/game-thumb.webp" alt="もりぞうクエストのゲーム画面" width="960" height="436"><span class="gp-play" aria-hidden="true">▶</span></span>
+    <span class="gp-tx">
+      <span class="gp-kick">NEW GAME</span>
+      <b>もりぞうクエスト</b>
+      <span class="gp-lead">ゲームで振り返る、森一真のあゆみ。ジャンプで思い出アイテムを集めながら、少林寺拳法の修行から2026年10月の学会発表までを駆け抜けよう。</span>
+      <span class="btn btn-primary gp-btn"><i data-lucide="gamepad-2"></i>あそんでみる</span>
+    </span>
+  </a>
+</section>
+'''
 index += sec(tiles, 'THEMES', '12のテーマで、森一真を知る', alt=True,
              deco='  <img class="nature tr" src="assets/nature/branch.webp" alt="" style="width:min(220px,30vw);opacity:.85">\n').replace('<section class="alt">', '<section id="themes" class="alt">', 1)
 kpis = [('calendar-heart', 10, '年+', '見守りの継続', '2016年から団地で運用', 'research'), ('bell-ring', 95, '%+', 'ボタン押下率', '参加者13名全員', 'research'),
@@ -1005,7 +1040,7 @@ write('game.html', inline_icons(game))
 
 # 検索エンジン向け: サイトマップと robots.txt
 write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-      ''.join(f'  <url><loc>{SITE}{p}</loc></url>\n' for p in [''] + [f'{t[0]}.html' for t in THEMES]) + '</urlset>\n')
+      ''.join(f'  <url><loc>{SITE}{p}</loc></url>\n' for p in [''] + [f'{t[0]}.html' for t in THEMES] + ['game.html']) + '</urlset>\n')
 write('robots.txt', f'User-agent: *\nAllow: /\n\nSitemap: {SITE}sitemap.xml\n')
 
 io.open(os.path.join(ROOT, 'assets', 'style.css'), 'w', encoding='utf-8', newline='\n').write(css_new.strip() + '\n')
