@@ -533,6 +533,34 @@ a.kpi{color:var(--text);transition:transform .3s ease,box-shadow .3s ease,border
 a.kpi:hover{transform:translateY(-4px);box-shadow:0 14px 28px rgba(40,90,30,.12);border-color:var(--accent);opacity:1}
 .kpi .kgo{position:absolute;top:20px;right:18px;width:18px;height:18px;color:var(--accent);opacity:.5;transition:opacity .3s,transform .3s}
 a.kpi:hover .kgo{opacity:1;transform:translateX(3px)}
+/* 強み(ストレングスファインダー) */
+.str-lead{font-size:14.5px;max-width:760px;margin-bottom:16px}
+.str-lead b{color:#2f7fc1}
+.dom-bar{display:flex;height:12px;border-radius:999px;overflow:hidden;max-width:760px;gap:2px}
+.dom-legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--muted);margin:8px 0 26px}
+.dom-legend span{display:inline-flex;align-items:center;gap:6px}
+.dom-legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.str-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+@media (max-width:980px){.str-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.str-grid{grid-template-columns:1fr}}
+.str{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--c);border-radius:16px;padding:18px 18px 20px;display:flex;flex-direction:column}
+.str .rk{font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;font-size:30px;line-height:1;color:var(--c)}
+.str h3{font-size:18px;margin-top:8px}
+.str .en{font-size:11.5px;color:var(--muted);letter-spacing:.04em}
+.str .dm{align-self:flex-start;font-size:11px;font-weight:700;color:#fff;background:var(--c);border-radius:999px;padding:1px 10px;margin-top:8px}
+.str p{font-size:13px;color:var(--muted);line-height:1.75;margin-top:10px}
+@media (max-width:560px){
+  .str{display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"rk h3 dm" "rk en dm" "p p p";column-gap:12px;padding:14px 16px 16px}
+  .str .rk{grid-area:rk;align-self:center;font-size:32px}
+  .str h3{grid-area:h3;margin-top:0;font-size:17px}
+  .str .en{grid-area:en}
+  .str .dm{grid-area:dm;align-self:center;margin-top:0}
+  .str p{grid-area:p;margin-top:8px}
+}
+.str-next{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:18px;font-size:13px}
+.str-next b{color:var(--muted);font-size:12px;letter-spacing:.06em;margin-right:4px}
+.str-next span{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:8px;padding:3px 10px}
+.str-note{font-size:11.5px;color:var(--muted);margin-top:16px}
 /* ギャラリー: 写真を小さめに(スマホ2列・PC5列)、拡大時に説明文 */
 .gallery{columns:5 150px;column-gap:12px}
 .gallery figure{margin:0 0 12px}

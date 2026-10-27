@@ -191,6 +191,34 @@ a.kpi{color:var(--text);transition:transform .3s ease,box-shadow .3s ease,border
 a.kpi:hover{transform:translateY(-4px);box-shadow:0 14px 28px rgba(40,90,30,.12);border-color:var(--accent);opacity:1}
 .kpi .kgo{position:absolute;top:20px;right:18px;width:18px;height:18px;color:var(--accent);opacity:.5;transition:opacity .3s,transform .3s}
 a.kpi:hover .kgo{opacity:1;transform:translateX(3px)}
+/* 強み(ストレングスファインダー) */
+.str-lead{font-size:14.5px;max-width:760px;margin-bottom:16px}
+.str-lead b{color:#2f7fc1}
+.dom-bar{display:flex;height:12px;border-radius:999px;overflow:hidden;max-width:760px;gap:2px}
+.dom-legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--muted);margin:8px 0 26px}
+.dom-legend span{display:inline-flex;align-items:center;gap:6px}
+.dom-legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.str-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+@media (max-width:980px){.str-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.str-grid{grid-template-columns:1fr}}
+.str{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--c);border-radius:16px;padding:18px 18px 20px;display:flex;flex-direction:column}
+.str .rk{font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;font-size:30px;line-height:1;color:var(--c)}
+.str h3{font-size:18px;margin-top:8px}
+.str .en{font-size:11.5px;color:var(--muted);letter-spacing:.04em}
+.str .dm{align-self:flex-start;font-size:11px;font-weight:700;color:#fff;background:var(--c);border-radius:999px;padding:1px 10px;margin-top:8px}
+.str p{font-size:13px;color:var(--muted);line-height:1.75;margin-top:10px}
+@media (max-width:560px){
+  .str{display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"rk h3 dm" "rk en dm" "p p p";column-gap:12px;padding:14px 16px 16px}
+  .str .rk{grid-area:rk;align-self:center;font-size:32px}
+  .str h3{grid-area:h3;margin-top:0;font-size:17px}
+  .str .en{grid-area:en}
+  .str .dm{grid-area:dm;align-self:center;margin-top:0}
+  .str p{grid-area:p;margin-top:8px}
+}
+.str-next{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:18px;font-size:13px}
+.str-next b{color:var(--muted);font-size:12px;letter-spacing:.06em;margin-right:4px}
+.str-next span{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:8px;padding:3px 10px}
+.str-note{font-size:11.5px;color:var(--muted);margin-top:16px}
 /* ギャラリー: 写真を小さめに(スマホ2列・PC5列)、拡大時に説明文 */
 .gallery{columns:5 150px;column-gap:12px}
 .gallery figure{margin:0 0 12px}
@@ -263,7 +291,7 @@ a.kpi:hover .kgo{opacity:1;transform:translateX(3px)}
 '''
 
 THEMES = [
-    ('profile',   'user-round',    'PROFILE',   'プロフィール',       '経歴・役職・資格・段位。森一真がどんな人かをひと目で。'),
+    ('profile',   'user-round',    'PROFILE',   'プロフィール',       '経歴・役職・資格・強み。森一真がどんな人かをひと目で。'),
     ('research',  'bell-ring',     'RESEARCH',  '研究:押しボタンPJ',  '「おはよう」ボタンで独居高齢者を見守る、10年続く地域研究。'),
     ('publications','book-open-text','PUBLICATIONS','論文・学会発表', 'Am J Cardiol 掲載の共著論文と、日本公衆衛生学会での発表。'),
     ('scs',       'hand-heart',    'SCS',       'SCS 地域交流',       '学生団体SCSの代表として、団地サロンや子どもの居場所へ。'),
@@ -515,7 +543,28 @@ about2 = (about_inner.replace('<dt>NICKNAME</dt>', '<dt><i data-lucide="smile"><
 lang = '<div class="chart-grid">' + chart_wrap('languages', '語学スコア', '満点に対する到達度', hbars([('TOEIC 760 / 990', 76.8, 'TOEIC 760点(満点990)'), ('TOEFL iBT 80 / 120', 66.7, 'TOEFL iBT 従来スコア80相当(CEFR B2)')], lw=150),
         table([('TOEIC', '760 / 990'), ('TOEFL iBT', '80 / 120 相当')], ['試験', 'スコア'])) + \
     chart_wrap('compass', '活動の広がり', 'いま取り組んでいる5つの領域', hub_svg(('森 一真', 'もりぞう'), [('stethoscope', '医学', '佐賀大学 医学科'), ('bell-ring', '研究', '押しボタンPJ'), ('hand-heart', '地域交流', 'SCS 代表'), ('radio', 'コミュニティ', 'DAO・ラジオ'), ('clapperboard', '発信', 'YouTube・執筆')])) + '</div>'
-page('profile', '医学生・研究員・地域活動家。データと共感で、人と地域をつなぐ。', sec(about2) + sec(lang, 'AT A GLANCE', 'ひと目でわかる森一真', alt=True))
+about2 = about2.replace('回復思考・学習欲・共感力<small>Restorative / Learner / Empathy ・ ENFP-A</small>',
+                        '活発性・ポジティブ・個別化<small>ストレングスファインダー TOP3 ・ ENFP-A</small>')
+# 強み(CliftonStrengths 34, 2025年3月受検)。レポート本文は転載せず、資質名と活動に結びつけた自分の言葉で書く
+DOMAINS = {'影響力': '#e07b24', '人間関係構築力': '#2f7fc1', '実行力': '#7b3f98', '戦略的思考力': '#2e9e5b'}
+top5 = [('活発性', 'Activator', '影響力', '「まずやってみる」が原動力。企画は話し合いだけで終わらせず、動きながら形にしていきます。'),
+        ('ポジティブ', 'Positivity', '人間関係構築力', '場を明るくして、周りに元気を広げます。団地のサロンや夏祭りの健康ブースでも、笑顔が生まれる雰囲気づくりを大切にしています。'),
+        ('個別化', 'Individualization', '人間関係構築力', '一人ひとりの個性や事情に目を向けます。見守りでは住民の方それぞれの「いつも」を、SCSでは仲間の得意を活かせる役割を考えます。'),
+        ('適応性', 'Adaptability', '人間関係構築力', '予定どおりにいかない現場でも、状況に合わせて柔軟に動けます。地域活動の当日に起きる変化にも、落ち着いて対応します。'),
+        ('成長促進', 'Developer', '人間関係構築力', '人の小さな成長に気づき、伸ばすのが好きです。SCSの後輩や、授業で出会う子どもたちの「できた」を一緒に喜びます。')]
+next5 = [('達成欲', '実行力'), ('共感性', '人間関係構築力'), ('収集心', '戦略的思考力'), ('自己確信', '影響力'), ('アレンジ', '実行力')]
+dom_share = [('人間関係構築力', 302), ('影響力', 153), ('実行力', 107), ('戦略的思考力', 100)]  # レポートの領域チャートの相対的な長さ
+strengths = ('    <p class="str-lead fade">ストレングスファインダー(CliftonStrengths 34)で、4つの領域のうち<b>「人間関係構築力」</b>に強みがあると出ました。TOP5のうち4つがこの領域です。</p>\n'
+    '    <div class="dom-bar fade" role="img" aria-label="領域ごとの相対的な分布: ' + '、'.join(d for d, _ in dom_share) + '">' +
+    ''.join(f'<span style="flex:{w};background:{DOMAINS[d]}"></span>' for d, w in dom_share) + '</div>\n'
+    '    <div class="dom-legend fade">' + ''.join(f'<span><i style="background:{DOMAINS[d]}"></i>{d}</span>' for d, _ in dom_share) + '</div>\n'
+    '    <div class="str-grid">\n' + '\n'.join(
+        f'      <div class="str fade" style="--c:{DOMAINS[dm]}"><span class="rk">{n}</span><h3>{jp}</h3><span class="en">{en}</span><span class="dm">{dm}</span><p>{t}</p></div>'
+        for n, (jp, en, dm, t) in enumerate(top5, 1)) + '\n    </div>\n'
+    '    <div class="str-next fade"><b>6〜10位</b>' + ''.join(f'<span style="--c:{DOMAINS[dm]}">{n}. {jp}</span>' for n, (jp, dm) in enumerate(next5, 6)) + '</div>\n'
+    '    <p class="str-note">2025年3月受検。CliftonStrengths® および34の資質名は Gallup, Inc. の商標です。</p>\n')
+page('profile', '医学生・研究員・地域活動家。データと共感で、人と地域をつなぐ。',
+     sec(about2) + sec(strengths, 'STRENGTHS', '強み — ストレングスファインダー TOP5', alt=True) + sec(lang, 'AT A GLANCE', 'ひと目でわかる森一真'))
 
 # 2 研究
 research_body = research.replace('    <h3 class="works-sub fade">押しボタンプロジェクト(おはようボタン)</h3>\n', '')
