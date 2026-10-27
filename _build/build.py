@@ -226,6 +226,62 @@ a.hobby{display:block;color:var(--text);transition:border-color .3s ease,transfo
 a.hobby:hover{border-color:var(--accent);transform:translateY(-3px);opacity:1}
 a.svc{display:block;color:var(--text)}
 a.svc:hover{opacity:1}
+/* 活動の広がり: 立体的な軌道の図(中心の球・傾いたリング・浮かぶカード) */
+.orbit{--cx:50%;--cy:50%;position:relative;aspect-ratio:2/1;max-width:980px;margin:8px auto 4px;perspective:1000px;isolation:isolate}
+.orbit::before{content:"";position:absolute;inset:2% 6%;background:radial-gradient(ellipse at 50% 52%,rgba(140,198,63,.24),rgba(140,198,63,0) 66%);z-index:-2}
+.orbit-floor{position:absolute;left:var(--cx);top:var(--cy);width:70%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%) rotateX(74deg);background:radial-gradient(circle,rgba(60,154,63,.2),rgba(60,154,63,.07) 42%,rgba(60,154,63,0) 70%);z-index:-1}
+.ring{position:absolute;left:var(--cx);top:var(--cy);aspect-ratio:1;border-radius:50%;border:1.5px solid rgba(60,154,63,.3);transform:translate(-50%,-50%) rotateX(72deg);animation:ring-spin 36s linear infinite;pointer-events:none}
+.ring.r1{width:30%}
+.ring.r2{width:52%;border-style:dashed;border-color:rgba(60,154,63,.38);animation-duration:64s;animation-direction:reverse}
+.ring.r3{width:76%;border-color:rgba(60,154,63,.2);animation-duration:90s}
+@keyframes ring-spin{from{transform:translate(-50%,-50%) rotateX(72deg) rotateZ(0)}to{transform:translate(-50%,-50%) rotateX(72deg) rotateZ(360deg)}}
+.orbit-beams{position:absolute;inset:0;width:100%;height:100%;overflow:visible;z-index:0;pointer-events:none}
+.orbit-beams line{stroke:var(--c);stroke-width:2;stroke-opacity:.5;stroke-linecap:round;stroke-dasharray:3 7;vector-effect:non-scaling-stroke;animation:beam-flow 1.4s linear infinite}
+@keyframes beam-flow{to{stroke-dashoffset:-20}}
+.orbit-core{position:absolute;left:var(--cx);top:var(--cy);width:clamp(96px,15.5%,152px);aspect-ratio:1;transform:translate(-50%,-50%);z-index:2}
+.core-ball{position:absolute;inset:0;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center;
+  background:radial-gradient(circle at 32% 28%,#d2f7ad 0%,#86cf5f 20%,#3c9a3f 52%,#256d2b 82%,#1a4f1f 100%);
+  box-shadow:inset -10px -16px 26px rgba(10,40,10,.35),inset 6px 8px 16px rgba(255,255,255,.35),0 24px 38px -12px rgba(30,90,35,.6);animation:core-float 5s ease-in-out infinite}
+.core-ball::before{content:"";position:absolute;top:10%;left:19%;width:36%;height:21%;border-radius:50%;background:radial-gradient(ellipse,rgba(255,255,255,.8),rgba(255,255,255,0) 70%);transform:rotate(-24deg)}
+.core-ball b{position:relative;font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:clamp(15px,2.1vw,22px);letter-spacing:.04em;text-shadow:0 2px 6px rgba(0,0,0,.25)}
+.core-ball small{position:relative;font-size:11px;opacity:.92}
+.core-shadow{position:absolute;left:14%;right:14%;bottom:-20%;height:14%;border-radius:50%;background:radial-gradient(ellipse,rgba(30,60,30,.38),rgba(30,60,30,0) 70%);animation:core-shadow 5s ease-in-out infinite;z-index:-1}
+@keyframes core-float{50%{transform:translateY(-8px)}}
+@keyframes core-shadow{50%{transform:scale(.8);opacity:.65}}
+.orbit-node{position:absolute;left:calc(var(--x) * 1%);top:calc(var(--y) * 1%);width:max-content;transform:translate(-50%,-50%);z-index:3;color:var(--text)}
+.orbit-node:hover{opacity:1}
+.orbit-node::before{content:"";position:absolute;left:16%;right:16%;bottom:-16px;height:12px;border-radius:50%;background:radial-gradient(ellipse,var(--c),transparent 70%);opacity:.22}
+.orbit-float{display:block;animation:node-float 6s ease-in-out infinite;animation-delay:var(--d)}
+@keyframes node-float{50%{transform:translateY(-7px)}}
+.orbit-card{position:relative;display:flex;align-items:center;gap:12px;padding:12px 30px 12px 14px;white-space:nowrap;border-radius:16px;
+  background:linear-gradient(150deg,rgba(255,255,255,.98),rgba(255,255,255,.84));border:1px solid #fff;
+  box-shadow:0 18px 30px -18px var(--c),0 4px 12px rgba(30,51,34,.08),inset 0 -3px 0 rgba(0,0,0,.05);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:transform .35s ease,box-shadow .35s ease}
+.orbit-node:hover .orbit-card,.orbit-node:focus-visible .orbit-card{transform:translateY(-6px) scale(1.04);box-shadow:0 26px 36px -18px var(--c),0 8px 20px rgba(30,51,34,.12),inset 0 -3px 0 rgba(0,0,0,.05)}
+.orbit-ic{flex:none;width:42px;height:42px;border-radius:13px;display:grid;place-items:center;color:#fff;background:var(--c);
+  background:linear-gradient(145deg,color-mix(in srgb,var(--c) 55%,#fff),var(--c) 58%,color-mix(in srgb,var(--c) 78%,#000));
+  box-shadow:inset 0 2px 3px rgba(255,255,255,.45),inset 0 -3px 6px rgba(0,0,0,.18),0 8px 14px -6px var(--c)}
+.orbit-ic svg{width:21px;height:21px}
+.orbit-tx{min-width:0}
+.orbit-tx b{display:block;font-size:15px;line-height:1.3}
+.orbit-tx small{display:block;font-size:11.5px;color:var(--muted);line-height:1.4;margin-top:2px}
+.orbit-go{position:absolute;right:11px;top:50%;margin-top:-.75em;line-height:1.5;color:var(--c);font-weight:700;opacity:.35;transition:opacity .3s ease,transform .3s ease}
+.orbit-node:hover .orbit-go{opacity:1;transform:translateX(3px)}
+.bm-m{display:none}
+@media (max-width:640px){
+  .orbit{aspect-ratio:1/1.22;--cy:56%}
+  .orbit-node{left:calc(var(--mx) * 1%);top:calc(var(--my) * 1%)}
+  .orbit-card{padding:9px 11px 9px 10px;gap:8px;border-radius:14px}
+  .orbit-ic{width:32px;height:32px;border-radius:10px}
+  .orbit-ic svg{width:17px;height:17px}
+  .orbit-tx b{font-size:13px}
+  .orbit-tx small{font-size:10.5px}
+  .orbit-go{display:none}
+  .ring.r1{width:40%}.ring.r2{width:66%}.ring.r3{width:94%}
+  .orbit-floor{width:100%}
+  .bm-d{display:none}.bm-m{display:block}
+}
+@media (prefers-reduced-motion:reduce){.ring,.core-ball,.core-shadow,.orbit-float,.orbit-beams line{animation:none}}
 /* ポッドキャスト(Spotify の埋め込み) */
 .podcast{max-width:760px;border-radius:14px;overflow:hidden;background:#282828}
 .podcast iframe{display:block;width:100%;height:352px;border:0}
@@ -428,7 +484,7 @@ def table(rows, head):
             ''.join('<tr>' + ''.join(f'<td{" class=\"n\"" if i else ""}>{c}</td>' for i, c in enumerate(r)) + '</tr>' for r in rows) + '</table></details>')
 
 def chart_wrap(icon, title, sub, svg, extra=''):
-    wide = ' wide' if 'hub-svg' in svg else ''
+    wide = ' wide' if ('hub-svg' in svg or 'class="orbit"' in svg) else ''
     return f'<div class="chart fade{wide}"><h3><i data-lucide="{icon}"></i>{title}</h3><p class="sub">{sub}</p>{svg}{extra}</div>\n'
 
 def hbars(items, maxv=100, unit='%', w=520, lw=170):
@@ -525,6 +581,24 @@ def hub_svg(center, spokes):
     out.append('</svg>')
     return '<div class="hub-svg" style="overflow-x:auto"><div style="min-width:600px;max-width:860px;margin:0 auto">' + ''.join(out) + '</div></div>'
 
+def orbit_html(center, nodes):
+    """立体的な軌道の図。nodes=[(icon,label,sub,href,color)]。PCは中心のまわりに楕円配置、スマホは上下に振り分け"""
+    import math
+    pc = [(50 + 36 * math.cos(a), 50 + 37 * math.sin(a)) for a in (-math.pi / 2 + 2 * math.pi * i / len(nodes) for i in range(len(nodes)))]
+    sp = [(50, 9), (76, 33), (74, 85), (26, 85), (24, 33)]  # スマホ用(上・右上・右下・左下・左上)
+    beams = lambda pts, cy, cls: (f'<svg class="orbit-beams {cls}" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' +
+        ''.join(f'<line x1="50" y1="{cy}" x2="{x:.1f}" y2="{y:.1f}" style="--c:{n[4]}"/>' for (x, y), n in zip(pts, nodes)) + '</svg>')
+    out = ['<div class="orbit">', '<span class="orbit-floor" aria-hidden="true"></span>',
+           '<span class="ring r1" aria-hidden="true"></span><span class="ring r2" aria-hidden="true"></span><span class="ring r3" aria-hidden="true"></span>',
+           beams(pc, 50, 'bm-d'), beams(sp, 56, 'bm-m'),
+           f'<div class="orbit-core" aria-hidden="true"><span class="core-shadow"></span><span class="core-ball"><b>{center[0]}</b><small>{center[1]}</small></span></div>']
+    for i, ((ic, lab, sub, href, col), (x, y), (mx, my)) in enumerate(zip(nodes, pc, sp)):
+        out.append(f'<a class="orbit-node" href="{href}" style="--x:{x:.1f};--y:{y:.1f};--mx:{mx};--my:{my};--c:{col};--d:{-i * 1.2:.1f}s">'
+                   f'<span class="orbit-float"><span class="orbit-card"><span class="orbit-ic"><i data-lucide="{ic}"></i></span>'
+                   f'<span class="orbit-tx"><b>{esc(lab)}</b><small>{esc(sub)}</small></span><span class="orbit-go" aria-hidden="true">→</span></span></span></a>')
+    out.append('</div>')
+    return ''.join(out)
+
 def year_line(events):
     """年表グラフ。2016年の運用開始〜2023年は省略記号でつなぎ、2023年以降を広く取る"""
     w = 1000; base = 200
@@ -552,7 +626,7 @@ about2 = (about_inner.replace('<dt>NICKNAME</dt>', '<dt><i data-lucide="smile"><
           .replace('<h3>経歴・役職</h3>', '<h3><i data-lucide="briefcase"></i> 経歴・役職</h3>').replace('<h3>資格・段位</h3>', '<h3><i data-lucide="award"></i> 資格・段位</h3>').replace('<li>少林寺拳法 初段</li>', '<li>少林寺拳法 初段<small>関東高校選抜大会 団体4位・組演武8位</small></li>'))
 lang = '<div class="chart-grid">' + chart_wrap('languages', '語学スコア', '満点に対する到達度', hbars([('TOEIC 760 / 990', 76.8, 'TOEIC 760点(満点990)'), ('TOEFL iBT 80 / 120', 66.7, 'TOEFL iBT 従来スコア80相当(CEFR B2)')], lw=150),
         table([('TOEIC', '760 / 990'), ('TOEFL iBT', '80 / 120 相当')], ['試験', 'スコア'])) + \
-    chart_wrap('compass', '活動の広がり', 'いま取り組んでいる5つの領域', hub_svg(('森 一真', 'もりぞう'), [('stethoscope', '医学', '佐賀大学 医学科'), ('bell-ring', '研究', '押しボタンPJ'), ('hand-heart', '地域交流', 'SCS 代表'), ('radio', 'バルーナーズ', 'DAO・ラジオ'), ('clapperboard', '発信', 'YouTube・執筆')])) + '</div>'
+    chart_wrap('compass', '活動の広がり', 'いま取り組んでいる5つの領域', orbit_html(('森 一真', 'もりぞう'), [('stethoscope', '医学', '佐賀大学 医学科', 'publications.html', '#2a9d8f'), ('bell-ring', '研究', '押しボタンPJ', 'research.html', '#3c9a3f'), ('hand-heart', '地域交流', 'SCS 代表', 'scs.html', '#e07b24'), ('radio', 'バルーナーズ', 'DAO・ラジオ', 'community.html', '#1592c4'), ('clapperboard', '発信', 'YouTube・執筆', 'creative.html', '#8e44ad')])) + '</div>'
 about2 = about2.replace('回復思考・学習欲・共感力<small>Restorative / Learner / Empathy ・ ENFP-A</small>',
                         '<a class="il" href="#strengths">活発性・ポジティブ・個別化</a><small>ストレングスファインダー TOP3 ・ ENFP-A</small>')
 # 強み(CliftonStrengths 34, 2025年3月受検)。レポート本文は転載せず、資質名と活動に結びつけた自分の言葉で書く
