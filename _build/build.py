@@ -340,6 +340,14 @@ a.orbit-node:hover .orbit-card,a.orbit-node:focus-visible .orbit-card{transform:
 /* 講演会のポスター(2枚並び) */
 .org-posters{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px;background:linear-gradient(135deg,#e8f1fb,#dfeaf7)}
 .org-posters img{display:block;width:100%;aspect-ratio:720/1018;object-fit:cover;border-radius:8px;cursor:zoom-in;box-shadow:0 6px 14px -8px rgba(20,60,120,.5)}
+/* SCSの活動の場所 */
+.places{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:26px}
+.place-group{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.place-group h3{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--accent)}
+.place-group h3 svg{width:18px;height:18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chips span{background:var(--accent-dim);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700;color:var(--text)}
+.place-note{font-size:12.5px;color:var(--muted);margin-top:10px;line-height:1.7}
 /* ポッドキャスト(Spotify の埋め込み) */
 .podcast{max-width:760px;border-radius:14px;overflow:hidden;background:#282828}
 .podcast iframe{display:block;width:100%;height:352px;border:0}
@@ -420,7 +428,7 @@ THEMES = [
     ('publications','book-open-text','PUBLICATIONS','論文・学会発表', '5分野の研究と、Am J Cardiol 掲載の共著論文・公衆衛生学会での発表。'),
     ('scs',       'hand-heart',    'SCS',       'SCS 地域交流',       '学生団体SCSの代表として、団地サロンや子どもの居場所へ。'),
     ('community', 'radio',         'COMMUNITY', 'バルーナーズDAO・ラジオ', 'DAOのモデレーター、えびすFMのラジオパーソナリティ。'),
-    ('education', 'graduation-cap','OUTREACH',  '教育・発信',         '中高生への出張授業、小学校の防煙教室、オンライン講演会、学会発表。'),
+    ('education', 'graduation-cap','OUTREACH',  '教育・発信',         '大阪・関西万博での登壇、中高生への出張授業、小学校の防煙教室、オンライン講演会。'),
     ('awards',    'trophy',        'AWARDS',    '実績・表彰',         'CSO志支援金、国際ソロプチミスト表彰、大臣からの手紙ほか。'),
     ('media',     'newspaper',     'MEDIA',     'メディア・掲載',     'サガテレビでの放映、大学の公式発表、地域紙・ラジオ。'),
     ('hobbies',   'palette',       'HOBBIES',   '趣味・アート',       '切り絵(美術館展示)・詩吟1級・少林寺拳法(全国大会出場)・ピックルボール部の設立。'),
@@ -788,11 +796,34 @@ scs_map = '<div class="chart-grid">' + chart_wrap('map', 'SCSの活動フィー�
     chart_wrap('pie-chart', 'メンバー構成', '2025年5月時点・総勢27名', donut([('医学生', 23, G), ('薬学部・理工学部', 4, B)], '27', '名') +
         '<div class="legend" style="justify-content:center"><span><i style="background:#3c9a3f"></i>医学生 23名</span><span><i style="background:#4a6fd1"></i>薬学部・理工学部 4名</span></div>' +
         table([('医学生', '23名'), ('薬学部・理工学部', '4名')], ['所属', '人数'])) + '</div>'
+PLACES = '''    <div class="places">
+      <div class="place-group fade"><h3><i data-lucide="armchair"></i>サロン(12か所)</h3><div class="chips"><span>南川副</span><span>嘉瀬</span><span>医大北</span><span>医大東</span><span>鍋島</span><span>新栄</span><span>白石</span><span>西川町</span><span>本庄</span><span>北堀端</span><span>ケアポート靖寿</span><span>県営城北団地 集会所</span></div><p class="place-note">各地区の公民館(10か所)・ケアポート靖寿・県営城北団地の集会所で、健康講話・体操・脳トレのサロンを開いています。</p></div>
+      <div class="place-group fade"><h3><i data-lucide="book-open"></i>夏休みの宿題補助</h3><div class="chips"><span>西川副公民館</span><span>赤松公民館</span></div><p class="place-note">夏休みに、小学生の宿題をサポートしています。</p></div>
+    </div>
+'''
 page('scs', '団地のサロン、子どもの居場所、公民館。地域の「となり」にいる学生でありたい。',
      sec(scs_intro, 'SCS', 'SCS(佐賀大学学生地域交流の会)') +
-     sec(scs_map, 'FIELD', '活動の全体像', alt=True) +
+     sec(scs_map + PLACES, 'FIELD', '活動の全体像', alt=True) +
      sec(matsuri, 'FESTIVAL', '地域のお祭りで医療体験ブース') +
      sec('''    <div class="org-grid">
+      <div class="org fade" style="padding-top:26px">
+        <span class="tag">EVENT 2026</span>
+        <h4>子ども食堂フェスを共催</h4>
+        <p>子ども食堂フェスを共催しました。</p>
+        <span class="card-link"><a class="il" href="https://www.instagram.com/p/DZ9mxiqzruf/" target="_blank" rel="noopener">Instagramの投稿 →</a></span>
+      </div>
+      <div class="org fade" style="padding-top:26px">
+        <span class="tag">CONCERT 2026</span>
+        <h4>鹿島での音楽療法コンサート</h4>
+        <p>鹿島で開かれた音楽療法のコンサートに、佐賀大学の室内楽部とともに、SCSとして協力しました。</p>
+        <span class="card-link"><a class="il" href="https://www.instagram.com/p/DVkx_ZEmrSq/" target="_blank" rel="noopener">Instagramの投稿 →</a></span>
+      </div>
+      <div class="org fade" style="padding-top:26px">
+        <span class="tag">FES</span>
+        <h4>佐賀大学同窓会フェス</h4>
+        <p>佐賀大学の同窓会フェスに、SCSとしてブースを出展。</p>
+        <span class="card-link"><a class="il" href="https://www.saga-u.ac.jp/koho/event/2025101538735" target="_blank" rel="noopener">佐賀大学のイベントページ →</a></span>
+      </div>
       <div class="org fade" style="padding-top:26px">
         <span class="tag">EVENT 2025</span>
         <h4>SAGAたてもの結び(モラージュ佐賀会場)</h4>
@@ -818,7 +849,16 @@ other_orgs = other_orgs.replace('<p>山形県南陽市立赤湯中学校で出�
     '<p>山形県南陽市の中学校・高校で、子宮頸がんとHPVワクチンの出張授業を担当(2024年1月・7月)。7月は市内3中学校と県立南陽高校で、講師3人のひとりとして授業しました。</p>')
 vcan = re.search(r'      <a class="org fade" href="https://vcan-hpv.org.*?</a>\n', other_orgs, re.S).group(0)
 edu = f'''    <div class="org-grid">
-{vcan}      <div class="org fade">
+      <div class="org fade" style="padding-top:26px">
+        <span class="tag">EXPO 2025</span>
+        <h4>大阪・関西万博で登壇(2025年6月)</h4>
+        <p>学生団体Vcanのメンバーとして、大阪・関西万博のプログラムに登壇しました。中高生への出張授業「中高ツアー」を軸にした、子宮頸がん・HPVワクチンの啓発の取り組みを、1日2回の発表で伝えました。</p>
+      </div>
+{vcan}      <div class="org fade" style="padding-top:26px">
+        <span class="tag">SCHOOL</span>
+        <h4>同志社中学校での出張授業(2025年3月・5月)</h4>
+        <p>Vcanの中高ツアーとして、京都の同志社中学校で2回授業を担当しました。3月は「学びプロジェクト」、5月は全校検診のプログラムで中学2年生292名に、子宮頸がんとHPVワクチンについて伝えました。</p>
+      </div>      <div class="org fade">
         <img class="org-img" src="assets/photos/drv-nishiyoka-class.webp" alt="西与賀小学校での授業" loading="lazy">
         <span class="tag">SCHOOL</span>
         <h4>佐賀市立西与賀小学校での授業(2025年6月・2026年6月)</h4>
@@ -833,17 +873,35 @@ edu = f'''    <div class="org-grid">
         <p>公民館や団地のサロンで、熱中症予防やフレイル予防など、医学部で学んだ知識を地域の方へ分かりやすくお伝えしています。</p>
         <span class="card-link">SCSの活動を見る →</span>
       </a>
-      <a class="org fade" href="https://vcan-hpv.org/activity/8/" target="_blank" rel="noopener">
+      <div class="org fade">
         <img class="org-img" src="assets/photos/vcan-poster.webp" alt="じぶんごとcaféのチラシ" loading="lazy" style="object-fit:contain;background:#f6f0fa">
         <span class="tag">EVENT</span>
-        <h4>Vcan じぶんごとcafé(佐賀市)</h4>
-        <p>佐賀市と連携したワークショップ型イベントで、参加者と一緒に健康を「自分ごと」として考えました。</p>
-        <span class="card-link">Vcanの活動ページ →</span>
-      </a>
+        <h4>Vcan じぶんごとcafé(佐賀)</h4>
+        <p>佐賀市と連携した、Vcanの子宮頸がん・HPVワクチン啓発イベント。コーヒーを飲みながら、モヤモヤや相談ごとを医大生と話せる場です。佐賀大学で2回、アバンセで1回開催しました。</p>
+        <span class="card-link"><a class="il" href="https://vcan-hpv.org/activity/8/" target="_blank" rel="noopener">Vcanの活動ページ ① →</a></span>
+        <span class="card-link"><a class="il" href="https://vcan-hpv.org/activity/1/" target="_blank" rel="noopener">Vcanの活動ページ ② →</a></span>
+        <span class="card-link"><a class="il" href="https://www.saga-s.co.jp/articles/-/1245508" target="_blank" rel="noopener">佐賀新聞の記事(第1回) →</a></span>
+      </div>
+      <div class="org fade" style="padding-top:26px">
+        <span class="tag">CITY</span>
+        <h4>佐賀市役所・唐津市役所でのHPVワクチン啓発</h4>
+        <p>自治体と連携して、HPVワクチンの啓発活動を行いました。唐津市での取り組みは、地元のケーブルテレビでも放送されました。</p>
+      </div>
+      <div class="org fade" style="padding-top:26px">
+        <span class="tag">EVENT</span>
+        <h4>春フェス長崎での啓発活動</h4>
+        <p>長崎のイベント「春フェス長崎」で、Vcanとして子宮頸がん・HPVワクチンの啓発活動を行いました。</p>
+      </div>
       <a class="org fade" href="https://scs-website-ten.vercel.app/blog/2026-03-01-kawasoe-bouen" target="_blank" rel="noopener" style="padding-top:26px">
         <span class="tag">SCHOOL</span>
         <h4>川副小学校での防煙教室(2026年)</h4>
         <p>SCSの防煙教室の第2弾(第1弾は北川副小学校)。タバコが体に与える影響を、スライドや教材を使って医学生ならではの視点で、小学生に分かりやすく伝えました。</p>
+        <span class="card-link">SCSの活動レポート →</span>
+      </a>
+      <a class="org fade" href="https://scs-website-ten.vercel.app/blog/2025-06-25-honjo-elementary-inquiry" target="_blank" rel="noopener" style="padding-top:26px">
+        <span class="tag">SCHOOL</span>
+        <h4>本庄小学校・BEYOND本庄での授業</h4>
+        <p>本庄小学校の6年生の総合型探究学習に、SCSとしてゲスト参加。子どもたちの「なぜ？」「どうして？」に、医学生の視点で一緒に向き合いました。</p>
         <span class="card-link">SCSの活動レポート →</span>
       </a>
       <div class="org fade">
@@ -967,6 +1025,8 @@ media = """    <div class="mini-grid">
       <a class="mini-card fade" href="community.html" style="color:inherit"><span class="ki"><i data-lucide="radio"></i></span><div><h4>えびすFM「バルーナーズDAOおとなりさんラジオ」</h4><p>2026年5月〜 ／ パーソナリティとして出演・Spotify でも配信</p></div></a>
       <a class="mini-card fade" href="https://www.suric.saga-u.ac.jp/saga_project_map/" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="map-pin"></i></span><div><h4>佐賀大学 地域連携紹介マップ</h4><p>2024年9月 ／ プロジェクトが掲載</p></div></a>
       <a class="mini-card fade" href="http://www.city.nanyo.yamagata.jp/up/files/giyousei/kouhoukoucyo/siho/pdf/1373.txt" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="book-open"></i></span><div><h4>市報なんよう 2024年8月号(山形県南陽市)</h4><p>特集「知らないまま後悔しないで 子宮頸がんとHPVワクチン」でVcanの出張授業と講師として紹介</p></div></a>
+      <a class="mini-card fade" href="https://www.saga-s.co.jp/articles/-/1245508" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="newspaper"></i></span><div><h4>佐賀新聞 掲載</h4><p>Vcanの「じぶんごとcafé」(第1回)が紹介されました</p></div></a>
+      <div class="mini-card fade"><span class="ki"><i data-lucide="tv"></i></span><div><h4>唐津市のケーブルテレビ</h4><p>唐津市でのHPVワクチン啓発の取り組みが放送されました</p></div></div>
       <div class="mini-card fade"><span class="ki"><i data-lucide="file-image"></i></span><div><h4>地域紙への掲載</h4><p>SCSのサロン活動が地域の新聞で紹介</p></div></div>
     </div>
 """

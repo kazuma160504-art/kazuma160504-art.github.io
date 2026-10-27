@@ -682,6 +682,14 @@ a.orbit-node:hover .orbit-card,a.orbit-node:focus-visible .orbit-card{transform:
 /* 講演会のポスター(2枚並び) */
 .org-posters{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px;background:linear-gradient(135deg,#e8f1fb,#dfeaf7)}
 .org-posters img{display:block;width:100%;aspect-ratio:720/1018;object-fit:cover;border-radius:8px;cursor:zoom-in;box-shadow:0 6px 14px -8px rgba(20,60,120,.5)}
+/* SCSの活動の場所 */
+.places{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:26px}
+.place-group{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.place-group h3{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--accent)}
+.place-group h3 svg{width:18px;height:18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chips span{background:var(--accent-dim);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700;color:var(--text)}
+.place-note{font-size:12.5px;color:var(--muted);margin-top:10px;line-height:1.7}
 /* ポッドキャスト(Spotify の埋め込み) */
 .podcast{max-width:760px;border-radius:14px;overflow:hidden;background:#282828}
 .podcast iframe{display:block;width:100%;height:352px;border:0}
