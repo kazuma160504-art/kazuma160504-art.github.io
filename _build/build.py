@@ -404,6 +404,19 @@ section{scroll-margin-top:110px}
 .confetti{position:fixed;top:-12px;z-index:170;width:8px;height:12px;border-radius:2px;pointer-events:none;animation:cf-fall 2.6s linear forwards}
 @keyframes cf-fall{to{transform:translateY(105vh) rotate(720deg);opacity:.8}}
 @media (prefers-reduced-motion:reduce){.morizo,.morizo.jump{animation:none}.morizo.hint{outline:3px solid #ffb300;outline-offset:4px;border-radius:8px}}
+/* あゆみ(年表): 年ごとに開け閉め */
+.ay-lead{color:var(--muted);font-size:14px;margin-bottom:16px}
+.ayumi{display:grid;gap:10px}
+.ay-year{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.ay-year summary{display:flex;align-items:baseline;gap:10px;padding:14px 18px;cursor:pointer;list-style:none}
+.ay-year summary::-webkit-details-marker{display:none}
+.ay-year summary b{font-size:20px;font-weight:900;color:var(--accent);letter-spacing:.04em}
+.ay-year summary small{color:var(--muted);font-size:12.5px}
+.ay-year summary::after{content:"";margin-left:auto;width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .25s ease;align-self:center}
+.ay-year[open] summary::after{transform:rotate(-135deg)}
+.ay-year ol{list-style:none;margin:0;padding:2px 18px 14px;display:grid;gap:2px}
+.ay-year li{display:grid;grid-template-columns:62px 1fr;gap:10px;padding:7px 0;border-top:1px dashed var(--line);font-size:14px;line-height:1.6}
+.ay-year li time{color:var(--accent);font-weight:700;font-variant-numeric:tabular-nums}
 /* ポッドキャスト(Spotify の埋め込み) */
 .podcast{max-width:760px;border-radius:14px;overflow:hidden;background:#282828}
 .podcast iframe{display:block;width:100%;height:352px;border:0}
@@ -773,8 +786,84 @@ strengths = ('    <p class="str-lead fade">ストレングスファインダー(
         for n, (jp, en, dm, t) in enumerate(top5, 1)) + '\n    </div>\n'
     '    <div class="str-next fade"><b>6〜10位</b>' + ''.join(f'<span style="--c:{DOMAINS[dm]}">{n}. {jp}</span>' for n, (jp, dm) in enumerate(next5, 6)) + '</div>\n'
     '    <p class="str-note">2025年3月受検。CliftonStrengths® および34の資質名は Gallup, Inc. の商標です。</p>\n')
+# あゆみ(年表): カレンダーの予定から拾った活動を、年ごとに開け閉めできる形で(最新の年だけ最初から開く)
+AYUMI = [
+    ('2023', [('08', '西日本医科学生総合体育大会(西医体)に卓球部で出場', None),
+              ('10', '城北団地のサロンに、研究チームとして毎月通いはじめる', 'research'),
+              ('10', 'SCSの最初の顔合わせ。公民館へのヒアリングをはじめる', 'scs'),
+              ('11', 'ダウン症の子どもと家族の会の定例会で、ボランティア(〜2024年5月)', None),
+              ('11', 'AHA BLSプロバイダー講習を受講', None),
+              ('12', '地域のクリスマス3世代交流会で、進行を担当', None)]),
+    ('2024', [('01', '山形県南陽市の中学校で、HPVワクチンの出張授業(Vcan)。7月にも', 'education'),
+              ('02', '城北団地で、押しボタンの住民説明会とアンケートを実施', 'research'),
+              ('02', '大学病院の災害訓練で模擬患者を担当(10月・2026年2月にも)', None),
+              ('02', 'BHELP標準コース(災害時の健康支援)を受講', None),
+              ('02', '保育園の「ぬいぐるみ病院」に参加(2026年までに4回)', None),
+              ('04', 'ICLSコースを修了', None),
+              ('07', 'アジア医学生会議 AMSC2024 で運営委員を務める', None),
+              ('07', '上高木公民館の「子どもの居場所づくり」に参加しはじめる', 'scs'),
+              ('09', '切り絵を佐賀大学美術館で展示', 'hobbies'),
+              ('09', '本庄公民館の地域カフェ「サンドカフェ」に参加しはじめる', 'scs'),
+              ('10', '「医療人へのとびら」で高校生とディスカッション', 'education'),
+              ('10', '第83回 日本公衆衛生学会総会(札幌)で発表', 'publications'),
+              ('12', '第9回 西日本医学生学術フォーラム(関西医科大学)に参加', None)]),
+    ('2025', [('01', '認知症カフェ「オレンジカフェ」で、医学のミニ講話', 'education'),
+              ('01', 'ピックルボール部の立ち上げに向けて動きだす', 'hobbies'),
+              ('02', 'Student Researcher に認定される', 'publications'),
+              ('03', 'Vcan 中高ツアーで、同志社中学校・ノートルダム清心で授業', 'education'),
+              ('03', '高校生にBLS(一次救命処置)を指導', None),
+              ('03', 'オンライン講演会「人生手術室」を開催(6月・8月にも)', 'education'),
+              ('03', '地域での活動がサガテレビで放映', 'media'),
+              ('04', '東京大学 松尾研究室のデータサイエンス講座「GCI」を受講(〜8月)', None),
+              ('06', '西与賀小学校で授業', 'education'),
+              ('06', '大阪・関西万博で登壇(Vcan)', 'education'),
+              ('08', '佐久総合病院(長野県)の夏期実習に参加', None),
+              ('09', '佐賀バルーナーズDAOのモデレーターに', 'community'),
+              ('09', '唐津市で、HPVワクチンの啓発', 'education'),
+              ('09', '国際医療福祉大学の学生団体と、オンラインで交流会(2回)', 'scs'),
+              ('10', '医大北祭り・養生ふれあい祭りで、医療体験ブース', 'scs'),
+              ('10', '第84回 日本公衆衛生学会総会(静岡)でポスター発表', 'publications'),
+              ('11', '「SAGAジュニアドクター」に学生スタッフとして参加', None),
+              ('11', 'プレコンセプションケアのセミナーや高校の授業に協力', 'education'),
+              ('11', '佐賀市市民活動プラザ「交流ゼミナール」で講師', 'education'),
+              ('11', '佐賀大学同窓会フェスにブース出展', 'scs'),
+              ('11', '北海道の「べてるの家」を訪問', None),
+              ('12', '永和システムマネジメント(福井)を訪ね、新型ボタンの共同開発を協議', 'research')]),
+    ('2026', [('01', '北川副小学校で防煙教室', 'education'),
+              ('01', '第36回 日本疫学会学術総会(長崎)に参加', 'publications'),
+              ('01', '学長に、押しボタンプロジェクトの進捗を報告', 'research'),
+              ('01', '体験型イベント「プレコンクエスト」(佐賀大学美術館)に協力', 'education'),
+              ('02', '佐賀子どもメディカルラリーにスタッフとして参加', 'education'),
+              ('02', 'SCSが国際ソロプチミスト佐賀有明より表彰', 'awards'),
+              ('03', '鹿島での音楽療法コンサートに協力', 'scs'),
+              ('03', '川副小学校で防煙教室', 'education'),
+              ('03', '佐賀TSUNAGIコンベンションで発表・展示。大学から記者発表', 'research'),
+              ('04', '医学部の学生団体統括委員会 委員長に', None),
+              ('04', '新型「いろどり+ボタン」の実証実験を開始', 'research'),
+              ('05', 'えびすFMのラジオパーソナリティに', 'community'),
+              ('05', '詩吟のコンクール(青年の部)に出場', 'hobbies'),
+              ('06', '西与賀小学校で、2年続けて授業', 'education'),
+              ('06', '城北団地で、災害時の安否確認訓練', 'research'),
+              ('07', '佐賀県庁で、市町の行政向けに新型ボタンを提案', 'research'),
+              ('07', '夏休みの宿題お手伝い(西川副・赤松公民館)', 'scs'),
+              ('08', '佐賀県の孤独・孤立対策 官民連携プラットフォームの交流会に参加', 'research'),
+              ('09', 'アバンセで、フレイル予防の健康セミナーの講師', 'education'),
+              ('09', '肝臓の国際共同研究(メタ解析)に参加', 'publications'),
+              ('10', '第85回 日本公衆衛生学会総会(東京)で口演(10月30日)', 'publications')]),
+    ('これから', [('2026.11', '佐賀大学同窓会フェスに、2年続けて出展', 'scs'),
+                  ('2026.11', '吟剣詩舞道大会に、合吟で出場', 'hobbies'),
+                  ('2026.12', '感染症の学会(高知)で口演発表', 'publications'),
+                  ('2027.03', '日本プライマリ・ケア連合学会 九州支部の学術大会(佐賀)で、学生企画を担当', None)]),
+]
+def ayumi_li(m, t, k):
+    t = f'<a class="il" href="{k}.html">{t}</a>' if k else t
+    return f'<li><time>{m}</time><span>{t}</span></li>'
+ayumi = ('    <p class="ay-lead fade">カレンダーの記録から、これまでの活動を年ごとにまとめました。年をタップすると開きます。</p>\n    <div class="ayumi">\n' +
+         '\n'.join(f'      <details class="ay-year fade"{" open" if y == "2026" else ""}><summary><b>{y}</b><small>{len(items)}件</small></summary><ol>' +
+                   ''.join(ayumi_li(*it) for it in items) + '</ol></details>' for y, items in AYUMI) + '\n    </div>\n')
 page('profile', '医学生・研究員・地域活動家。データと共感で、人と地域をつなぐ。',
-     sec(about2) + sec(strengths, 'STRENGTHS', '強み — ストレングスファインダー TOP5', alt=True).replace('<section class="alt">', '<section id="strengths" class="alt">', 1) + sec(lang, 'AT A GLANCE', 'ひと目でわかる森一真'))
+     sec(about2) + sec(strengths, 'STRENGTHS', '強み — ストレングスファインダー TOP5', alt=True).replace('<section class="alt">', '<section id="strengths" class="alt">', 1) + sec(lang, 'AT A GLANCE', 'ひと目でわかる森一真') +
+     sec(ayumi, 'HISTORY', 'あゆみ — 年ごとの活動', alt=True))
 
 # 2 研究
 research_body = research.replace('    <h3 class="works-sub fade">押しボタンプロジェクト(おはようボタン)</h3>\n', '')
@@ -855,6 +944,7 @@ scs_map = '<div class="chart-grid">' + chart_wrap('map', 'SCSの活動フィー�
 PLACES = '''    <div class="places">
       <div class="place-group fade"><h3><i data-lucide="armchair"></i>サロン(12か所)</h3><div class="chips"><span>南川副</span><span>嘉瀬</span><span>医大北</span><span>医大東</span><span>鍋島</span><span>新栄</span><span>白石</span><span>西川町</span><span>本庄</span><span>北堀端</span><span>ケアポート靖寿</span><span>県営城北団地 集会所</span></div><p class="place-note">各地区の公民館(10か所)・ケアポート靖寿・県営城北団地の集会所で、健康講話・体操・脳トレのサロンを開いています。</p></div>
       <div class="place-group fade"><h3><i data-lucide="book-open"></i>夏休みの宿題補助</h3><div class="chips"><span>西川副公民館</span><span>赤松公民館</span></div><p class="place-note">夏休みに、小学生の宿題をサポートしています。</p></div>
+      <div class="place-group fade"><h3><i data-lucide="hand-heart"></i>子どもの居場所・地域のカフェ</h3><div class="chips"><span>上高木公民館(子どもの居場所)</span><span>東高木公民館(ハッピーカフェ)</span><span>本庄公民館(サンドカフェ)</span><span>北堀端(カフェどこ吹く風)</span></div><p class="place-note">毎月の子どもの居場所づくりや、地域のカフェに参加しています。</p></div>
     </div>
 '''
 page('scs', '団地のサロン、子どもの居場所、公民館。地域の「となり」にいる学生でありたい。',
@@ -877,7 +967,7 @@ page('scs', '団地のサロン、子どもの居場所、公民館。地域の�
       <div class="org fade" style="padding-top:26px">
         <span class="tag">FES</span>
         <h4>佐賀大学同窓会フェス</h4>
-        <p>佐賀大学の同窓会フェスに、SCSとしてブースを出展。</p>
+        <p>佐賀大学の同窓会フェスに、SCSとしてブースを出展(2025年11月)。2026年11月も出展予定です。</p>
         <span class="card-link"><a class="il" href="https://www.saga-u.ac.jp/koho/event/2025101538735" target="_blank" rel="noopener">佐賀大学のイベントページ →</a></span>
       </div>
       <div class="org fade" style="padding-top:26px">
@@ -928,7 +1018,7 @@ edu = f'''    <div class="org-grid">
         <img class="org-img" src="assets/photos/ig-zaimoku-lecture.webp" alt="公民館での健康講演" loading="lazy">
         <span class="tag">LECTURE</span>
         <h4>地域での健康講演</h4>
-        <p>公民館や団地のサロンで、熱中症予防やフレイル予防など、医学部で学んだ知識を地域の方へ分かりやすくお伝えしています。</p>
+        <p>公民館や団地のサロン、認知症カフェ「オレンジカフェ」で、熱中症予防やフレイル予防など、医学部で学んだ知識を地域の方へ分かりやすくお伝えしています。2026年9月には、アバンセでフレイル予防の健康セミナーの講師を務めました。</p>
         <span class="card-link">SCSの活動を見る →</span>
       </a>
       <div class="org fade">
@@ -946,6 +1036,11 @@ edu = f'''    <div class="org-grid">
         <span class="card-link"><a class="il" href="https://vcan-hpv.org/activity/8/" target="_blank" rel="noopener">Vcanの活動ページ ① →</a></span>
         <span class="card-link"><a class="il" href="https://vcan-hpv.org/activity/1/" target="_blank" rel="noopener">Vcanの活動ページ ② →</a></span>
         <span class="card-link"><a class="il" href="https://www.saga-s.co.jp/articles/-/1245508" target="_blank" rel="noopener">佐賀新聞の記事(第1回) →</a></span>
+      </div>
+      <div class="org fade" style="padding-top:26px">
+        <span class="tag">PRECONCEPTION</span>
+        <h4>プレコンセプションケアの啓発(2025年〜)</h4>
+        <p>将来の妊娠・出産も見すえて、若い世代が自分の体と健康に向き合う「プレコンセプションケア」。SCSとして、SAGA CHIKAでのセミナー、致遠館高校の保健体育の授業(1年生約240名)、佐賀女子短期大学での講演会、体験型イベント「プレコンクエスト」(佐賀市青少年センター・佐賀大学美術館)に協力しました。</p>
       </div>
       <div class="org fade" style="padding-top:26px">
         <span class="tag">CITY</span>
@@ -988,8 +1083,8 @@ edu = f'''    <div class="org-grid">
       <div class="org fade">
         <div class="org-posters"><img src="assets/photos/jinsei-shujutsushitsu-1.webp" alt="「人生手術室」第1弾のポスター(3月27日・Zoom)" loading="lazy"><img src="assets/photos/jinsei-shujutsushitsu-2.webp" alt="「人生手術室2」第2弾のポスター(6月7日・Zoom)" loading="lazy"></div>
         <span class="tag">WEBINAR</span>
-        <h4>オンライン講演会「人生手術室」</h4>
-        <p>〜あなたの人生の選択肢にメスを入れる講演会〜。Zoomでのウェブセミナーを開催し、第1弾(3月27日)に続いて第2弾(6月7日)も開催しました。</p>
+        <h4>オンライン講演会「人生手術室」(2025年)</h4>
+        <p>〜あなたの人生の選択肢にメスを入れる講演会〜。SCSで企画したZoomのウェブセミナーで、3月27日の第1弾に続き、6月7日に第2弾、8月28日に第3弾を開催しました。</p>
       </div>
     </div>
     <h3 class="works-sub fade" style="margin-top:56px">学会発表</h3>
@@ -1003,7 +1098,7 @@ edu = f'''    <div class="org-grid">
 # カードの見出しから分類(複数可): hpv=HPVワクチン啓発 / school=学校・子ども / talk=講演・発表 / local=地域
 EDU_CATS = [('万博', 'hpv talk'), ('中高ツアー', 'hpv school'), ('同志社', 'hpv school'), ('西与賀', 'school'), ('地域での健康講演', 'local talk'), ('交流ゼミナール', 'local talk'),
             ('じぶんごとcafé', 'hpv local'), ('市役所', 'hpv local'), ('春フェス', 'hpv local'), ('防煙教室', 'school'), ('Student Researcher', 'talk'),
-            ('医療人へのとびら', 'school'), ('メディカルラリー', 'school local'), ('本庄小学校', 'school'), ('人生手術室', 'talk')]
+            ('医療人へのとびら', 'school'), ('メディカルラリー', 'school local'), ('本庄小学校', 'school'), ('人生手術室', 'talk'), ('プレコンセプション', 'school local')]
 def edu_cat(m):
     h4 = re.search(r'<h4>(.*?)</h4>', edu[m.end():]).group(1)
     cat = next((c for k, c in EDU_CATS if k in h4), 'local')
@@ -1094,6 +1189,7 @@ pub = """    <div class="pub fade">
     </div>
 """
 confs = """    <div class="mini-grid">
+      <div class="mini-card fade"><span class="ki"><i data-lucide="mic"></i></span><div><h4>日本感染症学会 西日本地方会・日本化学療法学会 西日本支部 合同学会(高知)</h4><p>2026年12月(予定) ／ 口演 ／ ESBL産生大腸菌の複雑性尿路感染症に対するホスホマイシンカルシウムの検討</p></div></div>
       <a class="mini-card fade" href="research.html" style="color:inherit"><span class="ki"><i data-lucide="mic"></i></span><div><h4>第85回 日本公衆衛生学会総会(東京)</h4><p>2026年10月30日 ／ 口演(O7-4・筆頭演者) ／ 「高齢者向け押しボタンシステムを活用した災害時安否確認訓練の評価と地域防災への示唆」</p></div></a>
       <a class="mini-card fade" href="research.html" style="color:inherit"><span class="ki"><i data-lucide="presentation"></i></span><div><h4>第84回 日本公衆衛生学会総会(静岡)</h4><p>2025年10月 ／ ポスター発表 ／ 押しボタンプロジェクト</p></div></a>
       <a class="mini-card fade" href="https://plaza.umin.ac.jp/jsph83/" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="presentation"></i></span><div><h4>第83回 日本公衆衛生学会総会(北海道)</h4><p>2024年10月 ／ 口演(O13-2-4・筆頭演者)「災害時の避難意向に関する世帯の特徴：佐賀市における横断的研究」 ／ 押しボタンPJのポスター(P08-67)「無線式呼び出し機を活用した住民主体の独居高齢者の見守りシステムの効果と今後の展望」</p></div></a>
@@ -1104,8 +1200,8 @@ confs = """    <div class="mini-grid">
 """
 # いま取り組んでいる研究(5分野)
 RESEARCH = [('heart-pulse', '心臓血管外科', '冠動脈バイパスの長期開存', '#e05264', ['冠動脈バイパス術後の長期開存率']),
-            ('pill', '感染症', '尿路感染症とホスホマイシン', '#2f7fc1', ['尿路感染症とホスホマイシン']),
-            ('microscope', '肝臓', 'ICI後の非代償化', '#c9862b', ['免疫チェックポイント阻害薬(ICI)投与後の、肝臓の非代償化']),
+            ('pill', '感染症', '尿路感染症とホスホマイシン', '#2f7fc1', ['尿路感染症とホスホマイシン(2026年12月の学会で口演予定)']),
+            ('microscope', '肝臓', 'ICI後の非代償化', '#c9862b', ['免疫チェックポイント阻害薬(ICI)投与後の、肝臓の非代償化(国際共同研究チームでメタ解析を担当)']),
             ('users', '公衆衛生', 'エピゲノム年齢・災害時避難', '#3c9a3f', ['<a class="il" href="https://www.med.saga-u.ac.jp/litlit/retreat2025/abstract.html" target="_blank" rel="noopener">エピゲノム年齢と喫煙量の関係</a>(Student Researcher 研究発表会で発表)', '災害時の避難意向調査(自主防災組織)']),
             ('siren', '救急', '見守りボタン・安否確認', '#8e44ad', ['<a class="il" href="research.html">「いろどり+ボタン」を使った見守りシステムと、災害時の安否確認</a>'])]
 fields = chart_wrap('network', '研究のフィールド', '心臓血管外科・感染症・肝臓・公衆衛生・救急の5分野', orbit_html(('研究', 'Research'),
