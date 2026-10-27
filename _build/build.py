@@ -326,6 +326,19 @@ a.orbit-node:hover .orbit-card,a.orbit-node:focus-visible .orbit-card{transform:
 .hero h1 .ch{display:inline-block;opacity:0;transform:translateY(.45em) rotate(-8deg);animation:ch-in .7s cubic-bezier(.2,.8,.25,1.25) forwards;animation-delay:calc(.35s + var(--i) * .12s)}
 @keyframes ch-in{to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.hero h1 .ch{opacity:1;transform:none;animation:none}}
+/* トップの名前: 大きな名前・マーカー線・役割のタグ・背景の英字 */
+.hero-kicker{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:700;letter-spacing:.42em;color:var(--accent);margin-bottom:12px;opacity:0;animation:rise .8s ease .1s forwards}
+.hero-kicker::before{content:"";width:40px;height:2px;border-radius:2px;background:linear-gradient(90deg,#c5e86c,#3c9a3f)}
+.hero h1{display:inline-block;position:relative;isolation:isolate;font-size:clamp(72px,11.5vw,132px);line-height:1.05;letter-spacing:.02em;color:#17301c;padding:0 .04em .04em 0}
+.hero h1 .ch:nth-child(2){margin-left:.16em}
+.hero h1::after{content:"";position:absolute;left:0;right:-.06em;bottom:.05em;height:.16em;border-radius:99px;z-index:-1;background:linear-gradient(90deg,rgba(197,232,108,.9),rgba(140,198,63,.5));transform-origin:0 50%;transform:scaleX(0);animation:hl-draw .9s cubic-bezier(.6,0,.2,1) 1s forwards}
+@keyframes hl-draw{to{transform:scaleX(1)}}
+.hero-roles{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;opacity:0;animation:rise .8s ease .45s forwards}
+.hero-roles span{font-size:13px;font-weight:700;letter-spacing:.1em;padding:6px 16px;border-radius:999px;color:#2c5a31;background:rgba(255,255,255,.78);border:1px solid rgba(60,154,63,.28);backdrop-filter:blur(4px)}
+.hero .copy{margin-top:20px;line-height:1.6}
+.hero-bgname{position:absolute;left:0;bottom:-.14em;z-index:1;white-space:nowrap;font-size:clamp(84px,15vw,220px);font-weight:900;letter-spacing:.04em;line-height:1;color:transparent;-webkit-text-stroke:1.5px rgba(60,154,63,.17);pointer-events:none;user-select:none;animation:bg-drift 36s linear infinite alternate}
+@keyframes bg-drift{to{transform:translateX(-14%)}}
+@media (prefers-reduced-motion:reduce){.hero h1::after{transform:none;animation:none}.hero-bgname{animation:none}}
 /* いま取り組んでいる研究(分野ごとのカード) */
 .rnow-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px;margin-top:26px}
 .rnow{position:relative;display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 18px 18px 22px;overflow:hidden;color:var(--text)}
@@ -366,13 +379,17 @@ section{scroll-margin-top:110px}
 /* もりぞーを探せ */
 .hunt-hint{max-width:1000px;margin:14px auto 0;text-align:center;font-size:13.5px;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:14px;padding:10px 14px}
 .hunt-hint b{color:var(--accent)}
-.morizo{position:absolute;z-index:6;width:34px;height:42px;padding:0;border:0;background:none;cursor:pointer;filter:drop-shadow(0 3px 3px rgba(0,0,0,.2));animation:mz-bob 2.6s ease-in-out infinite;-webkit-tap-highlight-color:transparent}
+.morizo{position:absolute;z-index:6;width:40px;height:50px;padding:0;border:0;background:none;cursor:pointer;filter:drop-shadow(0 3px 3px rgba(0,0,0,.2));animation:mz-bob 2.6s ease-in-out infinite;-webkit-tap-highlight-color:transparent}
 .morizo svg{display:block;width:100%;height:100%}
 .morizo.in-br{right:8px;bottom:6px}.morizo.in-bl{left:8px;bottom:6px}.morizo.in-tr{right:8px;top:6px}
-.morizo.peek-tr{right:18px;top:-30px}.morizo.peek-tl{left:18px;top:-30px}
+.morizo.peek-tr{right:18px;top:-36px}.morizo.peek-tl{left:18px;top:-36px}
 .morizo.done{opacity:.6}
 .morizo.jump{animation:mz-jump .7s ease}
 @keyframes mz-bob{50%{transform:translateY(-3px)}}
+.morizo.hint{animation:mz-hint .9s ease-in-out 5}
+@keyframes mz-hint{50%{transform:scale(1.4) rotate(-8deg);filter:drop-shadow(0 0 10px #ffd54f) drop-shadow(0 0 4px #ffb300)}}
+.hunt-hintbtn{display:block;width:100%;margin:0 0 10px;padding:8px 10px;border:0;border-radius:10px;background:#fff6d6;color:#7a5200;font:inherit;font-weight:700;cursor:pointer}
+.hunt-hintbtn:hover{background:#ffedb0}
 @keyframes mz-jump{30%{transform:translateY(-20px) rotate(-12deg) scale(1.2)}65%{transform:translateY(0) rotate(8deg) scale(1)}}
 .hunt-badge{position:fixed;left:12px;bottom:12px;z-index:150;display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:rgba(255,255,255,.95);border-radius:999px;padding:6px 12px 6px 6px;font:inherit;font-size:12.5px;font-weight:700;color:var(--text);box-shadow:0 8px 20px -10px rgba(30,51,34,.5);cursor:pointer}
 .hunt-badge svg{width:22px;height:27px}
@@ -386,7 +403,7 @@ section{scroll-margin-top:110px}
 .hunt-toast.on{opacity:1;transform:translate(-50%,0)}
 .confetti{position:fixed;top:-12px;z-index:170;width:8px;height:12px;border-radius:2px;pointer-events:none;animation:cf-fall 2.6s linear forwards}
 @keyframes cf-fall{to{transform:translateY(105vh) rotate(720deg);opacity:.8}}
-@media (prefers-reduced-motion:reduce){.morizo,.morizo.jump{animation:none}}
+@media (prefers-reduced-motion:reduce){.morizo,.morizo.jump{animation:none}.morizo.hint{outline:3px solid #ffb300;outline-offset:4px;border-radius:8px}}
 /* ポッドキャスト(Spotify の埋め込み) */
 .podcast{max-width:760px;border-radius:14px;overflow:hidden;background:#282828}
 .podcast iframe{display:block;width:100%;height:352px;border:0}
@@ -1137,10 +1154,21 @@ page('contact', '研究・地域活動、講演・取材、制作のご依頼な
 
 # ---------------------------------------------------------------- トップ
 hero = take('<section class="hero" id="top">', '</section>') + '</section>\n'
-hero = hero.replace('<h1>森 一真<span class="kana">', '<h1><span class="ch" style="--i:0">森</span> <span class="ch" style="--i:1">一</span><span class="ch" style="--i:2">真</span><span class="kana">')
-hero = hero.replace('<section class="hero" id="top">', '<section class="hero" id="top">\n  <img class="nature tl" src="assets/nature/leaves-hanging.webp" alt="">\n  <img class="nature br" src="assets/nature/branch-long.webp" alt="">')
-hero = hero.replace('<a class="btn btn-ghost" href="#activities">活動を見る</a>', '<a class="btn btn-ghost" href="#themes">12のテーマを見る</a>')
-hero = hero.replace('<a class="btn btn-ghost" href="#awards">実績・表彰</a>', '<a class="btn btn-ghost" href="awards.html">実績・表彰</a>\n      <a class="btn btn-game" href="game.html">🎮 ゲームで遊ぶ</a>')
+hero = hero.replace('<section class="hero" id="top">', '<section class="hero" id="top">\n  <img class="nature tl" src="assets/nature/leaves-hanging.webp" alt="">\n  <img class="nature br" src="assets/nature/branch-long.webp" alt="">\n  <span class="hero-bgname" aria-hidden="true">KAZUMA MORI</span>')
+# 名前を大きく見せて、説明の文字は減らす(所属などの詳しいことはプロフィールへ)
+hero_left, n = re.subn(r'    <div>\n    <span class="role">.*?\n    </div>\n    </div>\n', '''    <div>
+    <p class="hero-kicker">MORI KAZUMA</p>
+    <h1><span class="ch" style="--i:0">森</span><span class="ch" style="--i:1">一</span><span class="ch" style="--i:2">真</span></h1>
+    <p class="hero-roles"><span>医学生</span><span>研究者</span><span>SCS代表</span></p>
+    <p class="copy">「おはよう」でつながる地域を、<br>医療とデータと共感で。</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="#themes">活動を見る</a>
+      <a class="btn btn-game" href="game.html">🎮 ゲームで遊ぶ</a>
+    </div>
+    </div>
+''', hero, flags=re.S)
+assert n == 1
+hero = hero_left
 
 tiles = '    <div class="theme-grid">\n' + '\n'.join(
     f'''      <a class="theme fade" href="{k}.html"><span class="ti"><i data-lucide="{ic}"></i></span><span class="tn">{n:02d} {en}</span><h3>{t}</h3><p>{d}</p><span class="go">くわしく見る<i data-lucide="arrow-right"></i></span></a>'''
@@ -1187,11 +1215,11 @@ index += '''<section class="game-band">
     <span class="gp-tx">
       <span class="gp-kick">NEW GAME</span>
       <b>もりぞうクエスト</b>
-      <span class="gp-lead">ゲームで振り返る、森一真のあゆみ。思い出を集めて走る「ラン」、全10問の「クイズ」、そろえて読める「思い出カード」の3つのあそび。</span>
+      <span class="gp-lead">ゲームで振り返る、森一真のあゆみ。ラン・クイズ・思い出カードの3つのあそび。</span>
       <span class="btn btn-primary gp-btn"><i data-lucide="gamepad-2"></i>あそんでみる</span>
     </span>
   </a>
-  <p class="hunt-hint fade">🔍 <b>もりぞーを探せ!</b> このサイトの各ページのどこかに、もりぞーが1人かくれています。全ページで見つけてね。</p>
+  <p class="hunt-hint fade">🔍 <b>もりぞーを探せ!</b> 各ページに1人ずつかくれています。画面左下のボタンからヒントも見られるよ。</p>
 </section>
 '''
 index += sec(tiles, 'THEMES', '12のテーマで、森一真を知る', alt=True,
@@ -1366,7 +1394,8 @@ js = '''// 共通スクリプト: メニュー・スクロールフェード・�
     toastEl.textContent = msg; toastEl.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(function(){ toastEl.classList.remove('on'); }, 2800);
   }
   function list(){
-    return '<p>各ページのどこかに、もりぞーが1人かくれています。見つけたページに ✓ がつきます。</p><ul>' + KEYS.map(function(k){
+    return (found[key] ? '' : '<button type="button" class="hunt-hintbtn">🔍 このページのヒントを見る</button>') +
+      '<p>各ページのどこかに、もりぞーが1人かくれています。見つけたページに ✓ がつきます。</p><ul>' + KEYS.map(function(k){
       return '<li><a href="' + k + '.html"><span>' + PAGES[k] + '</span><span>' + (found[k] ? '✓' : '?') + '</span></a></li>';
     }).join('') + '</ul>';
   }
@@ -1375,6 +1404,15 @@ js = '''// 共通スクリプト: メニュー・スクロールフェード・�
       badge = document.createElement('button'); badge.type = 'button'; badge.className = 'hunt-badge'; document.body.appendChild(badge);
       panel = document.createElement('div'); panel.className = 'hunt-panel'; panel.hidden = true; document.body.appendChild(panel);
       badge.addEventListener('click', function(){ panel.innerHTML = list(); panel.hidden = !panel.hidden; });
+      // ヒント: もりぞーのいる場所までスクロールして、しばらく光らせる
+      panel.addEventListener('click', function(e){
+        if (!e.target.closest('.hunt-hintbtn')) return;
+        panel.hidden = true;
+        m.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        m.classList.remove('hint'); void m.offsetWidth; m.classList.add('hint');
+        setTimeout(function(){ m.classList.remove('hint'); }, 4600);
+        say('このあたりに、もりぞーがいるよ!');
+      });
     }
     badge.innerHTML = SVG + 'もりぞー ' + count() + '/' + KEYS.length;
     badge.setAttribute('aria-label', 'もりぞーを見つけたページ: ' + count() + '/' + KEYS.length);
@@ -1399,7 +1437,8 @@ js = '''// 共通スクリプト: メニュー・スクロールフェード・�
   }
   m.addEventListener('click', hit);
   m.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') hit(e); });
-  if (count() > 0) showBadge();
+  // ゲームのページでは、遊ぶじゃまにならないよう、見つけるまではボタンを出さない
+  if (key !== 'game' || count() > 0) showBadge();
 })();
 // エフェクト(動きを減らす設定の人には、進み具合のバー以外は出さない)
 (function(){

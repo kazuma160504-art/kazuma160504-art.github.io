@@ -105,7 +105,8 @@
     toastEl.textContent = msg; toastEl.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(function(){ toastEl.classList.remove('on'); }, 2800);
   }
   function list(){
-    return '<p>各ページのどこかに、もりぞーが1人かくれています。見つけたページに ✓ がつきます。</p><ul>' + KEYS.map(function(k){
+    return (found[key] ? '' : '<button type="button" class="hunt-hintbtn">🔍 このページのヒントを見る</button>') +
+      '<p>各ページのどこかに、もりぞーが1人かくれています。見つけたページに ✓ がつきます。</p><ul>' + KEYS.map(function(k){
       return '<li><a href="' + k + '.html"><span>' + PAGES[k] + '</span><span>' + (found[k] ? '✓' : '?') + '</span></a></li>';
     }).join('') + '</ul>';
   }
@@ -114,6 +115,15 @@
       badge = document.createElement('button'); badge.type = 'button'; badge.className = 'hunt-badge'; document.body.appendChild(badge);
       panel = document.createElement('div'); panel.className = 'hunt-panel'; panel.hidden = true; document.body.appendChild(panel);
       badge.addEventListener('click', function(){ panel.innerHTML = list(); panel.hidden = !panel.hidden; });
+      // ヒント: もりぞーのいる場所までスクロールして、しばらく光らせる
+      panel.addEventListener('click', function(e){
+        if (!e.target.closest('.hunt-hintbtn')) return;
+        panel.hidden = true;
+        m.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        m.classList.remove('hint'); void m.offsetWidth; m.classList.add('hint');
+        setTimeout(function(){ m.classList.remove('hint'); }, 4600);
+        say('このあたりに、もりぞーがいるよ!');
+      });
     }
     badge.innerHTML = SVG + 'もりぞー ' + count() + '/' + KEYS.length;
     badge.setAttribute('aria-label', 'もりぞーを見つけたページ: ' + count() + '/' + KEYS.length);
@@ -138,7 +148,8 @@
   }
   m.addEventListener('click', hit);
   m.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') hit(e); });
-  if (count() > 0) showBadge();
+  // ゲームのページでは、遊ぶじゃまにならないよう、見つけるまではボタンを出さない
+  if (key !== 'game' || count() > 0) showBadge();
 })();
 // エフェクト(動きを減らす設定の人には、進み具合のバー以外は出さない)
 (function(){
