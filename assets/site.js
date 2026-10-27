@@ -46,6 +46,100 @@
 })();
 // 現在のテーマタブを見える位置へ
 (function(){ var on=document.querySelector('.theme-tabs a.on'); if(on) on.scrollIntoView({inline:'center',block:'nearest'}); })();
+// 長いページの上に「このページ」の目次
+(function(){
+  var tabs = document.querySelector('.theme-tabs'); if (!tabs) return;
+  var heads = [].slice.call(document.querySelectorAll('section h2.sec-title'));
+  if (heads.length < 3) return;
+  var nav = document.createElement('nav'); nav.className = 'page-toc'; nav.setAttribute('aria-label', 'このページの内容');
+  var inner = document.createElement('div'); inner.className = 'in';
+  var lab = document.createElement('span'); lab.className = 'toc-label'; lab.textContent = 'このページ'; inner.appendChild(lab);
+  heads.forEach(function(h, i){
+    var sec = h.closest('section'); if (!sec.id) sec.id = 'sec-' + (i + 1);
+    var a = document.createElement('a'); a.href = '#' + sec.id; a.textContent = h.textContent; inner.appendChild(a);
+  });
+  nav.appendChild(inner); tabs.parentNode.insertBefore(nav, tabs.nextSibling);
+})();
+// カードの絞り込み(教育・発信など)
+(function(){
+  document.querySelectorAll('.filter-bar').forEach(function(bar){
+    var grid = bar.nextElementSibling; if (!grid) return;
+    var cards = [].slice.call(grid.children);
+    bar.querySelectorAll('button').forEach(function(b){
+      var f = b.getAttribute('data-filter');
+      var n = f === 'all' ? cards.length : cards.filter(function(c){ return (' ' + (c.getAttribute('data-cat') || '') + ' ').indexOf(' ' + f + ' ') >= 0; }).length;
+      var sm = document.createElement('small'); sm.textContent = n; b.appendChild(sm);
+      b.addEventListener('click', function(){
+        bar.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+        cards.forEach(function(c){
+          var show = f === 'all' || (' ' + (c.getAttribute('data-cat') || '') + ' ').indexOf(' ' + f + ' ') >= 0;
+          c.style.display = show ? '' : 'none'; if (show) c.classList.add('show');
+        });
+      });
+    });
+  });
+})();
+// もりぞーを探せ: 各ページのどこかに、もりぞーが1人かくれている(見つけたページは端末に記録)
+(function(){
+  var PAGES = {index:'トップ',profile:'プロフィール',research:'研究:押しボタンPJ',publications:'論文・学会発表',scs:'SCS 地域交流',community:'バルーナーズDAO・ラジオ',education:'教育・発信',awards:'実績・表彰',media:'メディア・掲載',hobbies:'趣味・アート',creative:'動画編集・執筆',gallery:'ギャラリー',contact:'連絡先・SNS',game:'もりぞうクエスト'};
+  var key = (location.pathname.split('/').pop() || 'index.html').replace('.html', '') || 'index';
+  if (!PAGES[key]) return;
+  var KEYS = Object.keys(PAGES), found = {};
+  try { found = JSON.parse(localStorage.getItem('morizo-found') || '{}') || {}; } catch (e) {}
+  function save(){ try { localStorage.setItem('morizo-found', JSON.stringify(found)); } catch (e) {} }
+  function count(){ return KEYS.filter(function(k){ return found[k]; }).length; }
+  var SVG = '<svg viewBox="0 0 48 60" aria-hidden="true"><path d="M13 37 L8 47" stroke="#b0bec5" stroke-width="6" stroke-linecap="round"/><path d="M13 37 L8 47" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="7.6" cy="48" r="2.6" fill="#f6d2b0"/><path d="M35 36 L42 25" stroke="#b0bec5" stroke-width="6" stroke-linecap="round"/><path d="M35 36 L42 25" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="42.6" cy="23.6" r="2.8" fill="#f6d2b0"/><path d="M19 52 L18 58 M29 52 L30 58" stroke="#33415c" stroke-width="5" stroke-linecap="round"/><rect x="12" y="31" width="24" height="23" rx="7" fill="#fff" stroke="#b0bec5" stroke-width="1.5"/><path d="M20 31 L28 31 L24 39 Z" fill="#3c9a3f"/><path d="M19 37 a5 5 0 0 0 10 0" fill="none" stroke="#2f7fc1" stroke-width="1.6"/><circle cx="24" cy="43" r="1.7" fill="#2f7fc1"/><circle cx="24" cy="18" r="12.5" fill="#f6d2b0"/><path d="M11.5 18 C11 8 18 4.5 25 5 C32 5.5 37 10 36.5 17 C33 12.5 27 11 21 13 C17 14 14 16 11.5 18 Z" fill="#2b2b2b"/><circle cx="19.5" cy="19.5" r="1.7" fill="#2b2b2b"/><circle cx="28.5" cy="19.5" r="1.7" fill="#2b2b2b"/><path d="M20.5 24 Q24 27.5 27.5 24" stroke="#b5543c" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="16.5" cy="23.5" r="2" fill="#f08080" fill-opacity=".45"/><circle cx="31.5" cy="23.5" r="2" fill="#f08080" fill-opacity=".45"/></svg>';
+  var cands = [].slice.call(document.querySelectorAll('main .theme, .theme-grid .theme, a.kpi, .org, .mini-card, .award, .rnow, .hobby, .place-group, .chart, .str, .hub-col, .gm-help li, .art-frame, .contact-box, .news, .gallery figure, .pn a'))
+    .filter(function(el){ var r = el.getBoundingClientRect(); return r.width > 140 && r.height > 70; });
+  if (!cands.length) return;
+  var host = cands[Math.floor(Math.random() * cands.length)], cs = getComputedStyle(host);
+  if (cs.position === 'static') host.style.position = 'relative';
+  var spots = cs.overflow === 'visible' ? ['peek-tr', 'peek-tl', 'in-br'] : ['in-br', 'in-bl', 'in-tr'];
+  var m = document.createElement('span');
+  m.className = 'morizo ' + spots[Math.floor(Math.random() * spots.length)] + (found[key] ? ' done' : '');
+  m.setAttribute('role', 'button'); m.setAttribute('tabindex', '0'); m.setAttribute('aria-label', 'かくれている もりぞー');
+  m.innerHTML = SVG; host.appendChild(m);
+  var toastEl = null, toastT = 0, badge = null, panel = null;
+  function say(msg){
+    if (!toastEl) { toastEl = document.createElement('div'); toastEl.className = 'hunt-toast'; toastEl.setAttribute('role', 'status'); document.body.appendChild(toastEl); }
+    toastEl.textContent = msg; toastEl.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(function(){ toastEl.classList.remove('on'); }, 2800);
+  }
+  function list(){
+    return '<p>各ページのどこかに、もりぞーが1人かくれています。見つけたページに ✓ がつきます。</p><ul>' + KEYS.map(function(k){
+      return '<li><a href="' + k + '.html"><span>' + PAGES[k] + '</span><span>' + (found[k] ? '✓' : '?') + '</span></a></li>';
+    }).join('') + '</ul>';
+  }
+  function showBadge(){
+    if (!badge) {
+      badge = document.createElement('button'); badge.type = 'button'; badge.className = 'hunt-badge'; document.body.appendChild(badge);
+      panel = document.createElement('div'); panel.className = 'hunt-panel'; panel.hidden = true; document.body.appendChild(panel);
+      badge.addEventListener('click', function(){ panel.innerHTML = list(); panel.hidden = !panel.hidden; });
+    }
+    badge.innerHTML = SVG + 'もりぞー ' + count() + '/' + KEYS.length;
+    badge.setAttribute('aria-label', 'もりぞーを見つけたページ: ' + count() + '/' + KEYS.length);
+  }
+  function celebrate(){
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var C = ['#3c9a3f', '#8cc63f', '#ffd54f', '#e07b24', '#2f7fc1', '#f06292'];
+    for (var i = 0; i < 60; i++) {
+      var c = document.createElement('i'); c.className = 'confetti';
+      c.style.left = (Math.random() * 100) + 'vw'; c.style.background = C[i % C.length]; c.style.animationDelay = (Math.random() * 0.8) + 's';
+      document.body.appendChild(c); setTimeout(function(el){ el.remove(); }, 3600, c);
+    }
+  }
+  function hit(e){
+    e.preventDefault(); e.stopPropagation();
+    var first = !found[key]; found[key] = 1; save();
+    m.classList.remove('jump'); void m.offsetWidth; m.classList.add('jump', 'done');
+    var n = count(), N = KEYS.length;
+    say(first ? (n === N ? '🎉 コンプリート! 全ページのもりぞーを見つけました!' : 'もりぞーを見つけた! (' + n + '/' + N + 'ページ)') : 'このページのもりぞーは、もう見つけたよ (' + n + '/' + N + ')');
+    showBadge();
+    if (first && n === N) celebrate();
+  }
+  m.addEventListener('click', hit);
+  m.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') hit(e); });
+  if (count() > 0) showBadge();
+})();
 // エフェクト(動きを減らす設定の人には、進み具合のバー以外は出さない)
 (function(){
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;

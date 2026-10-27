@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>もりぞうクエスト | 森 一真</title>
-<meta name="description" content="ゲームで振り返る 森一真のあゆみ。ジャンプで思い出アイテムを集めながら、2026年10月の学会発表をめざす横スクロールゲーム。">
+<meta name="description" content="ゲームで振り返る 森一真のあゆみ。思い出を集めて走るラン、全10問のクイズ、思い出カード(神経衰弱)の3つのあそび。">
 <link rel="canonical" href="https://kazuma160504-art.github.io/game.html">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://kazuma160504-art.github.io/game.html">
 <meta property="og:title" content="もりぞうクエスト | 森 一真">
-<meta property="og:description" content="ゲームで振り返る 森一真のあゆみ。ジャンプで思い出アイテムを集めながら、2026年10月の学会発表をめざす横スクロールゲーム。">
+<meta property="og:description" content="ゲームで振り返る 森一真のあゆみ。思い出を集めて走るラン、全10問のクイズ、思い出カード(神経衰弱)の3つのあそび。">
 <meta property="og:site_name" content="森 一真 公式プロフィール">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://kazuma160504-art.github.io/assets/og-image.jpg">
@@ -70,14 +70,24 @@
   </div>
 </section>
 <section class="game-sec">
+  <div class="mode-tabs" role="tablist" aria-label="あそびの種類">
+    <button type="button" role="tab" class="on" aria-selected="true" data-mode="run">🏃<span>もりぞうラン</span></button>
+    <button type="button" role="tab" aria-selected="false" data-mode="quiz">❓<span>もりぞうクイズ</span></button>
+    <button type="button" role="tab" aria-selected="false" data-mode="memory">🃏<span>思い出カード</span></button>
+  </div>
+  <div id="mode-run">
   <div class="game" id="game">
     <canvas role="img" aria-label="もりぞうクエストのゲーム画面"></canvas>
     <div class="gm-hud"><span class="pill" id="gm-hearts"></span><span class="pill stage" id="gm-stage"></span><span class="pill" id="gm-score"></span><span class="pill" id="gm-count"></span><button class="gm-pause" id="gm-sound" type="button" aria-label="効果音">🔊</button><button class="gm-pause" id="gm-pause" type="button" aria-label="一時停止">⏸</button></div>
     <div class="gm-start" id="gm-start"></div>
   </div>
   <div class="gm-toast" id="gm-toast" role="status" aria-live="polite"></div>
+  </div>
+  <div id="mode-quiz" class="mg-panel" hidden><div class="mg-box" id="quiz-box"></div></div>
+  <div id="mode-memory" class="mg-panel" hidden><div class="mg-box" id="memory-box"></div></div>
   <ul class="gm-help">
-    <li><b>あそびかた</b>画面をタップ(パソコンはスペースキー)でジャンプ。空中でもう1回ジャンプできます。</li>
+    <li><b>3つのあそび</b>🏃 ラン(思い出を集めて走る)・❓ クイズ(全10問)・🃏 思い出カード(神経衰弱)。どれでも森一真のあゆみを振り返れます。</li>
+    <li><b>ランのあそびかた</b>画面をタップ(パソコンはスペースキー)でジャンプ。空中でもう1回ジャンプでき、浮かぶ足場にも乗れます。コースは遊ぶたびに変わります。</li>
     <li><b>思い出アイテム</b>浮かんでいる丸いアイテムが、森一真の実際のできごと。集めると年ごとに振り返れます。</li>
     <li><b>✨とコンボ</b>✨を続けて取るとコンボがつながり、点数が最大5倍に。⭐を取ると「活発性ダッシュ」で無敵になり、障害物をなぎ倒せます。</li>
     <li><b>障害物とハート</b>締切や教科書、空飛ぶ🐝にぶつかるとハートが減ります。💖でハート回復。ゴールは2026年10月の学会発表!</li>
@@ -91,5 +101,6 @@
 <div class="lightbox" id="lightbox"><figure><img alt=""><figcaption></figcaption></figure></div>
 <script src="assets/site.js"></script>
 <script src="assets/game.js"></script>
+<script src="assets/minigames.js"></script>
 </body>
 </html>

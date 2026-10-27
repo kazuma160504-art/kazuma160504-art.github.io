@@ -690,6 +690,45 @@ a.orbit-node:hover .orbit-card,a.orbit-node:focus-visible .orbit-card{transform:
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .chips span{background:var(--accent-dim);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700;color:var(--text)}
 .place-note{font-size:12.5px;color:var(--muted);margin-top:10px;line-height:1.7}
+/* このページの目次(長いページの上に) */
+.page-toc{padding:14px 20px 0}
+.page-toc .in{max-width:1080px;margin:0 auto;display:flex;gap:8px;align-items:center;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+.page-toc .in::-webkit-scrollbar{display:none}
+.page-toc .toc-label{flex:none;font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--muted)}
+.page-toc a{flex:none;font-size:12.5px;font-weight:700;color:var(--accent);background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;white-space:nowrap}
+.page-toc a:hover{border-color:var(--accent);opacity:1}
+section{scroll-margin-top:110px}
+@media (max-width:560px){section{padding:56px 16px}.sec-title{margin-bottom:26px}}
+/* カードの絞り込み */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.filter-bar button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;font:inherit;font-size:13px;font-weight:700;color:var(--text);cursor:pointer}
+.filter-bar button small{color:var(--muted);font-weight:500;margin-left:4px}
+.filter-bar button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.filter-bar button.on small{color:#e9f6dc}
+/* もりぞーを探せ */
+.hunt-hint{max-width:1000px;margin:14px auto 0;text-align:center;font-size:13.5px;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:14px;padding:10px 14px}
+.hunt-hint b{color:var(--accent)}
+.morizo{position:absolute;z-index:6;width:34px;height:42px;padding:0;border:0;background:none;cursor:pointer;filter:drop-shadow(0 3px 3px rgba(0,0,0,.2));animation:mz-bob 2.6s ease-in-out infinite;-webkit-tap-highlight-color:transparent}
+.morizo svg{display:block;width:100%;height:100%}
+.morizo.in-br{right:8px;bottom:6px}.morizo.in-bl{left:8px;bottom:6px}.morizo.in-tr{right:8px;top:6px}
+.morizo.peek-tr{right:18px;top:-30px}.morizo.peek-tl{left:18px;top:-30px}
+.morizo.done{opacity:.6}
+.morizo.jump{animation:mz-jump .7s ease}
+@keyframes mz-bob{50%{transform:translateY(-3px)}}
+@keyframes mz-jump{30%{transform:translateY(-20px) rotate(-12deg) scale(1.2)}65%{transform:translateY(0) rotate(8deg) scale(1)}}
+.hunt-badge{position:fixed;left:12px;bottom:12px;z-index:150;display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:rgba(255,255,255,.95);border-radius:999px;padding:6px 12px 6px 6px;font:inherit;font-size:12.5px;font-weight:700;color:var(--text);box-shadow:0 8px 20px -10px rgba(30,51,34,.5);cursor:pointer}
+.hunt-badge svg{width:22px;height:27px}
+.hunt-panel{position:fixed;left:12px;bottom:58px;z-index:150;width:min(300px,calc(100vw - 24px));max-height:60vh;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 16px 36px -12px rgba(30,51,34,.45);font-size:13px}
+.hunt-panel[hidden]{display:none}
+.hunt-panel p{color:var(--muted);margin-bottom:8px;line-height:1.6}
+.hunt-panel ul{list-style:none;padding:0;display:grid;gap:4px}
+.hunt-panel li a{display:flex;justify-content:space-between;color:var(--text);padding:4px 6px;border-radius:8px}
+.hunt-panel li a:hover{background:var(--bg);opacity:1}
+.hunt-toast{position:fixed;left:50%;bottom:64px;z-index:160;transform:translate(-50%,10px);opacity:0;pointer-events:none;background:rgba(30,51,34,.92);color:#fff;font-weight:700;font-size:13.5px;border-radius:12px;padding:9px 14px;transition:opacity .25s ease,transform .25s ease;max-width:calc(100vw - 32px);text-align:center}
+.hunt-toast.on{opacity:1;transform:translate(-50%,0)}
+.confetti{position:fixed;top:-12px;z-index:170;width:8px;height:12px;border-radius:2px;pointer-events:none;animation:cf-fall 2.6s linear forwards}
+@keyframes cf-fall{to{transform:translateY(105vh) rotate(720deg);opacity:.8}}
+@media (prefers-reduced-motion:reduce){.morizo,.morizo.jump{animation:none}}
 /* ポッドキャスト(Spotify の埋め込み) */
 .podcast{max-width:760px;border-radius:14px;overflow:hidden;background:#282828}
 .podcast iframe{display:block;width:100%;height:352px;border:0}

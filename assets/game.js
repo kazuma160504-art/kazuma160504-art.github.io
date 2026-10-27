@@ -79,6 +79,7 @@
   var GOAL = { e: '🎤', d: '2026.10', t: '第85回 日本公衆衛生学会総会(東京)', x: '筆頭演者として、押しボタンを使った災害時の安否確認訓練を口演発表。' };
   var TOTAL = 0;
   STAGES.forEach(function (s) { TOTAL += s.items.length; });
+  window.MORIZO_STAGES = STAGES;
 
   var cv = root.querySelector('canvas'), ctx = cv.getContext('2d');
   function $(id) { return document.getElementById(id); }
@@ -96,7 +97,8 @@
   var startScore = 0, startSparkles = 0, stageSparkles = 0;
   var px = 0, py = 0, vy = 0, jumps = 0, inv = 0, t = 0, stageT = 0, speed = 250;
   var airT = 0, bufT = 0, squash = 0, shake = 0, dash = 0, combo = 0, comboT = 0, dustT = 0;
-  var items = [], obs = [], extras = [], coins = [], powers = [], stageEnd = 0, parts = [], floats = [];
+  var items = [], obs = [], extras = [], coins = [], powers = [], plats = [], onPlat = null, stageEnd = 0, parts = [], floats = [];
+  var seed = 1, stageSeed = 1;
   var last = 0, raf = 0, toastTimer = 0;
 
   var BALLOONS = [], BCOL = ['#e74c3c', '#f39c12', '#3c9a3f', '#2f7fc1', '#9b59b6', '#f06292'];
@@ -148,38 +150,60 @@
     return ob;
   }
 
+  function rnd() { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; }
+  function pick(a) { return a[Math.floor(rnd() * a.length)]; }
+  function plat(x, h, w) { plats.push({ x: x, h: h, w: w }); }
+  // 区間のパターン。年が進むほど種類が増え、遊ぶたびに並びが変わる
+  var POOLS = [
+    ['single', 'single', 'platform', 'wave'],
+    ['single', 'double', 'platform', 'wave', 'tall'],
+    ['single', 'double', 'platform', 'stairs', 'bee', 'wave'],
+    ['double', 'platform', 'stairs', 'bee', 'roller', 'tall', 'wave'],
+    ['double', 'stairs', 'bee', 'roller', 'tall', 'platform', 'bee']
+  ];
+
   function build(s) {
-    var st = STAGES[s], sp = 600 + s * 25, x = 640;
-    items = []; obs = []; extras = []; coins = []; powers = [];
+    seed = stageSeed;
+    var st = STAGES[s], sp = 600 + s * 25, x = 640, n = st.items.length, last = '';
+    items = []; obs = []; extras = []; coins = []; powers = []; plats = [];
+    var starAt = s >= 1 ? 1 + Math.floor(rnd() * Math.max(1, n - 2)) : -1;
+    var heartAt = s >= 2 ? 1 + Math.floor(rnd() * Math.max(1, n - 2)) : -1;
+    if (heartAt === starAt) heartAt = starAt > 1 ? starAt - 1 : starAt + 1;
     st.items.forEach(function (it, i) {
-      var lv = s === 0 ? [40, 120, 120][i % 3] : LEVELS[(i + s) % 3];
+      var lv = s === 0 ? pick([40, 120]) : pick([40, 120, 120, 215]);
       items.push({ id: s + '-' + i, it: it, x: x, h: lv, got: false });
       // 思い出への道しるべの ✨
       if (lv === 40) coinLine(x - 130, 24, 3, 40);
       else if (lv === 120) { coin(x - 84, 70); coin(x - 42, 104); }
       else { coin(x - 96, 120); coin(x - 50, 172); }
-      // 障害物と、その上にアーチ状の ✨
-      var o = st.obs[(i + s) % st.obs.length], n = (s >= 1 && (i + s) % 3 === 2) ? 2 : 1;
-      var ox = x + sp * 0.5 + ((i * 37 + s * 13) % 5 - 2) * 16;
-      addObs(ox, n, o);
-      if (s >= 2 && i % 3 === 1) { addObs(ox + 120, 1, o); coinArc(ox + 73, 30); }
-      else { coinArc(ox + 13, n * 30); if (!(s >= 2 && i % 3 === 2)) coinLine(ox + 150, 24, 3, 38); }
-      // 2024年からは、空中に 🐝(ジャンプのタイミングに注意)。下をくぐれば ✨
-      if (s >= 2 && i % 3 === 2 && i < st.items.length - 1) {
-        addObs(x + sp * 0.72, 1, ['🐝', '蜂'], { y0: 92, h: 28, fly: true, by: 92 });
-        coinLine(x + sp * 0.72 - 40, 24, 3, 40);
+      var o = pick(st.obs), a = x + sp * 0.25, mid = x + sp * 0.5;
+      var pat = i === n - 1 ? 'single' : pick(POOLS[s]);
+      if (pat === last && pat !== 'single') pat = 'single';
+      last = pat;
+      if (pat === 'single') { addObs(mid, 1, o); coinArc(mid + 13, 30); coinLine(mid + 150, 24, 3, 38); }
+      else if (pat === 'tall') { addObs(mid, 2, o); coinArc(mid + 13, 60); }
+      else if (pat === 'double') { addObs(mid - 60, 1, o); addObs(mid + 60, 1, pick(st.obs)); coinArc(mid + 13, 30); }
+      else if (pat === 'wave') { for (var k = 0; k < 7; k++) coin(a + k * 42, 40 + Math.sin(k / 6 * Math.PI) * 90); }
+      else if (pat === 'platform') {
+        var ph = 85 + Math.floor(rnd() * 30), pw = 130 + Math.floor(rnd() * 30);
+        plat(a, ph, pw); coinLine(a + 24, ph + 26, 3, 40); addObs(a + pw + 50, 1, o); coin(a + pw + 63, 100);
       }
-      // 最後の年は ⚽ が転がってくる
-      if (s >= 4 && i % 3 === 0 && i > 0) addObs(x + sp * 0.92, 1, ['⚽', 'ボール'], { roll: true, vx: -110 });
-      if (s >= 2 && i === 2) extras.push({ x: x + 110, h: 110, got: false });
-      if (s >= 1 && i === 1) powers.push({ x: x + sp * 0.26, h: 125, got: false });
+      else if (pat === 'stairs') { plat(a, 90, 105); plat(a + 150, 165, 115); coinLine(a + 22, 116, 2, 40); coinLine(a + 172, 191, 3, 34); addObs(a + 118, 1, o); }
+      else if (pat === 'bee') {
+        addObs(a + 20, 1, o); coinArc(a + 33, 30);
+        addObs(x + sp * 0.68, 1, ['🐝', '蜂'], { y0: 92, h: 28, fly: true, by: 92 }); coinLine(x + sp * 0.68 - 40, 24, 3, 40);
+      }
+      else if (pat === 'roller') { addObs(x + sp * 0.75, 1, ['⚽', 'ボール'], { roll: true, vx: -110 }); coinLine(a, 24, 3, 40); }
+      if (i === heartAt) extras.push({ x: x + 110, h: 110, got: false });
+      if (i === starAt) powers.push({ x: x + sp * 0.18, h: 125, got: false });
       x += sp;
     });
     stageEnd = x + 80;
   }
 
-  function startStage(s) {
-    stage = s; build(s);
+  function startStage(s, sameCourse) {
+    if (!sameCourse) stageSeed = 1 + Math.floor(Math.random() * 2147483000);
+    stage = s; build(s); onPlat = null;
     px = 0; py = 0; vy = 0; jumps = 0; inv = 0; stageT = 0; parts = []; floats = [];
     airT = 0; bufT = 0; squash = 0; shake = 0; dash = 0; combo = 0; comboT = 0;
     speed = 260 + s * 42;
@@ -194,13 +218,14 @@
     bufT = BUFFER;
     tryJump();
   }
+  function grounded() { return py <= 0 || !!onPlat; }
   function tryJump() {
     if (bufT <= 0) return;
-    if (py <= 0 || airT < COYOTE) { vy = JUMP1; jumps = 1; }
+    if (grounded() || airT < COYOTE) { vy = JUMP1; jumps = 1; onPlat = null; }
     else if (jumps < 2) { vy = JUMP2; jumps = 2; burst(px - 4, py + 4, ['#ffffff', '#c5e1a5'], 6, 90); }
     else return;
     if (py <= 0) py = 0.01;
-    airT = COYOTE; bufT = 0; squash = 1;
+    onPlat = null; airT = COYOTE; bufT = 0; squash = 1;
     sfx(jumps === 2 ? 'jump2' : 'jump');
   }
 
@@ -260,20 +285,26 @@
     if (bufT > 0) { bufT -= dt; tryJump(); }
     var sp = speed * (1 + Math.min(px / stageEnd, 1) * 0.12) * (dash > 0 ? DASH_SPEED : 1);
     px += sp * dt;
-    var wasAir = py > 0;
-    if (py > 0 || vy > 0) {
+    var wasAir = !grounded(), prev = py, landed = false;
+    // 足場の端から出たら落ちる
+    if (onPlat && (px - 8 > onPlat.x + onPlat.w || px + 8 < onPlat.x)) onPlat = null;
+    if (!onPlat && (py > 0 || vy > 0)) {
       vy -= GRAV * dt; py += vy * dt; airT += dt;
-      if (py <= 0) {
-        py = 0; vy = 0; jumps = 0; airT = 0;
-        if (wasAir) { squash = -1; burst(px, 2, ['#d7ccc8', '#efebe9'], 6, 70); }
+      if (vy <= 0) {
+        for (var q = 0; q < plats.length; q++) {
+          var p = plats[q];
+          if (px + 8 > p.x && px - 8 < p.x + p.w && prev >= p.h - 0.5 && py <= p.h) { py = p.h; vy = 0; jumps = 0; airT = 0; onPlat = p; landed = true; break; }
+        }
       }
+      if (py <= 0) { py = 0; vy = 0; jumps = 0; airT = 0; landed = true; }
+      if (landed && wasAir) { squash = -1; burst(px, py + 2, ['#d7ccc8', '#efebe9'], 6, 70); }
     }
     squash *= Math.pow(0.0005, dt);
     if (inv > 0) inv -= dt;
     if (shake > 0) shake -= dt;
     if (dash > 0) { dash -= dt; if (Math.floor(t * 30) % 2) parts.push({ x: px - 12, h: py + 10 + Math.random() * 36, vx: -60, vy: 0, life: 0.35, c: BCOL[Math.floor(t * 20) % BCOL.length] }); }
     if (comboT > 0) { comboT -= dt; if (comboT <= 0) combo = 0; }
-    if (py <= 0 && (dustT -= dt) < 0) { dustT = 0.22; parts.push({ x: px - 8, h: 2, vx: -50, vy: 30, life: 0.35, c: '#d7ccc8' }); }
+    if (grounded() && (dustT -= dt) < 0) { dustT = 0.22; parts.push({ x: px - 8, h: py + 2, vx: -50, vy: 30, life: 0.35, c: '#d7ccc8' }); }
 
     var L = px - 11, R = px + 11, B = py, T = py + 56, cy = py + 28;
     // ダッシュ中は ✨ と思い出を吸い寄せる
@@ -408,7 +439,7 @@
     var sx = 1 - squash * 0.12, sy = 1 + squash * 0.16;
     ctx.translate(x, y); ctx.scale(sx, sy); ctx.translate(-x, -y);
     if (dash > 0) { ctx.shadowColor = '#ffd54f'; ctx.shadowBlur = 16; }
-    var air = py > 0, sw = air ? 0 : Math.sin(px * 0.07), dogi = STAGES[stage].outfit === 'dogi';
+    var air = !grounded(), sw = air ? 0 : Math.sin(px * 0.07), dogi = STAGES[stage].outfit === 'dogi';
     var la = air ? -8 : 0, ra = air ? -10 : 0;
     ctx.lineCap = 'round';
     ctx.strokeStyle = dogi ? '#eceff1' : '#33415c'; ctx.lineWidth = 6; ctx.beginPath();
@@ -465,6 +496,13 @@
     }
     sign(230 - cam, st.year, st.title);
     if (stage === STAGES.length - 1) goal(stageEnd - cam); else flag(stageEnd - cam, '▶ ' + STAGES[stage + 1].year);
+    plats.forEach(function (p) {
+      var x0 = p.x - cam; if (x0 > W + 20 || x0 + p.w < -20) return;
+      var y = GROUND - p.h;
+      ctx.fillStyle = 'rgba(0,0,0,.08)'; rr(x0 + 5, y + 7, p.w, 16, 7); ctx.fill();
+      ctx.fillStyle = st.snow ? '#dbe7f3' : '#b08968'; rr(x0, y, p.w, 16, 7); ctx.fill();
+      ctx.fillStyle = st.snow ? '#ffffff' : st.grass; rr(x0, y - 2, p.w, 8, 4); ctx.fill();
+    });
     coins.forEach(function (o, i) { if (o.got) return; var cx = o.x - cam; if (cx > -20 && cx < W + 20) sparkle(cx, GROUND - o.h, i); });
     obs.forEach(function (o) {
       if (o.smashed) return;
@@ -626,7 +664,7 @@
     else if (a === 'next') { closeModal(); startStage(stage + 1); run(); }
     else if (a === 'retry') {
       STAGES[stage].items.forEach(function (_, k) { delete got[stage + '-' + k]; });
-      hearts = 3; score = startScore; sparkles = startSparkles; closeModal(); startStage(stage); run();
+      hearts = 3; score = startScore; sparkles = startSparkles; closeModal(); startStage(stage, true); run();
     } else if (a === 'share') share();
   }
 
@@ -646,6 +684,7 @@
     else if (e.key === 'Escape' || e.key === 'p' || e.key === 'P') pause();
   });
   document.addEventListener('visibilitychange', function () { if (document.hidden) pause(); });
+  document.addEventListener('morizo:pause', pause);
   var rt = 0;
   window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(resize, 120); });
 

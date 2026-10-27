@@ -348,6 +348,45 @@ a.orbit-node:hover .orbit-card,a.orbit-node:focus-visible .orbit-card{transform:
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .chips span{background:var(--accent-dim);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700;color:var(--text)}
 .place-note{font-size:12.5px;color:var(--muted);margin-top:10px;line-height:1.7}
+/* このページの目次(長いページの上に) */
+.page-toc{padding:14px 20px 0}
+.page-toc .in{max-width:1080px;margin:0 auto;display:flex;gap:8px;align-items:center;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+.page-toc .in::-webkit-scrollbar{display:none}
+.page-toc .toc-label{flex:none;font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--muted)}
+.page-toc a{flex:none;font-size:12.5px;font-weight:700;color:var(--accent);background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;white-space:nowrap}
+.page-toc a:hover{border-color:var(--accent);opacity:1}
+section{scroll-margin-top:110px}
+@media (max-width:560px){section{padding:56px 16px}.sec-title{margin-bottom:26px}}
+/* カードの絞り込み */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.filter-bar button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;font:inherit;font-size:13px;font-weight:700;color:var(--text);cursor:pointer}
+.filter-bar button small{color:var(--muted);font-weight:500;margin-left:4px}
+.filter-bar button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.filter-bar button.on small{color:#e9f6dc}
+/* もりぞーを探せ */
+.hunt-hint{max-width:1000px;margin:14px auto 0;text-align:center;font-size:13.5px;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:14px;padding:10px 14px}
+.hunt-hint b{color:var(--accent)}
+.morizo{position:absolute;z-index:6;width:34px;height:42px;padding:0;border:0;background:none;cursor:pointer;filter:drop-shadow(0 3px 3px rgba(0,0,0,.2));animation:mz-bob 2.6s ease-in-out infinite;-webkit-tap-highlight-color:transparent}
+.morizo svg{display:block;width:100%;height:100%}
+.morizo.in-br{right:8px;bottom:6px}.morizo.in-bl{left:8px;bottom:6px}.morizo.in-tr{right:8px;top:6px}
+.morizo.peek-tr{right:18px;top:-30px}.morizo.peek-tl{left:18px;top:-30px}
+.morizo.done{opacity:.6}
+.morizo.jump{animation:mz-jump .7s ease}
+@keyframes mz-bob{50%{transform:translateY(-3px)}}
+@keyframes mz-jump{30%{transform:translateY(-20px) rotate(-12deg) scale(1.2)}65%{transform:translateY(0) rotate(8deg) scale(1)}}
+.hunt-badge{position:fixed;left:12px;bottom:12px;z-index:150;display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:rgba(255,255,255,.95);border-radius:999px;padding:6px 12px 6px 6px;font:inherit;font-size:12.5px;font-weight:700;color:var(--text);box-shadow:0 8px 20px -10px rgba(30,51,34,.5);cursor:pointer}
+.hunt-badge svg{width:22px;height:27px}
+.hunt-panel{position:fixed;left:12px;bottom:58px;z-index:150;width:min(300px,calc(100vw - 24px));max-height:60vh;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 16px 36px -12px rgba(30,51,34,.45);font-size:13px}
+.hunt-panel[hidden]{display:none}
+.hunt-panel p{color:var(--muted);margin-bottom:8px;line-height:1.6}
+.hunt-panel ul{list-style:none;padding:0;display:grid;gap:4px}
+.hunt-panel li a{display:flex;justify-content:space-between;color:var(--text);padding:4px 6px;border-radius:8px}
+.hunt-panel li a:hover{background:var(--bg);opacity:1}
+.hunt-toast{position:fixed;left:50%;bottom:64px;z-index:160;transform:translate(-50%,10px);opacity:0;pointer-events:none;background:rgba(30,51,34,.92);color:#fff;font-weight:700;font-size:13.5px;border-radius:12px;padding:9px 14px;transition:opacity .25s ease,transform .25s ease;max-width:calc(100vw - 32px);text-align:center}
+.hunt-toast.on{opacity:1;transform:translate(-50%,0)}
+.confetti{position:fixed;top:-12px;z-index:170;width:8px;height:12px;border-radius:2px;pointer-events:none;animation:cf-fall 2.6s linear forwards}
+@keyframes cf-fall{to{transform:translateY(105vh) rotate(720deg);opacity:.8}}
+@media (prefers-reduced-motion:reduce){.morizo,.morizo.jump{animation:none}}
 /* ポッドキャスト(Spotify の埋め込み) */
 .podcast{max-width:760px;border-radius:14px;overflow:hidden;background:#282828}
 .podcast iframe{display:block;width:100%;height:352px;border:0}
@@ -935,6 +974,23 @@ edu = f'''    <div class="org-grid">
       <li><time>2026.03</time><span><a class="il" href="https://www.suric.saga-u.ac.jp/event/contents-12075/" target="_blank" rel="noopener">佐賀TSUNAGIコンベンションで研究成果を発表・展示</a></span></li>
     </ul>
 '''
+# カードの見出しから分類(複数可): hpv=HPVワクチン啓発 / school=学校・子ども / talk=講演・発表 / local=地域
+EDU_CATS = [('万博', 'hpv talk'), ('中高ツアー', 'hpv school'), ('同志社', 'hpv school'), ('西与賀', 'school'), ('地域での健康講演', 'local talk'),
+            ('じぶんごとcafé', 'hpv local'), ('市役所', 'hpv local'), ('春フェス', 'hpv local'), ('防煙教室', 'school'), ('Student Researcher', 'talk'),
+            ('医療人へのとびら', 'school'), ('メディカルラリー', 'school local'), ('本庄小学校', 'school'), ('人生手術室', 'talk')]
+def edu_cat(m):
+    h4 = re.search(r'<h4>(.*?)</h4>', edu[m.end():]).group(1)
+    cat = next((c for k, c in EDU_CATS if k in h4), 'local')
+    return m.group(0) + f' data-cat="{cat}"'
+edu = re.sub(r'<(?:div|a) class="org fade"', edu_cat, edu)
+edu = edu.replace('    <div class="org-grid">', '''    <div class="filter-bar fade" role="group" aria-label="カテゴリで絞り込む">
+      <button type="button" class="on" data-filter="all" aria-pressed="true">すべて</button>
+      <button type="button" data-filter="hpv" aria-pressed="false">HPVワクチン啓発</button>
+      <button type="button" data-filter="school" aria-pressed="false">学校・子ども</button>
+      <button type="button" data-filter="talk" aria-pressed="false">講演・発表</button>
+      <button type="button" data-filter="local" aria-pressed="false">地域</button>
+    </div>
+    <div class="org-grid">''', 1)
 page('education', '学んだことを、地域と次の世代へ。授業・講演・学会での発信。', sec(edu))
 
 # 6 実績
@@ -1122,10 +1178,11 @@ index += '''<section class="game-band">
     <span class="gp-tx">
       <span class="gp-kick">NEW GAME</span>
       <b>もりぞうクエスト</b>
-      <span class="gp-lead">ゲームで振り返る、森一真のあゆみ。ジャンプで思い出アイテムを集めながら、少林寺拳法の修行から2026年10月の学会発表までを駆け抜けよう。</span>
+      <span class="gp-lead">ゲームで振り返る、森一真のあゆみ。思い出を集めて走る「ラン」、全10問の「クイズ」、そろえて読める「思い出カード」の3つのあそび。</span>
       <span class="btn btn-primary gp-btn"><i data-lucide="gamepad-2"></i>あそんでみる</span>
     </span>
   </a>
+  <p class="hunt-hint fade">🔍 <b>もりぞーを探せ!</b> このサイトの各ページのどこかに、もりぞーが1人かくれています。全ページで見つけてね。</p>
 </section>
 '''
 index += sec(tiles, 'THEMES', '12のテーマで、森一真を知る', alt=True,
@@ -1146,7 +1203,7 @@ index += FOOT
 write('index.html', inline_icons(index))
 
 # ---------------------------------------------------------------- ゲーム(もりぞうクエスト)
-game_desc = 'ゲームで振り返る 森一真のあゆみ。ジャンプで思い出アイテムを集めながら、2026年10月の学会発表をめざす横スクロールゲーム。'
+game_desc = 'ゲームで振り返る 森一真のあゆみ。思い出を集めて走るラン、全10問のクイズ、思い出カード(神経衰弱)の3つのあそび。'
 game = head('もりぞうクエスト | 森 一真', game_desc, 'game.html', 'game', '<link rel="stylesheet" href="assets/game.css">\n')
 game += '''<section class="page-hero">
   <img class="nature tr" src="assets/nature/leaves-hanging.webp" alt="">
@@ -1160,21 +1217,31 @@ game += '''<section class="page-hero">
   </div>
 </section>
 <section class="game-sec">
+  <div class="mode-tabs" role="tablist" aria-label="あそびの種類">
+    <button type="button" role="tab" class="on" aria-selected="true" data-mode="run">🏃<span>もりぞうラン</span></button>
+    <button type="button" role="tab" aria-selected="false" data-mode="quiz">❓<span>もりぞうクイズ</span></button>
+    <button type="button" role="tab" aria-selected="false" data-mode="memory">🃏<span>思い出カード</span></button>
+  </div>
+  <div id="mode-run">
   <div class="game" id="game">
     <canvas role="img" aria-label="もりぞうクエストのゲーム画面"></canvas>
     <div class="gm-hud"><span class="pill" id="gm-hearts"></span><span class="pill stage" id="gm-stage"></span><span class="pill" id="gm-score"></span><span class="pill" id="gm-count"></span><button class="gm-pause" id="gm-sound" type="button" aria-label="効果音">🔊</button><button class="gm-pause" id="gm-pause" type="button" aria-label="一時停止">⏸</button></div>
     <div class="gm-start" id="gm-start"></div>
   </div>
   <div class="gm-toast" id="gm-toast" role="status" aria-live="polite"></div>
+  </div>
+  <div id="mode-quiz" class="mg-panel" hidden><div class="mg-box" id="quiz-box"></div></div>
+  <div id="mode-memory" class="mg-panel" hidden><div class="mg-box" id="memory-box"></div></div>
   <ul class="gm-help">
-    <li><b>あそびかた</b>画面をタップ(パソコンはスペースキー)でジャンプ。空中でもう1回ジャンプできます。</li>
+    <li><b>3つのあそび</b>🏃 ラン(思い出を集めて走る)・❓ クイズ(全10問)・🃏 思い出カード(神経衰弱)。どれでも森一真のあゆみを振り返れます。</li>
+    <li><b>ランのあそびかた</b>画面をタップ(パソコンはスペースキー)でジャンプ。空中でもう1回ジャンプでき、浮かぶ足場にも乗れます。コースは遊ぶたびに変わります。</li>
     <li><b>思い出アイテム</b>浮かんでいる丸いアイテムが、森一真の実際のできごと。集めると年ごとに振り返れます。</li>
     <li><b>✨とコンボ</b>✨を続けて取るとコンボがつながり、点数が最大5倍に。⭐を取ると「活発性ダッシュ」で無敵になり、障害物をなぎ倒せます。</li>
     <li><b>障害物とハート</b>締切や教科書、空飛ぶ🐝にぶつかるとハートが減ります。💖でハート回復。ゴールは2026年10月の学会発表!</li>
   </ul>
 </section>
 <div class="gm-modal" id="gm-modal" hidden><div class="gm-card" id="gm-card" role="dialog" aria-modal="true" aria-label="ふりかえり"></div></div>
-''' + FOOT.replace('<script src="assets/site.js"></script>', '<script src="assets/site.js"></script>\n<script src="assets/game.js"></script>')
+''' + FOOT.replace('<script src="assets/site.js"></script>', '<script src="assets/site.js"></script>\n<script src="assets/game.js"></script>\n<script src="assets/minigames.js"></script>')
 write('game.html', inline_icons(game))
 
 # 検索エンジン向け: サイトマップと robots.txt
@@ -1231,6 +1298,100 @@ js = '''// 共通スクリプト: メニュー・スクロールフェード・�
 })();
 // 現在のテーマタブを見える位置へ
 (function(){ var on=document.querySelector('.theme-tabs a.on'); if(on) on.scrollIntoView({inline:'center',block:'nearest'}); })();
+// 長いページの上に「このページ」の目次
+(function(){
+  var tabs = document.querySelector('.theme-tabs'); if (!tabs) return;
+  var heads = [].slice.call(document.querySelectorAll('section h2.sec-title'));
+  if (heads.length < 3) return;
+  var nav = document.createElement('nav'); nav.className = 'page-toc'; nav.setAttribute('aria-label', 'このページの内容');
+  var inner = document.createElement('div'); inner.className = 'in';
+  var lab = document.createElement('span'); lab.className = 'toc-label'; lab.textContent = 'このページ'; inner.appendChild(lab);
+  heads.forEach(function(h, i){
+    var sec = h.closest('section'); if (!sec.id) sec.id = 'sec-' + (i + 1);
+    var a = document.createElement('a'); a.href = '#' + sec.id; a.textContent = h.textContent; inner.appendChild(a);
+  });
+  nav.appendChild(inner); tabs.parentNode.insertBefore(nav, tabs.nextSibling);
+})();
+// カードの絞り込み(教育・発信など)
+(function(){
+  document.querySelectorAll('.filter-bar').forEach(function(bar){
+    var grid = bar.nextElementSibling; if (!grid) return;
+    var cards = [].slice.call(grid.children);
+    bar.querySelectorAll('button').forEach(function(b){
+      var f = b.getAttribute('data-filter');
+      var n = f === 'all' ? cards.length : cards.filter(function(c){ return (' ' + (c.getAttribute('data-cat') || '') + ' ').indexOf(' ' + f + ' ') >= 0; }).length;
+      var sm = document.createElement('small'); sm.textContent = n; b.appendChild(sm);
+      b.addEventListener('click', function(){
+        bar.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+        cards.forEach(function(c){
+          var show = f === 'all' || (' ' + (c.getAttribute('data-cat') || '') + ' ').indexOf(' ' + f + ' ') >= 0;
+          c.style.display = show ? '' : 'none'; if (show) c.classList.add('show');
+        });
+      });
+    });
+  });
+})();
+// もりぞーを探せ: 各ページのどこかに、もりぞーが1人かくれている(見つけたページは端末に記録)
+(function(){
+  var PAGES = {index:'トップ',%THEMES%game:'もりぞうクエスト'};
+  var key = (location.pathname.split('/').pop() || 'index.html').replace('.html', '') || 'index';
+  if (!PAGES[key]) return;
+  var KEYS = Object.keys(PAGES), found = {};
+  try { found = JSON.parse(localStorage.getItem('morizo-found') || '{}') || {}; } catch (e) {}
+  function save(){ try { localStorage.setItem('morizo-found', JSON.stringify(found)); } catch (e) {} }
+  function count(){ return KEYS.filter(function(k){ return found[k]; }).length; }
+  var SVG = '<svg viewBox="0 0 48 60" aria-hidden="true"><path d="M13 37 L8 47" stroke="#b0bec5" stroke-width="6" stroke-linecap="round"/><path d="M13 37 L8 47" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="7.6" cy="48" r="2.6" fill="#f6d2b0"/><path d="M35 36 L42 25" stroke="#b0bec5" stroke-width="6" stroke-linecap="round"/><path d="M35 36 L42 25" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="42.6" cy="23.6" r="2.8" fill="#f6d2b0"/><path d="M19 52 L18 58 M29 52 L30 58" stroke="#33415c" stroke-width="5" stroke-linecap="round"/><rect x="12" y="31" width="24" height="23" rx="7" fill="#fff" stroke="#b0bec5" stroke-width="1.5"/><path d="M20 31 L28 31 L24 39 Z" fill="#3c9a3f"/><path d="M19 37 a5 5 0 0 0 10 0" fill="none" stroke="#2f7fc1" stroke-width="1.6"/><circle cx="24" cy="43" r="1.7" fill="#2f7fc1"/><circle cx="24" cy="18" r="12.5" fill="#f6d2b0"/><path d="M11.5 18 C11 8 18 4.5 25 5 C32 5.5 37 10 36.5 17 C33 12.5 27 11 21 13 C17 14 14 16 11.5 18 Z" fill="#2b2b2b"/><circle cx="19.5" cy="19.5" r="1.7" fill="#2b2b2b"/><circle cx="28.5" cy="19.5" r="1.7" fill="#2b2b2b"/><path d="M20.5 24 Q24 27.5 27.5 24" stroke="#b5543c" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="16.5" cy="23.5" r="2" fill="#f08080" fill-opacity=".45"/><circle cx="31.5" cy="23.5" r="2" fill="#f08080" fill-opacity=".45"/></svg>';
+  var cands = [].slice.call(document.querySelectorAll('main .theme, .theme-grid .theme, a.kpi, .org, .mini-card, .award, .rnow, .hobby, .place-group, .chart, .str, .hub-col, .gm-help li, .art-frame, .contact-box, .news, .gallery figure, .pn a'))
+    .filter(function(el){ var r = el.getBoundingClientRect(); return r.width > 140 && r.height > 70; });
+  if (!cands.length) return;
+  var host = cands[Math.floor(Math.random() * cands.length)], cs = getComputedStyle(host);
+  if (cs.position === 'static') host.style.position = 'relative';
+  var spots = cs.overflow === 'visible' ? ['peek-tr', 'peek-tl', 'in-br'] : ['in-br', 'in-bl', 'in-tr'];
+  var m = document.createElement('span');
+  m.className = 'morizo ' + spots[Math.floor(Math.random() * spots.length)] + (found[key] ? ' done' : '');
+  m.setAttribute('role', 'button'); m.setAttribute('tabindex', '0'); m.setAttribute('aria-label', 'かくれている もりぞー');
+  m.innerHTML = SVG; host.appendChild(m);
+  var toastEl = null, toastT = 0, badge = null, panel = null;
+  function say(msg){
+    if (!toastEl) { toastEl = document.createElement('div'); toastEl.className = 'hunt-toast'; toastEl.setAttribute('role', 'status'); document.body.appendChild(toastEl); }
+    toastEl.textContent = msg; toastEl.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(function(){ toastEl.classList.remove('on'); }, 2800);
+  }
+  function list(){
+    return '<p>各ページのどこかに、もりぞーが1人かくれています。見つけたページに ✓ がつきます。</p><ul>' + KEYS.map(function(k){
+      return '<li><a href="' + k + '.html"><span>' + PAGES[k] + '</span><span>' + (found[k] ? '✓' : '?') + '</span></a></li>';
+    }).join('') + '</ul>';
+  }
+  function showBadge(){
+    if (!badge) {
+      badge = document.createElement('button'); badge.type = 'button'; badge.className = 'hunt-badge'; document.body.appendChild(badge);
+      panel = document.createElement('div'); panel.className = 'hunt-panel'; panel.hidden = true; document.body.appendChild(panel);
+      badge.addEventListener('click', function(){ panel.innerHTML = list(); panel.hidden = !panel.hidden; });
+    }
+    badge.innerHTML = SVG + 'もりぞー ' + count() + '/' + KEYS.length;
+    badge.setAttribute('aria-label', 'もりぞーを見つけたページ: ' + count() + '/' + KEYS.length);
+  }
+  function celebrate(){
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var C = ['#3c9a3f', '#8cc63f', '#ffd54f', '#e07b24', '#2f7fc1', '#f06292'];
+    for (var i = 0; i < 60; i++) {
+      var c = document.createElement('i'); c.className = 'confetti';
+      c.style.left = (Math.random() * 100) + 'vw'; c.style.background = C[i % C.length]; c.style.animationDelay = (Math.random() * 0.8) + 's';
+      document.body.appendChild(c); setTimeout(function(el){ el.remove(); }, 3600, c);
+    }
+  }
+  function hit(e){
+    e.preventDefault(); e.stopPropagation();
+    var first = !found[key]; found[key] = 1; save();
+    m.classList.remove('jump'); void m.offsetWidth; m.classList.add('jump', 'done');
+    var n = count(), N = KEYS.length;
+    say(first ? (n === N ? '🎉 コンプリート! 全ページのもりぞーを見つけました!' : 'もりぞーを見つけた! (' + n + '/' + N + 'ページ)') : 'このページのもりぞーは、もう見つけたよ (' + n + '/' + N + ')');
+    showBadge();
+    if (first && n === N) celebrate();
+  }
+  m.addEventListener('click', hit);
+  m.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') hit(e); });
+  if (count() > 0) showBadge();
+})();
 // エフェクト(動きを減らす設定の人には、進み具合のバー以外は出さない)
 (function(){
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1290,5 +1451,6 @@ js = '''// 共通スクリプト: メニュー・スクロールフェード・�
   });
 })();
 '''
+js = js.replace('%THEMES%', ''.join(f"{k}:'{t}'," for k, _, _, t, _ in THEMES))
 io.open(os.path.join(ROOT, 'assets', 'site.js'), 'w', encoding='utf-8', newline='\n').write(js)
 print('built', [t[0] for t in THEMES])
