@@ -467,7 +467,7 @@ THEMES = [
     ('publications','book-open-text','PUBLICATIONS','論文・学会発表', '5分野の研究と、Am J Cardiol 掲載の共著論文・公衆衛生学会での発表。'),
     ('scs',       'hand-heart',    'SCS',       'SCS 地域交流',       '学生団体SCSの代表として、団地サロンや子どもの居場所へ。'),
     ('community', 'radio',         'COMMUNITY', 'バルーナーズDAO・ラジオ', 'DAOのモデレーター、えびすFMのラジオパーソナリティ。'),
-    ('education', 'graduation-cap','OUTREACH',  '教育・発信',         '大阪・関西万博での登壇、中高生への出張授業、小学校の防煙教室、オンライン講演会。'),
+    ('education', 'graduation-cap','OUTREACH',  '教育・発信',         '大阪・関西万博での登壇、中高生への出張授業、小学校の防煙教室、市民向けセミナーの講師。'),
     ('awards',    'trophy',        'AWARDS',    '実績・表彰',         'CSO志支援金、国際ソロプチミスト表彰、大臣からの手紙ほか。'),
     ('media',     'newspaper',     'MEDIA',     'メディア・掲載',     'サガテレビでの放映、大学の公式発表、地域紙・ラジオ。'),
     ('hobbies',   'palette',       'HOBBIES',   '趣味・アート',       '切り絵(美術館展示)・詩吟1級・少林寺拳法(全国大会出場)・ピックルボール部の設立。'),
@@ -913,6 +913,13 @@ edu = f'''    <div class="org-grid">
         <span class="card-link">SCSの活動を見る →</span>
       </a>
       <div class="org fade">
+        <img class="org-img" src="assets/photos/koryu-seminar-2025.webp" alt="交流ゼミナールで講演する森一真" loading="lazy">
+        <span class="tag">SEMINAR</span>
+        <h4>佐賀市市民活動プラザ「交流ゼミナール」の講師(2025年11月)</h4>
+        <p>第3回 交流ゼミナール「佐大生と創る、身も心も“ほっとする”まちづくり」で、SCS代表として講師を担当しました。心理的安全性・ラポール(信頼関係)・ウェルビーイング・D&amp;I(多様性と包摂)をテーマに、市民活動に関わる方々と、ワークを通して「ほっとできる場」のつくり方を考えました。</p>
+        <p style="font-size:12px">会場12名・オンライン4名が参加し、Facebookのライブ配信は227回視聴。アンケートでは満足度が10段階で平均8.92、回答者全員が「自分の活動に取り入れてみたいことがあった」と答えました。</p>
+      </div>
+      <div class="org fade">
         <img class="org-img" src="assets/photos/vcan-poster.webp" alt="じぶんごとcaféのチラシ" loading="lazy" style="object-fit:contain;background:#f6f0fa">
         <span class="tag">EVENT</span>
         <h4>Vcan じぶんごとcafé(佐賀)</h4>
@@ -975,7 +982,7 @@ edu = f'''    <div class="org-grid">
     </ul>
 '''
 # カードの見出しから分類(複数可): hpv=HPVワクチン啓発 / school=学校・子ども / talk=講演・発表 / local=地域
-EDU_CATS = [('万博', 'hpv talk'), ('中高ツアー', 'hpv school'), ('同志社', 'hpv school'), ('西与賀', 'school'), ('地域での健康講演', 'local talk'),
+EDU_CATS = [('万博', 'hpv talk'), ('中高ツアー', 'hpv school'), ('同志社', 'hpv school'), ('西与賀', 'school'), ('地域での健康講演', 'local talk'), ('交流ゼミナール', 'local talk'),
             ('じぶんごとcafé', 'hpv local'), ('市役所', 'hpv local'), ('春フェス', 'hpv local'), ('防煙教室', 'school'), ('Student Researcher', 'talk'),
             ('医療人へのとびら', 'school'), ('メディカルラリー', 'school local'), ('本庄小学校', 'school'), ('人生手術室', 'talk')]
 def edu_cat(m):
