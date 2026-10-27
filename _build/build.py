@@ -640,7 +640,7 @@ matsuri = '''    <p class="creative-lead fade" style="margin-top:-18px">地域�
 scs_g = '    <div class="gallery fade">\n' + '\n'.join(f for f in gal_figs if any(x in f for x in ['scs-', 'salon-', 'balloon-art', 'kids-tanabata'])) + '\n    </div>\n'
 scs_map = '<div class="chart-grid">' + chart_wrap('map', 'SCSの活動フィールド', '地域のさまざまな場所へ出向いています', hub_svg(('SCS', '学生地域交流の会'),
         [('armchair', '団地サロン', '健康講話・体操・脳トレ'), ('baby', '子どもの居場所', '宿題サポート・遊び'), ('mic', '健康講演', '公民館で熱中症予防など'),
-         ('tent', '夏祭り', '血圧測定・CPR体験'), ('school', '小学校', '健康の授業'), ('heart-handshake', '地域イベント', 'バルーン・交流')])) + \
+         ('tent', '夏祭り', '血圧測定・CPR体験'), ('school', '小学校', '性教育の授業'), ('heart-handshake', '地域イベント', 'バルーン・交流')])) + \
     chart_wrap('pie-chart', 'メンバー構成', '2025年5月時点・総勢27名', donut([('医学生', 23, G), ('薬学部・理工学部', 4, B)], '27', '名') +
         '<div class="legend" style="justify-content:center"><span><i style="background:#3c9a3f"></i>医学生 23名</span><span><i style="background:#4a6fd1"></i>薬学部・理工学部 4名</span></div>' +
         table([('医学生', '23名'), ('薬学部・理工学部', '4名')], ['所属', '人数'])) + '</div>'
@@ -667,8 +667,10 @@ edu = f'''    <div class="org-grid">
 {vcan}      <div class="org fade">
         <img class="org-img" src="assets/photos/drv-nishiyoka-class.webp" alt="西与賀小学校での授業" loading="lazy">
         <span class="tag">SCHOOL</span>
-        <h4>佐賀市立西与賀小学校での授業(2025年6月)</h4>
-        <p>SCSのメンバーと小学校を訪問し、子どもたちに向けて健康について考える授業を行いました。</p>
+        <h4>佐賀市立西与賀小学校での授業(2025年6月・2026年6月)</h4>
+        <p>佐賀市社会福祉協議会の福祉教育プログラムの一環として、SCSで小学生向けの性教育の授業を担当しました。「自分を大切にしよう」「一人ひとり違っていて、みんな素晴らしい」をテーマに、絵本の読み聞かせとグループワークで、成長の個人差や性の多様性について子どもたちと一緒に考えました。</p>
+        <p style="font-size:12px">2025年6月は2クラス約65人に実施(事前アンケートをもとに内容を準備)。翌年も同校から依頼をいただき、2026年6月にも実施しました。</p>
+        <a class="card-link" href="https://www.scshakyou.jp/welfare/volunteer.html" target="_blank" rel="noopener">佐賀市社会福祉協議会(ボランティア) →</a>
       </div>
       <div class="org fade">
         <img class="org-img" src="assets/photos/ig-zaimoku-lecture.webp" alt="公民館での健康講演" loading="lazy">
@@ -795,7 +797,7 @@ page('media', 'テレビ・大学の公式発表・地域紙・ラジオで紹�
 
 all_figs = list(dict.fromkeys(gal_figs + [f'      <figure><img src="assets/photos/{n}.webp" alt="{c}" loading="lazy"><figcaption>{c}</figcaption></figure>' for n, c in
     [('kirie-kenuki', '切り絵「歌舞伎十八番 毛抜」'), ('drv-matsuri-cpr', '夏祭りでCPR体験ブース'), ('drv-matsuri-bp', '夏祭りで血圧測定'), ('drv-matsuri-booth', 'SCSの健康ブース'), ('drv-matsuri-team', '地域の方と'), ('drv-nishiyoka-team', '西与賀小学校にて'),
-     ('drv-nishiyoka-class', '小学校での授業'), ('ig-johoku-heatstroke', '城北サロンで熱中症の話'), ('ig-johoku-hobby-talk', '城北サロンで趣味紹介'), ('ig-zaimoku-lecture', '公民館で健康講演'),
+     ('drv-nishiyoka-class', '西与賀小学校での授業'), ('ig-johoku-heatstroke', '城北サロンで熱中症の話'), ('ig-johoku-hobby-talk', '城北サロンで趣味紹介'), ('ig-zaimoku-lecture', '公民館で健康講演'),
      ('ig-johoku-cognicise', 'コグニサイズ'), ('ig-kids-place-1', '子どもの居場所'), ('ig-kids-place-2', '子どもの居場所(神社で)'), ('oshibotan-walk', '住民の方と一緒に'), ('oshibotan-salon-talk', '押しボタンPJの説明')]]))
 page('gallery', '団地のサロン、夏祭り、小学校、地域イベント。写真で振り返る活動。', sec('    <div class="gallery fade">\n' + '\n'.join(all_figs) + '\n    </div>\n', 'GALLERY', f'活動の写真 {len(all_figs)}枚'))
 
