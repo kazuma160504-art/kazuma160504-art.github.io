@@ -769,7 +769,8 @@ person = {
                'https://note.com/tasty_bee649', 'https://my.prairie.cards/u/kazuma2004'],
 }
 ld = '<script type="application/ld+json">' + json.dumps(person, ensure_ascii=False) + '</script>\n'
-index = head('森 一真 | 医学生・研究員 — 公式プロフィール', index_desc, '', 'index', ld)
+gsc = '<meta name="google-site-verification" content="QcdspnUW68llJaSAl-r3WHO57CO5bSkfWSJb63lbNmo">\n'  # Google Search Console の所有権確認(消さない)
+index = head('森 一真 | 医学生・研究員 — 公式プロフィール', index_desc, '', 'index', gsc + ld)
 index += hero + '\n'
 index += sec(tiles, 'THEMES', '12のテーマで、森一真を知る', alt=True,
              deco='  <img class="nature tr" src="assets/nature/branch.webp" alt="" style="width:min(220px,30vw);opacity:.85">\n').replace('<section class="alt">', '<section id="themes" class="alt">', 1)
