@@ -420,10 +420,10 @@ THEMES = [
     ('publications','book-open-text','PUBLICATIONS','論文・学会発表', '5分野の研究と、Am J Cardiol 掲載の共著論文・公衆衛生学会での発表。'),
     ('scs',       'hand-heart',    'SCS',       'SCS 地域交流',       '学生団体SCSの代表として、団地サロンや子どもの居場所へ。'),
     ('community', 'radio',         'COMMUNITY', 'バルーナーズDAO・ラジオ', 'DAOのモデレーター、えびすFMのラジオパーソナリティ。'),
-    ('education', 'graduation-cap','OUTREACH',  '教育・発信',         '中高生への出張授業、オンライン講演会、学会発表、地域での健康講演。'),
+    ('education', 'graduation-cap','OUTREACH',  '教育・発信',         '中高生への出張授業、小学校の防煙教室、オンライン講演会、学会発表。'),
     ('awards',    'trophy',        'AWARDS',    '実績・表彰',         'CSO志支援金、国際ソロプチミスト表彰、大臣からの手紙ほか。'),
     ('media',     'newspaper',     'MEDIA',     'メディア・掲載',     'サガテレビでの放映、大学の公式発表、地域紙・ラジオ。'),
-    ('hobbies',   'palette',       'HOBBIES',   '趣味・アート',       '切り絵(美術館展示)・詩吟1級・少林寺拳法(全国大会出場)・笑い文字。'),
+    ('hobbies',   'palette',       'HOBBIES',   '趣味・アート',       '切り絵(美術館展示)・詩吟1級・少林寺拳法(全国大会出場)・ピックルボール部の設立。'),
     ('creative',  'clapperboard',  'CREATIVE',  '動画編集・執筆',     'GREEN VIBES CHANNEL運営、ショート動画編集、Kindle・note。'),
     ('gallery',   'images',        'GALLERY',   'ギャラリー',         '団地のサロン、夏祭り、小学校、地域イベント。活動の写真集。'),
     ('contact',   'mail',          'CONTACT',   '連絡先・SNS',        'メール・SNS・各種サイトへのリンクと、このページのQRコード。'),
@@ -784,7 +784,7 @@ scs_g = '    <div class="gallery fade">\n' + '\n'.join(f for f in gal_figs if an
 scs_map = '<div class="chart-grid">' + chart_wrap('map', 'SCSの活動フィールド', '地域のさまざまな場所へ出向いています', orbit_html(('SCS', '学生地域交流の会'),
         [('armchair', '団地サロン', '健康講話・体操・脳トレ', None, '#3c9a3f'), ('baby', '子どもの居場所', '宿題サポート・遊び', None, '#e07b24'),
          ('mic', '健康講演', '公民館で熱中症予防など', None, '#2a9d8f'), ('tent', 'お祭り', '医療体験ブースを出店', None, '#e05264'),
-         ('school', '小学校', '性教育の授業', 'education.html', '#2f7fc1'), ('heart-handshake', '地域イベント', 'バルーン・交流', 'gallery.html', '#8e44ad')])) + \
+         ('school', '小学校', '性教育・防煙教室', 'education.html', '#2f7fc1'), ('heart-handshake', '地域イベント', 'バルーン・交流', 'gallery.html', '#8e44ad')])) + \
     chart_wrap('pie-chart', 'メンバー構成', '2025年5月時点・総勢27名', donut([('医学生', 23, G), ('薬学部・理工学部', 4, B)], '27', '名') +
         '<div class="legend" style="justify-content:center"><span><i style="background:#3c9a3f"></i>医学生 23名</span><span><i style="background:#4a6fd1"></i>薬学部・理工学部 4名</span></div>' +
         table([('医学生', '23名'), ('薬学部・理工学部', '4名')], ['所属', '人数'])) + '</div>'
@@ -839,6 +839,12 @@ edu = f'''    <div class="org-grid">
         <h4>Vcan じぶんごとcafé(佐賀市)</h4>
         <p>佐賀市と連携したワークショップ型イベントで、参加者と一緒に健康を「自分ごと」として考えました。</p>
         <span class="card-link">Vcanの活動ページ →</span>
+      </a>
+      <a class="org fade" href="https://scs-website-ten.vercel.app/blog/2026-03-01-kawasoe-bouen" target="_blank" rel="noopener" style="padding-top:26px">
+        <span class="tag">SCHOOL</span>
+        <h4>川副小学校での防煙教室(2026年)</h4>
+        <p>SCSの防煙教室の第2弾(第1弾は北川副小学校)。タバコが体に与える影響を、スライドや教材を使って医学生ならではの視点で、小学生に分かりやすく伝えました。</p>
+        <span class="card-link">SCSの活動レポート →</span>
       </a>
       <div class="org fade">
         <div class="org-posters"><img src="assets/photos/jinsei-shujutsushitsu-1.webp" alt="「人生手術室」第1弾のポスター(3月27日・Zoom)" loading="lazy"><img src="assets/photos/jinsei-shujutsushitsu-2.webp" alt="「人生手術室2」第2弾のポスター(6月7日・Zoom)" loading="lazy"></div>
@@ -898,7 +904,7 @@ kirie = '''    <div class="artwork fade">
       </div>
     </div>
 '''
-page('hobbies', '手を動かし、声を出し、体を動かす。切り絵・詩吟・少林寺拳法・カリンバ・笑い文字。',
+page('hobbies', '手を動かし、声を出し、体を動かす。切り絵・詩吟・少林寺拳法・ピックルボール・カリンバ・笑い文字。',
      sec(kirie, 'ARTWORK', '切り絵作品').replace('<section>', '<section id="artwork">', 1) + sec(hobbies, 'HOBBIES', '好きなこと', alt=True))
 
 # 8 クリエイティブ
@@ -1079,14 +1085,15 @@ game += '''<section class="page-hero">
 <section class="game-sec">
   <div class="game" id="game">
     <canvas role="img" aria-label="もりぞうクエストのゲーム画面"></canvas>
-    <div class="gm-hud"><span class="pill" id="gm-hearts"></span><span class="pill stage" id="gm-stage"></span><span class="pill" id="gm-count"></span><button class="gm-pause" id="gm-pause" type="button" aria-label="一時停止">⏸</button></div>
+    <div class="gm-hud"><span class="pill" id="gm-hearts"></span><span class="pill stage" id="gm-stage"></span><span class="pill" id="gm-score"></span><span class="pill" id="gm-count"></span><button class="gm-pause" id="gm-sound" type="button" aria-label="効果音">🔊</button><button class="gm-pause" id="gm-pause" type="button" aria-label="一時停止">⏸</button></div>
     <div class="gm-start" id="gm-start"></div>
   </div>
   <div class="gm-toast" id="gm-toast" role="status" aria-live="polite"></div>
   <ul class="gm-help">
     <li><b>あそびかた</b>画面をタップ(パソコンはスペースキー)でジャンプ。空中でもう1回ジャンプできます。</li>
     <li><b>思い出アイテム</b>浮かんでいる丸いアイテムが、森一真の実際のできごと。集めると年ごとに振り返れます。</li>
-    <li><b>障害物とハート</b>締切や教科書にぶつかるとハートが減ります。💖でハート回復。ゴールは2026年10月の学会発表!</li>
+    <li><b>✨とコンボ</b>✨を続けて取るとコンボがつながり、点数が最大5倍に。⭐を取ると「活発性ダッシュ」で無敵になり、障害物をなぎ倒せます。</li>
+    <li><b>障害物とハート</b>締切や教科書、空飛ぶ🐝にぶつかるとハートが減ります。💖でハート回復。ゴールは2026年10月の学会発表!</li>
   </ul>
 </section>
 <div class="gm-modal" id="gm-modal" hidden><div class="gm-card" id="gm-card" role="dialog" aria-modal="true" aria-label="ふりかえり"></div></div>

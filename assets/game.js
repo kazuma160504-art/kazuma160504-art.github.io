@@ -46,6 +46,7 @@
         { e: '✍️', d: '2025.04', t: 'note でエッセイを書きはじめる', x: '「フットワーク軽いヤツと思われたら勝ち」など、全11記事。', u: 'creative.html' },
         { e: '🎪', d: '2025.05', t: 'SCS は総勢27名に', x: '代表として、団地のサロン・子どもの居場所・夏祭りの健康ブースへ。', u: 'scs.html' },
         { e: '🏫', d: '2025.06', t: '西与賀小学校で授業', x: '「自分を大切にしよう」をテーマに、2クラス約65人へ。翌年もふたたび。', u: 'education.html' },
+        { e: '🏓', d: '2025', t: 'ピックルボール部を設立', x: '新しいスポーツ「ピックルボール」の部を立ち上げる。', u: 'hobbies.html' },
         { e: '✂️', d: 'ART', t: '切り絵を佐賀大学美術館で展示', x: '歌舞伎十八番「毛抜」を、一枚の黒い紙から。', u: 'hobbies.html' },
         { e: '🏀', d: 'DAO', t: '佐賀バルーナーズDAO モデレーター', x: 'ファンコミュニティの運営で、感謝状をいただく。', u: 'community.html' },
         { e: '🪧', d: '2025.10', t: '第84回 日本公衆衛生学会総会(静岡)', x: '押しボタンプロジェクトをポスター発表。', u: 'publications.html' },
@@ -57,6 +58,7 @@
       items: [
         { e: '📊', d: '2026.01', t: '日本疫学会学術総会(長崎)に参加', x: '国際疫学会 西太平洋地域との合同学術集会。', u: 'publications.html' },
         { e: '🏆', d: '2026.02', t: '国際ソロプチミスト佐賀有明より表彰', x: 'SCSの地域活動が評価され、佐賀新聞でも紹介。', u: 'awards.html' },
+        { e: '🚭', d: '2026', t: '川副小学校で防煙教室', x: 'タバコが体に与える影響を、医学生の視点で小学生に伝える。', u: 'education.html' },
         { e: '📣', d: '2026.03', t: '佐賀大学が公式プレスリリース', x: '押しボタンプロジェクトを大学として発表。TSUNAGIコンベンションでも展示。', u: 'research.html' },
         { e: '🔘', d: '2026.04', t: '「いろどり+ボタン」実証実験スタート', x: '新型ボタン30台で、見守りが進化。', u: 'research.html' },
         { e: '📻', d: '2026.05', t: 'えびすFMのラジオパーソナリティに', x: '「バルーナーズDAOおとなりさんラジオ」で、バスケと地域の話題を。', u: 'community.html' },
@@ -73,17 +75,21 @@
 
   var cv = root.querySelector('canvas'), ctx = cv.getContext('2d');
   function $(id) { return document.getElementById(id); }
-  var elHearts = $('gm-hearts'), elStage = $('gm-stage'), elCount = $('gm-count'), elToast = $('gm-toast'),
-      elStart = $('gm-start'), modal = $('gm-modal'), card = $('gm-card');
+  var elHearts = $('gm-hearts'), elStage = $('gm-stage'), elScore = $('gm-score'), elCount = $('gm-count'), elToast = $('gm-toast'),
+      elStart = $('gm-start'), elSound = $('gm-sound'), modal = $('gm-modal'), card = $('gm-card');
 
   // 論理座標: 高さ 400 固定、幅は画面の比率に合わせる
   var H = 400, GROUND = 340, W = 640, scale = 1, dpr = 1;
   var GRAV = 2300, JUMP1 = 780, JUMP2 = 700, MAXH = 5;
-  var LEVELS = [40, 120, 215]; // 思い出アイテムの高さ(地面 / 1段ジャンプ / 2段ジャンプ)
+  var COYOTE = 0.09, BUFFER = 0.13;          // 足場を離れた直後・着地の直前の入力も受け付ける(操作の気持ちよさ)
+  var LEVELS = [40, 120, 215];               // 思い出アイテムの高さ(地面 / 1段ジャンプ / 2段ジャンプ)
+  var DASH_TIME = 4, DASH_SPEED = 1.45;      // ⭐「活発性ダッシュ」: 無敵・加速・吸い寄せ
 
-  var state = 'title', stage = 0, got = {}, hearts = 3;
+  var state = 'title', stage = 0, got = {}, hearts = 3, score = 0, sparkles = 0;
+  var startScore = 0, startSparkles = 0, stageSparkles = 0;
   var px = 0, py = 0, vy = 0, jumps = 0, inv = 0, t = 0, stageT = 0, speed = 250;
-  var items = [], obs = [], extras = [], stageEnd = 0, parts = [], floats = [];
+  var airT = 0, bufT = 0, squash = 0, shake = 0, dash = 0, combo = 0, comboT = 0, dustT = 0;
+  var items = [], obs = [], extras = [], coins = [], powers = [], stageEnd = 0, parts = [], floats = [];
   var last = 0, raf = 0, toastTimer = 0;
 
   var BALLOONS = [], BCOL = ['#e74c3c', '#f39c12', '#3c9a3f', '#2f7fc1', '#9b59b6', '#f06292'];
@@ -92,22 +98,74 @@
   for (i = 0; i < 46; i++) SNOW.push({ x: (i * 97) % 1400, y: (i * 53) % H, s: 1.4 + (i % 3), v: 26 + (i % 5) * 9 });
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
-  function best() { try { return +localStorage.getItem('morizo-best') || 0; } catch (e) { return 0; } }
-  function saveBest(n) { try { if (n > best()) localStorage.setItem('morizo-best', String(n)); } catch (e) {} }
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, String(v)); } catch (e) {} return null; }
+  function bestScore() { return +store('morizo-best-score') || 0; }
   function countGot() { var n = 0; for (var k in got) if (got[k]) n++; return n; }
+  function mult() { return Math.min(5, 1 + Math.floor(combo / 5)); }
+  function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
 
-  // ---- ステージの組み立て
+  // ---- 効果音(Web Audio で短い音を鳴らす。🔇で消せる)
+  var audio = null, muted = store('morizo-mute') === '1';
+  var SFX = {
+    jump: [[520, 780, 0.08, 'square', 0.035]], jump2: [[700, 1100, 0.09, 'square', 0.035]],
+    coin: [[1320, 1760, 0.06, 'square', 0.025]],
+    item: [[660, 660, 0.09, 'triangle', 0.07], [880, 880, 0.09, 'triangle', 0.07, 0.08], [1320, 1320, 0.16, 'triangle', 0.07, 0.16]],
+    hit: [[240, 80, 0.28, 'sawtooth', 0.07]], smash: [[180, 60, 0.18, 'square', 0.06]],
+    power: [[440, 1760, 0.45, 'triangle', 0.07]], heal: [[880, 1320, 0.2, 'sine', 0.07]],
+    clear: [[523, 523, 0.12, 'triangle', 0.07], [659, 659, 0.12, 'triangle', 0.07, 0.12], [784, 784, 0.12, 'triangle', 0.07, 0.24], [1046, 1046, 0.3, 'triangle', 0.07, 0.36]]
+  };
+  function sfx(name, pitch) {
+    if (muted) return;
+    try {
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+      if (audio.state === 'suspended') audio.resume();
+      var now = audio.currentTime, k = pitch || 1;
+      SFX[name].forEach(function (n) {
+        var o = audio.createOscillator(), g = audio.createGain(), t0 = now + (n[5] || 0);
+        o.type = n[3]; o.frequency.setValueAtTime(n[0] * k, t0); o.frequency.exponentialRampToValueAtTime(n[1] * k, t0 + n[2]);
+        g.gain.setValueAtTime(n[4], t0); g.gain.exponentialRampToValueAtTime(0.0001, t0 + n[2]);
+        o.connect(g); g.connect(audio.destination); o.start(t0); o.stop(t0 + n[2] + 0.02);
+      });
+    } catch (e) {}
+  }
+  function soundIcon() { elSound.textContent = muted ? '🔇' : '🔊'; elSound.setAttribute('aria-label', muted ? '効果音をオンにする' : '効果音をオフにする'); }
+
+  // ---- ステージの組み立て(思い出・障害物・✨・⭐・💖 を並べる)
+  function coin(x, h) { coins.push({ x: x, h: h, got: false }); }
+  function coinLine(x0, h, n, gap) { for (var k = 0; k < n; k++) coin(x0 + k * gap, h); }
+  function coinArc(cx, base) { [-84, -42, 0, 42, 84].forEach(function (dx) { coin(cx + dx, base + 30 + (1 - (dx / 84) * (dx / 84)) * 78); }); }
+  function addObs(x, n, o, extra) {
+    var ob = { x: x, w: 26, h: n * 30, y0: 0, n: n, e: o[0], name: o[1], vx: 0, fly: false, roll: false };
+    for (var k in extra) ob[k] = extra[k];
+    obs.push(ob);
+    return ob;
+  }
+
   function build(s) {
-    var st = STAGES[s], sp = 560 + s * 30, x = 620;
-    items = []; obs = []; extras = [];
+    var st = STAGES[s], sp = 600 + s * 25, x = 640;
+    items = []; obs = []; extras = []; coins = []; powers = [];
     st.items.forEach(function (it, i) {
       var lv = s === 0 ? [40, 120, 120][i % 3] : LEVELS[(i + s) % 3];
       items.push({ id: s + '-' + i, it: it, x: x, h: lv, got: false });
+      // 思い出への道しるべの ✨
+      if (lv === 40) coinLine(x - 130, 24, 3, 40);
+      else if (lv === 120) { coin(x - 84, 70); coin(x - 42, 104); }
+      else { coin(x - 96, 120); coin(x - 50, 172); }
+      // 障害物と、その上にアーチ状の ✨
       var o = st.obs[(i + s) % st.obs.length], n = (s >= 1 && (i + s) % 3 === 2) ? 2 : 1;
       var ox = x + sp * 0.5 + ((i * 37 + s * 13) % 5 - 2) * 16;
-      obs.push({ x: ox, w: 26, h: n * 30, n: n, e: o[0], name: o[1] });
-      if (s >= 2 && i % 3 === 1) obs.push({ x: ox + 120, w: 26, h: 30, n: 1, e: o[0], name: o[1] });
+      addObs(ox, n, o);
+      if (s >= 2 && i % 3 === 1) { addObs(ox + 120, 1, o); coinArc(ox + 73, 30); }
+      else { coinArc(ox + 13, n * 30); if (!(s >= 2 && i % 3 === 2)) coinLine(ox + 150, 24, 3, 38); }
+      // 2024年からは、空中に 🐝(ジャンプのタイミングに注意)。下をくぐれば ✨
+      if (s >= 2 && i % 3 === 2 && i < st.items.length - 1) {
+        addObs(x + sp * 0.72, 1, ['🐝', '蜂'], { y0: 92, h: 28, fly: true, by: 92 });
+        coinLine(x + sp * 0.72 - 40, 24, 3, 40);
+      }
+      // 最後の年は ⚽ が転がってくる
+      if (s >= 4 && i % 3 === 0 && i > 0) addObs(x + sp * 0.92, 1, ['⚽', 'ボール'], { roll: true, vx: -110 });
       if (s >= 2 && i === 2) extras.push({ x: x + 110, h: 110, got: false });
+      if (s >= 1 && i === 1) powers.push({ x: x + sp * 0.26, h: 125, got: false });
       x += sp;
     });
     stageEnd = x + 80;
@@ -116,72 +174,139 @@
   function startStage(s) {
     stage = s; build(s);
     px = 0; py = 0; vy = 0; jumps = 0; inv = 0; stageT = 0; parts = []; floats = [];
-    speed = 250 + s * 40;
+    airT = 0; bufT = 0; squash = 0; shake = 0; dash = 0; combo = 0; comboT = 0;
+    speed = 260 + s * 42;
+    startScore = score; startSparkles = sparkles; stageSparkles = 0;
     hud();
   }
 
-  function newGame() { got = {}; hearts = 3; startStage(0); }
+  function newGame() { got = {}; hearts = 3; score = 0; sparkles = 0; startStage(0); }
 
   // ---- 入力
-  function jump() {
-    if (jumps >= 2) return;
-    vy = jumps ? JUMP2 : JUMP1; jumps++;
+  function press() {
+    bufT = BUFFER;
+    tryJump();
+  }
+  function tryJump() {
+    if (bufT <= 0) return;
+    if (py <= 0 || airT < COYOTE) { vy = JUMP1; jumps = 1; }
+    else if (jumps < 2) { vy = JUMP2; jumps = 2; burst(px - 4, py + 4, ['#ffffff', '#c5e1a5'], 6, 90); }
+    else return;
     if (py <= 0) py = 0.01;
+    airT = COYOTE; bufT = 0; squash = 1;
+    sfx(jumps === 2 ? 'jump2' : 'jump');
   }
 
-  // ---- 判定
+  // ---- 判定と演出
   function hitCircle(cx, cy, r, L, R, B, T) {
     var nx = Math.max(L, Math.min(cx, R)), ny = Math.max(B, Math.min(cy, T)), dx = cx - nx, dy = cy - ny;
     return dx * dx + dy * dy < r * r;
   }
-
-  function burst(x, h, col) {
-    for (var k = 0; k < 14; k++) {
-      var a = k / 14 * Math.PI * 2, v = 120 + (k % 4) * 40;
-      parts.push({ x: x, h: h, vx: Math.cos(a) * v, vy: Math.sin(a) * v, life: 0.7, c: col[k % col.length] });
+  function burst(x, h, col, n, v) {
+    n = n || 14; v = v || 120;
+    for (var k = 0; k < n; k++) {
+      var a = k / n * Math.PI * 2, s = v + (k % 4) * 40;
+      parts.push({ x: x, h: h, vx: Math.cos(a) * s, vy: Math.sin(a) * s, life: 0.7, c: col[k % col.length] });
     }
+  }
+  function float(txt, x, h, c, size, follow) { floats.push({ txt: txt, x: x, h: h, c: c, life: 1.1, size: size || 15, follow: follow }); }
+  function gain(base) {
+    var before = mult();
+    combo++; comboT = 1.6;
+    var m = mult();
+    if (m > before) { floats = floats.filter(function (f) { return !f.combo; }); float('COMBO ×' + m + '!', 0, py + 110, '#e07b24', 18, true); floats[floats.length - 1].combo = true; }
+    score += base * m;
   }
 
   function collect(o) {
-    burst(o.x, o.h, ['#ffd54f', '#3c9a3f', '#8cc63f', '#ffffff']);
+    gain(100);
+    burst(o.x, o.h, ['#ffd54f', '#3c9a3f', '#8cc63f', '#ffffff'], 16, 140);
+    float('+' + 100 * mult(), o.x, o.h + 26, '#3c9a3f', 16);
     toast(o.it.e + ' ' + o.it.d + ' ' + o.it.t);
-    if (o.it.power) heal('ポジティブ! ❤+1', o.x, o.h + 30);
+    sfx('item');
+    if (o.it.power) heal('ポジティブ! ❤+1', o.x, o.h + 52);
     hud();
   }
-
   function heal(txt, x, h) {
     hearts = Math.min(MAXH, hearts + 1);
-    floats.push({ x: x, h: h, txt: txt, c: '#d81b60', life: 1.2 });
+    float(txt, x, h, '#d81b60', 15);
+    sfx('heal');
     hud();
   }
-
   function hurt(o) {
-    hearts--; inv = 1.2;
-    floats.push({ follow: true, h: py + 80, txt: o.name + '!', c: '#e53935', life: 1 });
-    try { if (navigator.vibrate) navigator.vibrate(60); } catch (e) {}
+    hearts--; inv = 1.3; shake = 0.3; combo = 0;
+    float(o.name + '!', 0, py + 80, '#e53935', 16, true);
+    sfx('hit');
+    try { if (navigator.vibrate) navigator.vibrate(70); } catch (e) {}
     hud();
     if (hearts <= 0) gameOver();
+  }
+  function smash(o) {
+    o.smashed = true; gain(50);
+    burst(o.x + o.w / 2, o.y0 + o.h / 2, ['#ffd54f', '#ff8a65', '#ffffff'], 12, 160);
+    float('ドーン! +' + 50 * mult(), o.x, o.y0 + o.h + 30, '#e07b24', 15);
+    sfx('smash'); shake = 0.12;
   }
 
   function update(dt) {
     t += dt; stageT += dt;
-    px += speed * (1 + Math.min(px / stageEnd, 1) * 0.12) * dt;
+    if (bufT > 0) { bufT -= dt; tryJump(); }
+    var sp = speed * (1 + Math.min(px / stageEnd, 1) * 0.12) * (dash > 0 ? DASH_SPEED : 1);
+    px += sp * dt;
+    var wasAir = py > 0;
     if (py > 0 || vy > 0) {
-      vy -= GRAV * dt; py += vy * dt;
-      if (py <= 0) { py = 0; vy = 0; jumps = 0; }
+      vy -= GRAV * dt; py += vy * dt; airT += dt;
+      if (py <= 0) {
+        py = 0; vy = 0; jumps = 0; airT = 0;
+        if (wasAir) { squash = -1; burst(px, 2, ['#d7ccc8', '#efebe9'], 6, 70); }
+      }
     }
+    squash *= Math.pow(0.0005, dt);
     if (inv > 0) inv -= dt;
-    var L = px - 11, R = px + 11, B = py, T = py + 56;
+    if (shake > 0) shake -= dt;
+    if (dash > 0) { dash -= dt; if (Math.floor(t * 30) % 2) parts.push({ x: px - 12, h: py + 10 + Math.random() * 36, vx: -60, vy: 0, life: 0.35, c: BCOL[Math.floor(t * 20) % BCOL.length] }); }
+    if (comboT > 0) { comboT -= dt; if (comboT <= 0) combo = 0; }
+    if (py <= 0 && (dustT -= dt) < 0) { dustT = 0.22; parts.push({ x: px - 8, h: 2, vx: -50, vy: 30, life: 0.35, c: '#d7ccc8' }); }
+
+    var L = px - 11, R = px + 11, B = py, T = py + 56, cy = py + 28;
+    // ダッシュ中は ✨ と思い出を吸い寄せる
+    if (dash > 0) {
+      coins.concat(items).forEach(function (o) {
+        if (o.got) return;
+        var dx = px - o.x, dy = cy - o.h, d = Math.sqrt(dx * dx + dy * dy);
+        if (d < 170) { o.x += dx / d * 520 * dt; o.h += dy / d * 520 * dt; }
+      });
+    }
+    coins.forEach(function (o) {
+      if (!o.got && hitCircle(o.x, o.h, 12, L, R, B, T)) {
+        o.got = true; sparkles++; stageSparkles++; gain(10);
+        burst(o.x, o.h, ['#ffe082', '#ffffff'], 6, 80);
+        sfx('coin', 1 + Math.min(combo, 24) * 0.025);
+      }
+    });
     items.forEach(function (o) {
       if (!o.got && hitCircle(o.x, o.h, 20, L, R, B, T)) { o.got = true; got[o.id] = true; collect(o); }
     });
     extras.forEach(function (o) {
       if (!o.got && hitCircle(o.x, o.h, 18, L, R, B, T)) { o.got = true; burst(o.x, o.h, ['#f06292', '#ffffff']); heal('ポジティブ! ❤+1', o.x, o.h + 30); }
     });
-    if (inv <= 0) {
-      for (var k = 0; k < obs.length && state === 'run'; k++) {
-        var o = obs[k];
-        if (!o.hit && R - 3 > o.x && L + 3 < o.x + o.w && B + 2 < o.h) { o.hit = true; hurt(o); }
+    powers.forEach(function (o) {
+      if (!o.got && hitCircle(o.x, o.h, 20, L, R, B, T)) {
+        o.got = true; dash = DASH_TIME; inv = Math.max(inv, 0);
+        burst(o.x, o.h, ['#ffd54f', '#fff59d', '#ffffff'], 20, 170);
+        float('⭐ 活発性ダッシュ!', 0, py + 110, '#e07b24', 18, true);
+        toast('⭐ 活発性ダッシュ! しばらく無敵で、✨を吸い寄せる');
+        sfx('power');
+      }
+    });
+    for (var k = 0; k < obs.length && state === 'run'; k++) {
+      var o = obs[k];
+      if (o.smashed) continue;
+      if (o.roll && o.x - px < W * 0.85) { o.x += o.vx * dt; }
+      if (o.fly) o.y0 = o.by + Math.sin(t * 3 + o.x * 0.01) * 10;
+      if (!o.hit && R - 4 > o.x && L + 4 < o.x + o.w && B + 3 < o.y0 + o.h && T - 4 > o.y0) {
+        if (dash > 0) smash(o);
+        else if (inv <= 0) { o.hit = true; hurt(o); }
       }
     }
     parts = parts.filter(function (p) { p.life -= dt; p.x += p.vx * dt; p.h += p.vy * dt; p.vy -= 260 * dt; return p.life > 0; });
@@ -200,6 +325,11 @@
     ctx.font = '700 ' + size + 'px ' + TEXT_FONT; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.lineJoin = 'round'; ctx.lineWidth = Math.max(3, size / 4); ctx.strokeStyle = 'rgba(255,255,255,.92)';
     ctx.strokeText(txt, x, y); ctx.fillStyle = color; ctx.fillText(txt, x, y);
+  }
+  function star(x, y, r) {
+    ctx.beginPath();
+    for (var k = 0; k < 10; k++) { var a = -Math.PI / 2 + k * Math.PI / 5, rr2 = k % 2 ? r * 0.45 : r; ctx.lineTo(x + Math.cos(a) * rr2, y + Math.sin(a) * rr2); }
+    ctx.closePath(); ctx.fill();
   }
 
   function balloon(x, y, r, c) {
@@ -236,14 +366,12 @@
     ctx.strokeStyle = '#8d6e63'; ctx.lineWidth = 2; ctx.stroke();
     label(a, x, GROUND - 84, 16, '#3c9a3f'); label(b, x, GROUND - 64, 12, '#1e3322');
   }
-
   function flag(x, txt) {
     if (x < -80 || x > W + 80) return;
     ctx.fillStyle = '#6d4c41'; ctx.fillRect(x - 2, GROUND - 96, 4, 96);
     ctx.fillStyle = '#3c9a3f'; ctx.beginPath(); ctx.moveTo(x + 2, GROUND - 96); ctx.lineTo(x + 58, GROUND - 82); ctx.lineTo(x + 2, GROUND - 68); ctx.closePath(); ctx.fill();
     label(txt, x + 26, GROUND - 82, 11, '#1e3322');
   }
-
   function goal(x) {
     if (x < -120 || x > W + 120) return;
     ctx.fillStyle = '#ffffff'; rr(x - 72, GROUND - 64, 144, 64, 10); ctx.fill();
@@ -252,30 +380,38 @@
     label('第85回 公衆衛生学会', x, GROUND - 22, 11, '#1e3322');
     emoji(GOAL.e, x, GROUND - 96 + Math.sin(t * 3) * 4, 40);
   }
-
-  function orb(x, y, e, ring) {
-    ctx.fillStyle = 'rgba(255,255,255,.35)'; circle(x, y, 26);
+  function orb(x, y, e, ring, glow) {
+    var pulse = 1 + Math.sin(t * 5 + x * 0.01) * 0.08;
+    ctx.fillStyle = glow || 'rgba(255,255,255,.4)'; circle(x, y, 27 * pulse);
     ctx.fillStyle = 'rgba(255,255,255,.95)'; circle(x, y, 20);
     ctx.strokeStyle = ring; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(x, y, 20, 0, Math.PI * 2); ctx.stroke();
     emoji(e, x, y + 1, 23);
   }
+  function sparkle(x, y, k) {
+    var s = 1 + Math.sin(t * 6 + k) * 0.18;
+    ctx.fillStyle = 'rgba(255,214,79,.35)'; circle(x, y, 11 * s);
+    ctx.fillStyle = '#ffc107'; star(x, y, 9 * s);
+    ctx.fillStyle = '#fff8e1'; star(x - 1, y - 1, 4 * s);
+  }
 
   function player(x, y) {
-    if (inv > 0 && Math.floor(t * 14) % 2) return;
+    if (inv > 0 && dash <= 0 && Math.floor(t * 14) % 2) return;
+    ctx.save();
+    // 着地でつぶれて、ジャンプで伸びる
+    var sx = 1 - squash * 0.12, sy = 1 + squash * 0.16;
+    ctx.translate(x, y); ctx.scale(sx, sy); ctx.translate(-x, -y);
+    if (dash > 0) { ctx.shadowColor = '#ffd54f'; ctx.shadowBlur = 16; }
     var air = py > 0, sw = air ? 0 : Math.sin(px * 0.07), dogi = STAGES[stage].outfit === 'dogi';
     var la = air ? -8 : 0, ra = air ? -10 : 0;
     ctx.lineCap = 'round';
-    // 脚
     ctx.strokeStyle = dogi ? '#eceff1' : '#33415c'; ctx.lineWidth = 6; ctx.beginPath();
     if (air) { ctx.moveTo(x - 4, y - 16); ctx.lineTo(x - 9, y - 6); ctx.moveTo(x + 4, y - 16); ctx.lineTo(x + 9, y - 9); }
     else { ctx.moveTo(x - 3, y - 16); ctx.lineTo(x - 3 + sw * 7, y - 2); ctx.moveTo(x + 3, y - 16); ctx.lineTo(x + 3 - sw * 7, y - 2); }
     ctx.stroke();
-    // 腕(輪郭つき)
     ctx.strokeStyle = '#b0bec5'; ctx.lineWidth = 7; ctx.beginPath();
     ctx.moveTo(x - 9, y - 34); ctx.lineTo(x - 13 - sw * 4, y - 22 + la); ctx.moveTo(x + 9, y - 34); ctx.lineTo(x + 14 + sw * 4, y - 23 + ra); ctx.stroke();
     ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 4.5; ctx.stroke();
     ctx.fillStyle = '#f6d2b0'; circle(x - 13 - sw * 4, y - 21 + la, 2.8); circle(x + 14 + sw * 4, y - 22 + ra, 2.8);
-    // 体: 高校までは道着、大学からは白衣
     ctx.fillStyle = '#ffffff'; rr(x - 11, y - 38, 22, 25, 6); ctx.fill();
     ctx.strokeStyle = '#b0bec5'; ctx.lineWidth = 1.5; ctx.stroke();
     if (dogi) {
@@ -286,32 +422,34 @@
       ctx.strokeStyle = '#2f7fc1'; ctx.lineWidth = 1.8; ctx.beginPath(); ctx.arc(x + 1, y - 32, 6, 0.2, Math.PI - 0.2); ctx.stroke();
       ctx.fillStyle = '#2f7fc1'; circle(x + 1, y - 25, 2);
     }
-    // 頭
     ctx.fillStyle = '#f6d2b0'; circle(x + 1, y - 49, 11);
     ctx.fillStyle = '#2b2b2b'; ctx.beginPath(); ctx.arc(x + 1, y - 50, 11.6, Math.PI * 1.02, Math.PI * 1.98); ctx.fill();
     ctx.beginPath(); ctx.moveTo(x - 10, y - 51); ctx.quadraticCurveTo(x - 3, y - 46, x + 5, y - 53); ctx.lineTo(x + 2, y - 60); ctx.lineTo(x - 8, y - 58); ctx.closePath(); ctx.fill();
     circle(x + 5, y - 48, 1.6); circle(x + 9.5, y - 48, 1.6);
     ctx.strokeStyle = '#b5543c'; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.arc(x + 7.5, y - 44.5, 3, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke();
     ctx.fillStyle = 'rgba(240,120,120,.45)'; circle(x + 11, y - 45, 2);
+    ctx.restore();
   }
 
   function draw() {
-    var st = STAGES[stage], cam = px - W * 0.22, k;
+    var st = STAGES[stage], k;
     ctx.setTransform(scale * dpr, 0, 0, scale * dpr, 0, 0);
     var g = ctx.createLinearGradient(0, 0, 0, GROUND);
     g.addColorStop(0, st.sky[0]); g.addColorStop(1, st.sky[1]);
     ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    // ぶつかったときは画面がゆれる
+    if (shake > 0) ctx.translate((Math.random() - 0.5) * 12 * shake / 0.3, (Math.random() - 0.5) * 8 * shake / 0.3);
+    var cam = px - W * 0.22;
     ctx.fillStyle = st.sun; circle(W - 80, 66, 26);
-    // 佐賀の空にはバルーン
     var span = W + 240;
     BALLOONS.forEach(function (b) { balloon(((b.x - cam * 0.12) % span + span) % span - 120, b.y + Math.sin(t * 0.8 + b.p) * 6, b.r, b.c); });
-    ctx.fillStyle = st.hill; ctx.beginPath(); ctx.moveTo(0, GROUND);
-    for (var x = 0; x <= W + 16; x += 16) { var wx = x + cam * 0.3; ctx.lineTo(x, GROUND - 56 - Math.sin(wx * 0.006) * 26 - Math.sin(wx * 0.017) * 9); }
-    ctx.lineTo(W + 16, GROUND); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = st.hill; ctx.beginPath(); ctx.moveTo(-20, GROUND);
+    for (var x = -20; x <= W + 20; x += 16) { var wx = x + cam * 0.3; ctx.lineTo(x, GROUND - 56 - Math.sin(wx * 0.006) * 26 - Math.sin(wx * 0.017) * 9); }
+    ctx.lineTo(W + 20, GROUND); ctx.closePath(); ctx.fill();
     var off = cam * 0.6;
     for (k = Math.floor(off / 150) - 1; k * 150 - off < W + 80; k++) scenery(k * 150 - off + ((k * 53) % 60 + 60) % 60, k, st);
-    ctx.fillStyle = st.ground; ctx.fillRect(0, GROUND, W, H - GROUND);
-    ctx.fillStyle = st.grass; ctx.fillRect(0, GROUND, W, 9);
+    ctx.fillStyle = st.ground; ctx.fillRect(-20, GROUND, W + 40, H - GROUND + 20);
+    ctx.fillStyle = st.grass; ctx.fillRect(-20, GROUND, W + 40, 9);
     ctx.fillStyle = 'rgba(0,0,0,.07)';
     for (k = Math.floor(cam / 64); k * 64 - cam < W; k++) ctx.fillRect(k * 64 - cam, GROUND + 22 + (Math.abs(k) % 2) * 14, 24, 4);
     if (st.snow) {
@@ -320,25 +458,44 @@
     }
     sign(230 - cam, st.year, st.title);
     if (stage === STAGES.length - 1) goal(stageEnd - cam); else flag(stageEnd - cam, '▶ ' + STAGES[stage + 1].year);
+    coins.forEach(function (o, i) { if (o.got) return; var cx = o.x - cam; if (cx > -20 && cx < W + 20) sparkle(cx, GROUND - o.h, i); });
     obs.forEach(function (o) {
+      if (o.smashed) return;
       var ox = o.x - cam; if (ox < -50 || ox > W + 50) return;
-      for (var j = 0; j < o.n; j++) emoji(o.e, ox + o.w / 2, GROUND - 15 - j * 30, 30);
+      if (o.roll) {
+        ctx.save(); ctx.translate(ox + o.w / 2, GROUND - 15); ctx.rotate(-o.x * 0.05); emoji(o.e, 0, 0, 28); ctx.restore();
+      } else if (o.fly) {
+        emoji(o.e, ox + o.w / 2 + Math.sin(t * 12) * 1.5, GROUND - o.y0 - o.h / 2, 30);
+      } else {
+        for (var j = 0; j < o.n; j++) emoji(o.e, ox + o.w / 2, GROUND - 15 - j * 30, 30);
+      }
     });
     items.forEach(function (o, i) {
       if (o.got) return;
       var ix = o.x - cam; if (ix < -60 || ix > W + 60) return;
       var iy = GROUND - o.h + Math.sin(t * 3 + i) * 4;
-      orb(ix, iy, o.it.e, '#3c9a3f'); label(o.it.d, ix, iy - 31, 11, '#1e3322');
+      orb(ix, iy, o.it.e, '#3c9a3f'); label(o.it.d, ix, iy - 32, 11, '#1e3322');
     });
     extras.forEach(function (o) {
       if (o.got) return;
       var ex = o.x - cam; if (ex < -60 || ex > W + 60) return;
-      orb(ex, GROUND - o.h + Math.sin(t * 4) * 4, '💖', '#e91e63');
+      orb(ex, GROUND - o.h + Math.sin(t * 4) * 4, '💖', '#e91e63', 'rgba(255,205,225,.55)');
+    });
+    powers.forEach(function (o) {
+      if (o.got) return;
+      var qx = o.x - cam; if (qx < -60 || qx > W + 60) return;
+      orb(qx, GROUND - o.h + Math.sin(t * 4) * 5, '⭐', '#f5a623', 'rgba(255,224,130,.6)');
     });
     player(W * 0.22, GROUND - py);
     parts.forEach(function (p) { ctx.globalAlpha = Math.max(0, p.life / 0.7); ctx.fillStyle = p.c; circle(p.x - cam, GROUND - p.h, 3); });
-    floats.forEach(function (f) { ctx.globalAlpha = Math.min(1, f.life); label(f.txt, f.follow ? W * 0.22 : f.x - cam, GROUND - f.h, 15, f.c); });
+    floats.forEach(function (f) { ctx.globalAlpha = Math.min(1, f.life); label(f.txt, f.follow ? W * 0.22 : f.x - cam, GROUND - f.h, f.size, f.c); });
     ctx.globalAlpha = 1;
+    // コンボ中は左上にコンボ数
+    if (combo >= 3 && state === 'run') label('COMBO ' + combo + (mult() > 1 ? '  ×' + mult() : ''), 74, 84, 14, mult() > 1 ? '#e07b24' : '#3c9a3f');
+    if (dash > 0) {
+      ctx.fillStyle = 'rgba(255,255,255,.75)'; rr(W / 2 - 60, 80, 120, 10, 5); ctx.fill();
+      ctx.fillStyle = '#ffb300'; rr(W / 2 - 60, 80, 120 * dash / DASH_TIME, 10, 5); ctx.fill();
+    }
     if (state === 'run' && stageT < 2.2) {
       ctx.globalAlpha = Math.min(1, (2.2 - stageT) / 0.6);
       label(st.year, W / 2, H * 0.3, 44, '#3c9a3f'); label(st.title, W / 2, H * 0.3 + 38, 20, '#1e3322');
@@ -352,8 +509,11 @@
     for (var k = 0; k < hearts; k++) s += '❤️';
     elHearts.textContent = s || '💔';
     elStage.textContent = STAGES[stage].year + ' ' + STAGES[stage].title;
+    elScore.textContent = '★ ' + fmt(score);
     elCount.textContent = '🎁 ' + countGot() + '/' + TOTAL;
   }
+  var lastScore = -1;
+  function hudScore() { if (score !== lastScore) { lastScore = score; elScore.textContent = '★ ' + fmt(score); } }
 
   function toast(msg) {
     elToast.textContent = msg; elToast.classList.add('on');
@@ -361,11 +521,11 @@
   }
 
   function showStart(mode) {
-    var b = best();
+    var b = bestScore();
     elStart.innerHTML = mode === 'pause'
       ? '<h2>ひと休み中</h2><p class="gm-best">準備ができたら再開しよう</p><button class="btn btn-primary" type="button" data-act="resume">▶ つづける</button>'
       : '<p class="gm-kicker">ゲームで振り返る 森一真のあゆみ</p><h2>もりぞうクエスト</h2><button class="btn btn-primary" type="button" data-act="start">▶ スタート</button>' +
-        '<p class="gm-best">' + (b ? 'ベスト記録: 思い出 ' + b + ' / ' + TOTAL + ' 個' : 'タップ / スペースでジャンプ(空中でもう1回)') + '</p>';
+        '<p class="gm-best">' + (b ? 'ハイスコア ★ ' + fmt(b) : 'タップ / スペースでジャンプ(空中でもう1回)') + '</p>';
     elStart.hidden = false; root.classList.add('idle');
   }
 
@@ -384,12 +544,20 @@
 
   function finishStage() {
     state = 'card'; root.classList.remove('running');
-    if (stage === STAGES.length - 1) { ending(); return; }
-    var st = STAGES[stage], nx = STAGES[stage + 1], n = 0;
-    var list = st.items.map(function (it, k) { var ok = !!got[stage + '-' + k]; if (ok) n++; return li(it, ok); }).join('');
+    var st = STAGES[stage], n = 0;
+    st.items.forEach(function (_, k) { if (got[stage + '-' + k]) n++; });
+    var all = n === st.items.length, bonus = hearts * 100 + (all ? 300 : 0);
+    score += bonus; hud();
+    if (stage === STAGES.length - 1) { ending(bonus); return; }
+    sfx('clear');
+    var nx = STAGES[stage + 1];
+    var list = st.items.map(function (it, k) { return li(it, !!got[stage + '-' + k]); }).join('');
     openModal('<p class="gm-kicker">' + esc(st.year) + ' CLEAR!</p><h2>' + esc(st.title) + '</h2>' +
-      '<p class="gm-sub">この時代の思い出 <b>' + n + ' / ' + st.items.length + '</b> 個</p><ul class="gm-list">' + list + '</ul>' +
-      '<div class="gm-btns sticky"><button class="btn btn-primary" type="button" data-act="next">' + esc(nx.year) + '「' + esc(nx.title) + '」へ ▶</button></div>');
+      '<div class="gm-stats"><span>思い出<b>' + n + '/' + st.items.length + '</b></span><span>✨<b>' + stageSparkles + '</b></span>' +
+      '<span>ボーナス<b>+' + bonus + '</b></span><span>スコア<b>' + fmt(score) + '</b></span></div>' +
+      (all ? '<p class="gm-perfect">🌟 この時代の思い出をコンプリート!</p>' : '') +
+      '<div class="gm-btns"><button class="btn btn-primary" type="button" data-act="next">' + esc(nx.year) + '「' + esc(nx.title) + '」へ ▶</button></div>' +
+      '<details class="gm-more"><summary>この時代の思い出を見る(' + n + '/' + st.items.length + ')</summary><ul class="gm-list">' + list + '</ul></details>');
   }
 
   function gameOver() {
@@ -399,8 +567,10 @@
       '<div class="gm-btns"><button class="btn btn-primary" type="button" data-act="retry">もう一度チャレンジ ▶</button></div>');
   }
 
-  function ending() {
-    var n = countGot(); saveBest(n);
+  function ending(bonus) {
+    var n = countGot(), prev = bestScore(), isBest = score > prev;
+    if (isBest) store('morizo-best-score', score);
+    sfx('clear');
     var rank = n === TOTAL ? '🌟 伝説のもりぞう(コンプリート!)' : n >= TOTAL * 0.8 ? '🩺 地域をつなぐ医学生' : n >= TOTAL * 0.5 ? '🔘 見守りボタンの研究員' : '🌱 まずやってみる活発性';
     var album = STAGES.map(function (st, s) {
       return '<h3>' + esc(st.year) + ' ' + esc(st.title) + '</h3><ul class="gm-list">' +
@@ -408,7 +578,9 @@
     }).join('');
     openModal('<p class="gm-kicker">GOAL!</p><h2>' + GOAL.e + ' ' + esc(GOAL.t) + '</h2>' +
       '<p class="gm-sub">' + esc(GOAL.d) + ' ／ ' + esc(GOAL.x) + '<br>森一真のあゆみは、まだまだ続く…!</p>' +
-      '<div class="gm-score"><span>集めた思い出</span><b>' + n + '</b><small>/ ' + TOTAL + ' 個</small></div>' +
+      '<div class="gm-score"><span>スコア</span><b>' + fmt(score) + '</b></div>' +
+      (isBest ? '<p class="gm-perfect">🎉 ハイスコア更新!</p>' : (prev ? '<p class="gm-sub" style="text-align:center">ハイスコア ★ ' + fmt(prev) + '</p>' : '')) +
+      '<div class="gm-stats"><span>思い出<b>' + n + '/' + TOTAL + '</b></span><span>✨<b>' + sparkles + '</b></span><span>ゴールボーナス<b>+' + bonus + '</b></span></div>' +
       '<p class="gm-rank">称号: ' + rank + '</p>' +
       '<div class="gm-btns"><button class="btn btn-primary" type="button" data-act="again">もう一度あそぶ</button>' +
       '<button class="btn btn-ghost" type="button" data-act="share">Xでシェア</button><a class="btn btn-ghost" href="index.html">サイトを見る</a></div>' +
@@ -416,7 +588,7 @@
   }
 
   function share() {
-    var text = 'もりぞうクエストで森一真のあゆみを振り返ったよ! 思い出 ' + countGot() + '/' + TOTAL + ' 個 #もりぞうクエスト';
+    var text = 'もりぞうクエストで森一真のあゆみを振り返ったよ! スコア ' + fmt(score) + '・思い出 ' + countGot() + '/' + TOTAL + ' 個 #もりぞうクエスト';
     window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(location.href.split('#')[0]), '_blank', 'noopener');
   }
 
@@ -426,7 +598,7 @@
     if (state !== 'run') return;
     var dt = last ? Math.min((ts - last) / 1000, 1 / 30) : 0;
     last = ts;
-    update(dt); draw();
+    update(dt); draw(); hudScore();
     if (state === 'run') raf = requestAnimationFrame(frame);
   }
   function run() {
@@ -440,14 +612,14 @@
 
   function act(a) {
     if (a === 'start' || a === 'again') {
-      closeModal(); newGame(); run();
-      toast('タップ / スペースでジャンプ! 空中でもう1回ジャンプできるよ');
+      closeModal(); newGame(); run(); sfx('coin');
+      toast('タップ / スペースでジャンプ! 空中でもう1回。✨を集めてコンボをつなごう');
       if (root.getBoundingClientRect().top < 0) root.scrollIntoView({ block: 'center', behavior: 'smooth' });
     } else if (a === 'resume') run();
     else if (a === 'next') { closeModal(); startStage(stage + 1); run(); }
     else if (a === 'retry') {
       STAGES[stage].items.forEach(function (_, k) { delete got[stage + '-' + k]; });
-      hearts = 3; closeModal(); startStage(stage); run();
+      hearts = 3; score = startScore; sparkles = startSparkles; closeModal(); startStage(stage); run();
     } else if (a === 'share') share();
   }
 
@@ -456,13 +628,14 @@
     if (b && (root.contains(b) || modal.contains(b))) act(b.getAttribute('data-act'));
   });
   $('gm-pause').addEventListener('click', pause);
+  elSound.addEventListener('click', function () { muted = !muted; store('morizo-mute', muted ? '1' : '0'); soundIcon(); if (!muted) sfx('coin'); });
   root.addEventListener('pointerdown', function (e) {
     if (state !== 'run' || (e.target.closest && e.target.closest('button'))) return;
-    e.preventDefault(); jump();
+    e.preventDefault(); press();
   });
   document.addEventListener('keydown', function (e) {
     if (state !== 'run') return;
-    if (e.code === 'Space' || e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') { e.preventDefault(); if (!e.repeat) jump(); }
+    if (e.code === 'Space' || e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') { e.preventDefault(); if (!e.repeat) press(); }
     else if (e.key === 'Escape' || e.key === 'p' || e.key === 'P') pause();
   });
   document.addEventListener('visibilitychange', function () { if (document.hidden) pause(); });
@@ -480,6 +653,7 @@
     draw();
   }
 
+  soundIcon();
   startStage(0);
   showStart('title');
   resize();
