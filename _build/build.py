@@ -888,10 +888,12 @@ other_orgs = other_orgs.replace('<p>山形県南陽市立赤湯中学校で出�
     '<p>山形県南陽市の中学校・高校で、子宮頸がんとHPVワクチンの出張授業を担当(2024年1月・7月)。7月は市内3中学校と県立南陽高校で、講師3人のひとりとして授業しました。</p>')
 vcan = re.search(r'      <a class="org fade" href="https://vcan-hpv.org.*?</a>\n', other_orgs, re.S).group(0)
 edu = f'''    <div class="org-grid">
-      <div class="org fade" style="padding-top:26px">
+      <div class="org fade">
+        <img class="org-img" src="assets/photos/expo2025-inochi.webp" alt="大阪・関西万博「inochiのペイフォワードWeek」のステージで話す森一真" loading="lazy">
         <span class="tag">EXPO 2025</span>
         <h4>大阪・関西万博で登壇(2025年6月)</h4>
-        <p>学生団体Vcanのメンバーとして、大阪・関西万博のプログラムに登壇しました。中高生への出張授業「中高ツアー」を軸にした、子宮頸がん・HPVワクチンの啓発の取り組みを、1日2回の発表で伝えました。</p>
+        <p>万博の催事「inochiのペイフォワードWeek Presented by 中外製薬」(ギャラリーWEST)のステージに、学生団体Vcanのメンバーとして登壇しました。中高生への出張授業「中高ツアー」を軸にした、子宮頸がん・HPVワクチンの啓発の取り組みを、1日2回の発表で伝えました。</p>
+        <span class="card-link"><a class="il" href="https://inochi-payitforward.com/event8-details/" target="_blank" rel="noopener">イベントのページ →</a></span>
       </div>
 {vcan}      <div class="org fade" style="padding-top:26px">
         <span class="tag">SCHOOL</span>
