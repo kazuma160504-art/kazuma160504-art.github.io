@@ -686,19 +686,20 @@ edu = f'''    <div class="org-grid">
         <p>公民館や団地のサロンで、熱中症予防やフレイル予防など、医学部で学んだ知識を地域の方へ分かりやすくお伝えしています。</p>
         <span class="card-link">SCSの活動を見る →</span>
       </a>
-      <div class="org fade">
+      <a class="org fade" href="https://vcan-hpv.org/activity/8/" target="_blank" rel="noopener">
         <img class="org-img" src="assets/photos/vcan-poster.webp" alt="じぶんごとcaféのチラシ" loading="lazy" style="object-fit:contain;background:#f6f0fa">
         <span class="tag">EVENT</span>
         <h4>Vcan じぶんごとcafé(佐賀市)</h4>
         <p>佐賀市と連携したワークショップ型イベントで、参加者と一緒に健康を「自分ごと」として考えました。</p>
-      </div>
+        <span class="card-link">Vcanの活動ページ →</span>
+      </a>
     </div>
     <h3 class="works-sub fade" style="margin-top:56px">学会発表</h3>
     <ul class="timeline fade">
       <li><time>2026.10</time><span><a class="il" href="publications.html">第85回 日本公衆衛生学会総会(東京) 口演発表(筆頭演者)</a></span></li>
       <li><time>2025.10</time><span><a class="il" href="publications.html">第84回 日本公衆衛生学会総会(静岡) ポスター発表</a></span></li>
       <li><time>2024.10</time><span><a class="il" href="publications.html">第83回 日本公衆衛生学会総会(北海道) ポスター・口演発表</a></span></li>
-      <li><time>2026.03</time><span>佐賀TSUNAGIコンベンションで研究成果を発表・展示</span></li>
+      <li><time>2026.03</time><span><a class="il" href="https://www.suric.saga-u.ac.jp/event/contents-12075/" target="_blank" rel="noopener">佐賀TSUNAGIコンベンションで研究成果を発表・展示</a></span></li>
     </ul>
 '''
 page('education', '学んだことを、地域と次の世代へ。授業・講演・学会での発信。', sec(edu))
@@ -711,7 +712,7 @@ aw = aw[:-len('</div>')] + '''  <div class="award fade">
         <span class="ic"><i data-lucide="medal"></i></span>
         <span><span class="when">2021.12 ／ 少林寺拳法</span><h4>関東高等学校少林寺拳法選抜大会 入賞</h4><p>第24回大会(ALSOKぐんま武道館)で、男子団体演武 4位、男子自由組演武 8位。</p></span>
       </div>
-      <a class="award fade" href="media.html">
+      <a class="award fade" href="http://www.city.nanyo.yamagata.jp/up/files/giyousei/kouhoukoucyo/siho/pdf/1373.txt" target="_blank" rel="noopener">
         <span class="ic"><i data-lucide="newspaper"></i></span>
         <span><span class="when">2024.08 ／ 掲載</span><h4>「市報なんよう」でHPVワクチン出張授業が特集</h4><p>山形県南陽市の広報誌(No.1373)で、Vcanの講師として紹介されました。</p></span>
       </a>
@@ -735,7 +736,7 @@ kirie = '''    <div class="artwork fade">
         <p>歌舞伎十八番のひとつ「毛抜」を題材にした切り絵作品。一枚の黒い紙から、隈取の表情、指先、着物のしわまでを切り出し、背景には花を描いた和紙を、着物の部分には千代紙を重ねて色を添えています。</p>
         <ul class="art-meta">
           <li><i data-lucide="scissors"></i>技法:切り絵(黒紙の切り抜き + 和紙・千代紙の色付け)</li>
-          <li><i data-lucide="landmark"></i>佐賀大学美術館での作品展示実績あり</li>
+          <li><i data-lucide="landmark"></i><a class="il" href="https://sagadaipress.saga-u.ac.jp/archives/10980/" target="_blank" rel="noopener">佐賀大学美術館での作品展示実績あり</a></li>
         </ul>
       </div>
     </div>
@@ -776,9 +777,9 @@ pub = """    <div class="pub fade">
 confs = """    <div class="mini-grid">
       <a class="mini-card fade" href="research.html" style="color:inherit"><span class="ki"><i data-lucide="mic"></i></span><div><h4>第85回 日本公衆衛生学会総会(東京)</h4><p>2026年10月30日 ／ 口演(O7-4・筆頭演者) ／ 「高齢者向け押しボタンシステムを活用した災害時安否確認訓練の評価と地域防災への示唆」</p></div></a>
       <a class="mini-card fade" href="research.html" style="color:inherit"><span class="ki"><i data-lucide="presentation"></i></span><div><h4>第84回 日本公衆衛生学会総会(静岡)</h4><p>2025年10月 ／ ポスター発表 ／ 押しボタンプロジェクト</p></div></a>
-      <a class="mini-card fade" href="research.html" style="color:inherit"><span class="ki"><i data-lucide="presentation"></i></span><div><h4>第83回 日本公衆衛生学会総会(北海道)</h4><p>2024年10月 ／ ポスター・口演発表 ／ 押しボタンプロジェクト</p></div></a>
-      <a class="mini-card fade" href="research.html" style="color:inherit"><span class="ki"><i data-lucide="lightbulb"></i></span><div><h4>佐賀TSUNAGIコンベンション</h4><p>2026年3月 ／ 研究成果の発表・展示</p></div></a>
-      <div class="mini-card fade"><span class="ki"><i data-lucide="users"></i></span><div><h4>佐賀疫学研究会</h4><p>2026年1月 ／ 参加</p></div></div>
+      <a class="mini-card fade" href="https://plaza.umin.ac.jp/jsph83/" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="presentation"></i></span><div><h4>第83回 日本公衆衛生学会総会(北海道)</h4><p>2024年10月 ／ 口演(O13-2-4・筆頭演者)「災害時の避難意向に関する世帯の特徴：佐賀市における横断的研究」 ／ 押しボタンPJのポスター(P08-67)「無線式呼び出し機を活用した住民主体の独居高齢者の見守りシステムの効果と今後の展望」</p></div></a>
+      <a class="mini-card fade" href="https://www.suric.saga-u.ac.jp/event/contents-12075/" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="lightbulb"></i></span><div><h4>佐賀TSUNAGIコンベンション</h4><p>2026年3月 ／ 研究成果の発表・展示</p></div></a>
+      <a class="mini-card fade" href="https://joint-jea-ieawpr2026.jp/home_jp/" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="users"></i></span><div><h4>第36回 日本疫学会学術総会(長崎)</h4><p>2026年1月 ／ 参加 ／ 国際疫学会 西太平洋地域との合同学術集会</p></div></a>
     </div>
 """
 fields = chart_wrap('network', '研究のフィールド', '地域の見守りから、肝臓・循環器の臨床研究まで', hub_svg(('研究', 'Research'),
@@ -788,11 +789,11 @@ page('publications', '査読付き国際誌への共著論文と、学会での�
 media = """    <div class="mini-grid">
       <a class="mini-card fade" href="https://www.saga-u.ac.jp/koho/%e4%bc%9a%e8%a6%8b/2026033040388" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="newspaper"></i></span><div><h4>佐賀大学 公式プレスリリース</h4><p>2026年3月 ／ 押しボタンプロジェクトを大学として発表</p></div></a>
       <a class="mini-card fade" href="https://www.saga-s.co.jp/articles/-/1659890" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="newspaper"></i></span><div><h4>佐賀新聞 掲載</h4><p>SCSの国際ソロプチミスト佐賀有明からの表彰(2026年2月)が紹介されました</p></div></a>
-      <div class="mini-card fade"><span class="ki"><i data-lucide="tv"></i></span><div><h4>サガテレビ 取材</h4><p>2026年2月 ／ 住民向け説明会の様子が取材されました</p></div></div>
+      <a class="mini-card fade" href="https://www.sagatv.co.jp/news/archives/2026052223359" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="tv"></i></span><div><h4>サガテレビ 取材</h4><p>2026年2月 ／ 住民向け説明会の様子が取材されました</p></div></a>
       <a class="mini-card fade" href="https://youtu.be/Bt9TFAmHH0I" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="tv"></i></span><div><h4>サガテレビ 放映</h4><p>2025年3月 ／ 地域での活動が紹介されました</p></div></a>
       <a class="mini-card fade" href="community.html" style="color:inherit"><span class="ki"><i data-lucide="radio"></i></span><div><h4>えびすFM「バルーナーズDAOおとなりさんラジオ」</h4><p>2026年5月〜 ／ パーソナリティとして出演・Spotify でも配信</p></div></a>
       <a class="mini-card fade" href="https://www.suric.saga-u.ac.jp/saga_project_map/" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="map-pin"></i></span><div><h4>佐賀大学 地域連携紹介マップ</h4><p>2024年9月 ／ プロジェクトが掲載</p></div></a>
-      <div class="mini-card fade"><span class="ki"><i data-lucide="book-open"></i></span><div><h4>市報なんよう 2024年8月号(山形県南陽市)</h4><p>特集「知らないまま後悔しないで 子宮頸がんとHPVワクチン」でVcanの出張授業と講師として紹介</p></div></div>
+      <a class="mini-card fade" href="http://www.city.nanyo.yamagata.jp/up/files/giyousei/kouhoukoucyo/siho/pdf/1373.txt" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="book-open"></i></span><div><h4>市報なんよう 2024年8月号(山形県南陽市)</h4><p>特集「知らないまま後悔しないで 子宮頸がんとHPVワクチン」でVcanの出張授業と講師として紹介</p></div></a>
       <div class="mini-card fade"><span class="ki"><i data-lucide="file-image"></i></span><div><h4>地域紙への掲載</h4><p>SCSのサロン活動が地域の新聞で紹介</p></div></div>
     </div>
 """
