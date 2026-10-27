@@ -269,7 +269,7 @@ a.orbit-node:hover .orbit-card,a.orbit-node:focus-visible .orbit-card{transform:
 .orbit-node:hover .orbit-go{opacity:1;transform:translateX(3px)}
 .orbit-node.nolink .orbit-card{padding-right:14px}
 .bm-m{display:none}
-@media (max-width:720px){
+@media (max-width:800px){
   .orbit.stack{aspect-ratio:auto;height:var(--mh);--cy:var(--mcy)}
   .orbit.stack .orbit-node{left:calc(var(--mx) * 1%);top:calc(var(--my) * 1%)}
   .orbit.stack .orbit-card{padding:9px 11px 9px 10px;gap:8px;border-radius:14px}
@@ -326,6 +326,20 @@ a.orbit-node:hover .orbit-card,a.orbit-node:focus-visible .orbit-card{transform:
 .hero h1 .ch{display:inline-block;opacity:0;transform:translateY(.45em) rotate(-8deg);animation:ch-in .7s cubic-bezier(.2,.8,.25,1.25) forwards;animation-delay:calc(.35s + var(--i) * .12s)}
 @keyframes ch-in{to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.hero h1 .ch{opacity:1;transform:none;animation:none}}
+/* いま取り組んでいる研究(分野ごとのカード) */
+.rnow-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px;margin-top:26px}
+.rnow{position:relative;display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 18px 18px 22px;overflow:hidden;color:var(--text)}
+.rnow::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.rnow-ic{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;color:#fff;background:var(--c);box-shadow:inset 0 2px 3px rgba(255,255,255,.4),inset 0 -3px 6px rgba(0,0,0,.15),0 8px 14px -8px var(--c)}
+.rnow-ic svg{width:21px;height:21px}
+.rnow-f{display:block;font-weight:700;font-size:15.5px}
+.rnow ul{list-style:none;padding:0;margin:6px 0 0}
+.rnow li{position:relative;padding-left:14px;font-size:13.5px;color:var(--muted);line-height:1.7}
+.rnow li::before{content:"";position:absolute;left:0;top:.72em;width:6px;height:6px;border-radius:50%;background:var(--c)}
+.rnow a.il{color:inherit}
+/* 講演会のポスター(2枚並び) */
+.org-posters{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px;background:linear-gradient(135deg,#e8f1fb,#dfeaf7)}
+.org-posters img{display:block;width:100%;aspect-ratio:720/1018;object-fit:cover;border-radius:8px;cursor:zoom-in;box-shadow:0 6px 14px -8px rgba(20,60,120,.5)}
 /* ポッドキャスト(Spotify の埋め込み) */
 .podcast{max-width:760px;border-radius:14px;overflow:hidden;background:#282828}
 .podcast iframe{display:block;width:100%;height:352px;border:0}
@@ -403,10 +417,10 @@ a.orbit-node:hover .orbit-card,a.orbit-node:focus-visible .orbit-card{transform:
 THEMES = [
     ('profile',   'user-round',    'PROFILE',   'プロフィール',       '経歴・役職・資格・強み。森一真がどんな人かをひと目で。'),
     ('research',  'bell-ring',     'RESEARCH',  '研究:押しボタンPJ',  '「おはよう」ボタンで独居高齢者を見守る、10年続く地域研究。'),
-    ('publications','book-open-text','PUBLICATIONS','論文・学会発表', 'Am J Cardiol 掲載の共著論文と、日本公衆衛生学会での発表。'),
+    ('publications','book-open-text','PUBLICATIONS','論文・学会発表', '5分野の研究と、Am J Cardiol 掲載の共著論文・公衆衛生学会での発表。'),
     ('scs',       'hand-heart',    'SCS',       'SCS 地域交流',       '学生団体SCSの代表として、団地サロンや子どもの居場所へ。'),
     ('community', 'radio',         'COMMUNITY', 'バルーナーズDAO・ラジオ', 'DAOのモデレーター、えびすFMのラジオパーソナリティ。'),
-    ('education', 'graduation-cap','OUTREACH',  '教育・発信',         '中高生への出張授業、学会発表、地域での健康講演。'),
+    ('education', 'graduation-cap','OUTREACH',  '教育・発信',         '中高生への出張授業、オンライン講演会、学会発表、地域での健康講演。'),
     ('awards',    'trophy',        'AWARDS',    '実績・表彰',         'CSO志支援金、国際ソロプチミスト表彰、大臣からの手紙ほか。'),
     ('media',     'newspaper',     'MEDIA',     'メディア・掲載',     'サガテレビでの放映、大学の公式発表、地域紙・ラジオ。'),
     ('hobbies',   'palette',       'HOBBIES',   '趣味・アート',       '切り絵(美術館展示)・詩吟1級・少林寺拳法(全国大会出場)・笑い文字。'),
@@ -612,8 +626,10 @@ def orbit_html(center, nodes):
     PCは中心のまわりに楕円配置。スマホは5項目で短い文字なら上下に振り分け、それ以外は縦のジグザグに並べる"""
     import math
     n = len(nodes)
-    pc = [(50 + 36 * math.cos(a), 50 + 37 * math.sin(a)) for a in (-math.pi / 2 + 2 * math.pi * i / n for i in range(n))]
     em = lambda t: sum(1 if ord(c) > 0x2000 else 0.55 for c in t)  # 全角1・半角0.55として文字幅を数える
+    wide = max(98 + max(em(lab) * 15, em(sub) * 11.5) for _, lab, sub, _, _ in nodes) > 215  # PCでのカード幅が大きい図は、少し内側に寄せる
+    rx = 33 if wide else 36
+    pc = [(50 + rx * math.cos(a), 50 + 37 * math.sin(a)) for a in (-math.pi / 2 + 2 * math.pi * i / n for i in range(n))]
     card_w = max(61 + max(em(lab) * 13, em(sub) * 10.5) for _, lab, sub, _, _ in nodes)  # スマホでのカード幅の目安(px)
     stack = not (n == 5 and card_w <= 150)
     if stack:
@@ -754,7 +770,7 @@ scs_intro = '''    <div class="act-lead fade">
       <figure class="fade"><img src="assets/photos/salon-newspaper.webp" alt="活動が地域紙に" loading="lazy"><figcaption>活動が地域紙に掲載</figcaption></figure>
     </div>
 '''
-matsuri = '''    <p class="creative-lead fade" style="margin-top:-18px">地域の夏祭りにSCSとしてブースを出展。血圧測定、心肺蘇生(CPR)体験、妊婦体験ジャケットなど、子どもから大人まで楽しみながら健康について学べる場をつくりました。</p>
+matsuri = '''    <p class="creative-lead fade" style="margin-top:-18px">医大北祭り・養生ふれあい祭りなど、地域のお祭りにSCSとして医療体験ブースを出店。血圧測定、心肺蘇生(CPR)体験、妊婦体験ジャケットなど、子どもから大人まで楽しみながら健康について学べる場をつくりました。</p>
     <div class="photo-row">
       <figure class="fade"><img src="assets/photos/drv-matsuri-cpr.webp" alt="心肺蘇生体験ブース" loading="lazy"><figcaption>心肺蘇生(CPR)体験</figcaption></figure>
       <figure class="fade"><img src="assets/photos/drv-matsuri-bp.webp" alt="血圧測定" loading="lazy"><figcaption>血圧測定コーナー</figcaption></figure>
@@ -767,7 +783,7 @@ matsuri = '''    <p class="creative-lead fade" style="margin-top:-18px">地域�
 scs_g = '    <div class="gallery fade">\n' + '\n'.join(f for f in gal_figs if any(x in f for x in ['scs-', 'salon-', 'balloon-art', 'kids-tanabata'])) + '\n    </div>\n'
 scs_map = '<div class="chart-grid">' + chart_wrap('map', 'SCSの活動フィールド', '地域のさまざまな場所へ出向いています', orbit_html(('SCS', '学生地域交流の会'),
         [('armchair', '団地サロン', '健康講話・体操・脳トレ', None, '#3c9a3f'), ('baby', '子どもの居場所', '宿題サポート・遊び', None, '#e07b24'),
-         ('mic', '健康講演', '公民館で熱中症予防など', None, '#2a9d8f'), ('tent', '夏祭り', '血圧測定・CPR体験', None, '#e05264'),
+         ('mic', '健康講演', '公民館で熱中症予防など', None, '#2a9d8f'), ('tent', 'お祭り', '医療体験ブースを出店', None, '#e05264'),
          ('school', '小学校', '性教育の授業', 'education.html', '#2f7fc1'), ('heart-handshake', '地域イベント', 'バルーン・交流', 'gallery.html', '#8e44ad')])) + \
     chart_wrap('pie-chart', 'メンバー構成', '2025年5月時点・総勢27名', donut([('医学生', 23, G), ('薬学部・理工学部', 4, B)], '27', '名') +
         '<div class="legend" style="justify-content:center"><span><i style="background:#3c9a3f"></i>医学生 23名</span><span><i style="background:#4a6fd1"></i>薬学部・理工学部 4名</span></div>' +
@@ -775,9 +791,19 @@ scs_map = '<div class="chart-grid">' + chart_wrap('map', 'SCSの活動フィー�
 page('scs', '団地のサロン、子どもの居場所、公民館。地域の「となり」にいる学生でありたい。',
      sec(scs_intro, 'SCS', 'SCS(佐賀大学学生地域交流の会)') +
      sec(scs_map, 'FIELD', '活動の全体像', alt=True) +
-     sec(matsuri, 'FESTIVAL', '地域のお祭りで健康ブース') +
-     sec(ig_html, 'INSTAGRAM', '最近の活動(Instagramより)', alt=True) +
-     sec(scs_g, 'GALLERY', '活動の様子'))
+     sec(matsuri, 'FESTIVAL', '地域のお祭りで医療体験ブース') +
+     sec('''    <div class="org-grid">
+      <div class="org fade" style="padding-top:26px">
+        <span class="tag">EVENT 2025</span>
+        <h4>SAGAたてもの結び(モラージュ佐賀会場)</h4>
+        <p>「SAGAたてもの結び」に、SCSとしてモラージュ佐賀の会場で参加しました。</p>
+        <span class="card-link"><a class="il" href="https://sagadaipress.saga-u.ac.jp/archives/tag/saga%E3%81%9F%E3%81%A6%E3%82%82%E3%81%AE%E7%B5%90%E3%81%B3/" target="_blank" rel="noopener">佐賀大学の関連記事 →</a></span>
+        <span class="card-link"><a class="il" href="https://www.instagram.com/p/DOH5shvDxzG/" target="_blank" rel="noopener">Instagramの投稿 →</a></span>
+      </div>
+    </div>
+''', 'EVENT', '地域のイベントへ', alt=True) +
+     sec(ig_html, 'INSTAGRAM', '最近の活動(Instagramより)') +
+     sec(scs_g, 'GALLERY', '活動の様子', alt=True))
 
 # 4 コミュニティ
 podcast = """    <p class="fade" style="color:var(--muted);font-size:14px;margin-bottom:18px">えびすFMで放送した回を、Spotify のポッドキャストで配信しています。</p>
@@ -814,6 +840,12 @@ edu = f'''    <div class="org-grid">
         <p>佐賀市と連携したワークショップ型イベントで、参加者と一緒に健康を「自分ごと」として考えました。</p>
         <span class="card-link">Vcanの活動ページ →</span>
       </a>
+      <div class="org fade">
+        <div class="org-posters"><img src="assets/photos/jinsei-shujutsushitsu-1.webp" alt="「人生手術室」第1弾のポスター(3月27日・Zoom)" loading="lazy"><img src="assets/photos/jinsei-shujutsushitsu-2.webp" alt="「人生手術室2」第2弾のポスター(6月7日・Zoom)" loading="lazy"></div>
+        <span class="tag">WEBINAR</span>
+        <h4>オンライン講演会「人生手術室」</h4>
+        <p>〜あなたの人生の選択肢にメスを入れる講演会〜。Zoomでのウェブセミナーを開催し、第1弾(3月27日)に続いて第2弾(6月7日)も開催しました。</p>
+      </div>
     </div>
     <h3 class="works-sub fade" style="margin-top:56px">学会発表</h3>
     <ul class="timeline fade">
@@ -907,10 +939,19 @@ confs = """    <div class="mini-grid">
       <a class="mini-card fade" href="https://joint-jea-ieawpr2026.jp/home_jp/" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="users"></i></span><div><h4>第36回 日本疫学会学術総会(長崎)</h4><p>2026年1月 ／ 参加 ／ 国際疫学会 西太平洋地域との合同学術集会</p></div></a>
     </div>
 """
-fields = chart_wrap('network', '研究のフィールド', '地域の見守りから、肝臓・循環器の臨床研究まで', orbit_html(('研究', 'Research'),
-    [('bell-ring', '地域見守り', '押しボタンPJ', 'research.html', '#3c9a3f'), ('users', '社会疫学', 'ソーシャルキャピタル', None, '#2f7fc1'), ('activity', '肝臓・代謝', 'MASLD', None, '#c9862b'),
-     ('heart-pulse', '循環器', '心血管リスク予測', None, '#e05264'), ('siren', '救急医学', '孤立死・突然死の回避', None, '#8e44ad')]))
-page('publications', '査読付き国際誌への共著論文と、学会での研究発表。', sec(pub, 'PAPER', '論文') + sec(confs, 'CONFERENCE', '学会・研究会発表', alt=True) + sec(fields, 'FIELDS', '研究の広がり'))
+# いま取り組んでいる研究(5分野)
+RESEARCH = [('heart-pulse', '心臓血管外科', '冠動脈バイパスの長期開存', '#e05264', ['冠動脈バイパス術後の長期開存率']),
+            ('pill', '感染症', '尿路感染症とホスホマイシン', '#2f7fc1', ['尿路感染症とホスホマイシン']),
+            ('microscope', '肝臓', 'ICI後の非代償化', '#c9862b', ['免疫チェックポイント阻害薬(ICI)投与後の、肝臓の非代償化']),
+            ('users', '公衆衛生', 'エピゲノム年齢・災害時避難', '#3c9a3f', ['エピゲノム年齢と喫煙量の関係', '災害時の避難意向調査(自主防災組織)']),
+            ('siren', '救急', '見守りボタン・安否確認', '#8e44ad', ['<a class="il" href="research.html">「いろどり+ボタン」を使った見守りシステムと、災害時の安否確認</a>'])]
+fields = chart_wrap('network', '研究のフィールド', '心臓血管外科・感染症・肝臓・公衆衛生・救急の5分野', orbit_html(('研究', 'Research'),
+    [(ic, f, sub, 'research.html' if f == '救急' else None, c) for ic, f, sub, c, _ in RESEARCH]))
+fields += '    <div class="rnow-grid">\n' + '\n'.join(
+    f'      <div class="rnow fade" style="--c:{c}"><span class="rnow-ic"><i data-lucide="{ic}"></i></span><div><span class="rnow-f">{f}</span><ul>' +
+    ''.join(f'<li>{t}</li>' for t in topics) + '</ul></div></div>' for ic, f, _, c, topics in RESEARCH) + '\n    </div>\n'
+page('publications', '心臓血管外科・感染症・肝臓・公衆衛生・救急の5分野での研究と、論文・学会発表。',
+     sec(fields, 'RESEARCH NOW', 'いま取り組んでいる研究') + sec(pub, 'PAPER', '論文', alt=True) + sec(confs, 'CONFERENCE', '学会・研究会発表'))
 
 media = """    <div class="mini-grid">
       <a class="mini-card fade" href="https://www.saga-u.ac.jp/koho/%e4%bc%9a%e8%a6%8b/2026033040388" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="newspaper"></i></span><div><h4>佐賀大学 公式プレスリリース</h4><p>2026年3月 ／ 押しボタンプロジェクトを大学として発表</p></div></a>
@@ -1079,7 +1120,7 @@ js = '''// 共通スクリプト: メニュー・スクロールフェード・�
 })();
 (function(){
   var lb=document.getElementById('lightbox'); if(!lb) return; var im=lb.querySelector('img'), cap=lb.querySelector('figcaption');
-  document.querySelectorAll('.gallery img,.photo-row img,.org-img,.art-frame img').forEach(function(el){
+  document.querySelectorAll('.gallery img,.photo-row img,.org-img,.art-frame img,.org-posters img').forEach(function(el){
     el.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();im.src=el.src;im.alt=el.alt;
       var fc=el.closest('figure')&&el.closest('figure').querySelector('figcaption'); cap.textContent=fc?fc.textContent:el.alt;
       lb.classList.add('open');});

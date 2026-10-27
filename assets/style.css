@@ -611,7 +611,7 @@ a.orbit-node:hover .orbit-card,a.orbit-node:focus-visible .orbit-card{transform:
 .orbit-node:hover .orbit-go{opacity:1;transform:translateX(3px)}
 .orbit-node.nolink .orbit-card{padding-right:14px}
 .bm-m{display:none}
-@media (max-width:720px){
+@media (max-width:800px){
   .orbit.stack{aspect-ratio:auto;height:var(--mh);--cy:var(--mcy)}
   .orbit.stack .orbit-node{left:calc(var(--mx) * 1%);top:calc(var(--my) * 1%)}
   .orbit.stack .orbit-card{padding:9px 11px 9px 10px;gap:8px;border-radius:14px}
@@ -668,6 +668,20 @@ a.orbit-node:hover .orbit-card,a.orbit-node:focus-visible .orbit-card{transform:
 .hero h1 .ch{display:inline-block;opacity:0;transform:translateY(.45em) rotate(-8deg);animation:ch-in .7s cubic-bezier(.2,.8,.25,1.25) forwards;animation-delay:calc(.35s + var(--i) * .12s)}
 @keyframes ch-in{to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.hero h1 .ch{opacity:1;transform:none;animation:none}}
+/* いま取り組んでいる研究(分野ごとのカード) */
+.rnow-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px;margin-top:26px}
+.rnow{position:relative;display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 18px 18px 22px;overflow:hidden;color:var(--text)}
+.rnow::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.rnow-ic{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;color:#fff;background:var(--c);box-shadow:inset 0 2px 3px rgba(255,255,255,.4),inset 0 -3px 6px rgba(0,0,0,.15),0 8px 14px -8px var(--c)}
+.rnow-ic svg{width:21px;height:21px}
+.rnow-f{display:block;font-weight:700;font-size:15.5px}
+.rnow ul{list-style:none;padding:0;margin:6px 0 0}
+.rnow li{position:relative;padding-left:14px;font-size:13.5px;color:var(--muted);line-height:1.7}
+.rnow li::before{content:"";position:absolute;left:0;top:.72em;width:6px;height:6px;border-radius:50%;background:var(--c)}
+.rnow a.il{color:inherit}
+/* 講演会のポスター(2枚並び) */
+.org-posters{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px;background:linear-gradient(135deg,#e8f1fb,#dfeaf7)}
+.org-posters img{display:block;width:100%;aspect-ratio:720/1018;object-fit:cover;border-radius:8px;cursor:zoom-in;box-shadow:0 6px 14px -8px rgba(20,60,120,.5)}
 /* ポッドキャスト(Spotify の埋め込み) */
 .podcast{max-width:760px;border-radius:14px;overflow:hidden;background:#282828}
 .podcast iframe{display:block;width:100%;height:352px;border:0}
