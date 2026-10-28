@@ -751,6 +751,29 @@ section{scroll-margin-top:110px}
 .conf-photo{max-width:640px;margin:26px auto 0}
 .conf-photo img{display:block;width:100%;border-radius:14px;cursor:zoom-in;box-shadow:0 14px 30px -18px rgba(30,51,34,.5)}
 .conf-photo figcaption{margin-top:8px;text-align:center;font-size:13px;color:var(--muted)}
+/* SCS: 場所ごとに開くボタン */
+.sp-lead{color:var(--muted);font-size:14px;margin:-8px 0 18px}
+.spots{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));grid-auto-flow:dense;gap:10px;align-items:start}
+.spot summary{display:flex;align-items:center;gap:10px;min-height:66px;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:14px;cursor:pointer;list-style:none;transition:border-color .2s,box-shadow .2s,transform .2s}
+.spot summary::-webkit-details-marker{display:none}
+.spot summary:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 10px 20px -14px rgba(30,51,34,.45)}
+.spot summary::after{content:"+";flex:none;font-size:18px;font-weight:700;color:var(--accent);transition:transform .25s ease}
+.sp-ic{flex:none;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#eef6e6;font-size:20px}
+.sp-t{flex:1;display:grid;line-height:1.35;min-width:0}
+.sp-t b{font-size:14.5px}
+.sp-t small{font-size:12px;color:var(--muted)}
+.sp-cam{font-style:normal;font-size:13px;opacity:.75}
+.spot[open]{grid-column:1/-1}
+.spot[open] summary{border-color:var(--accent);background:#f1f8ea;border-radius:14px 14px 0 0;transform:none;box-shadow:none}
+.spot[open] summary::after{transform:rotate(45deg)}
+.sp-body{background:#fff;border:1px solid var(--accent);border-top:0;border-radius:0 0 14px 14px;padding:14px 16px 16px;animation:sp-in .3s ease}
+@keyframes sp-in{from{opacity:0;transform:translateY(-6px)}}
+.sp-body p{font-size:14px;line-height:1.8}
+.sp-photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:12px}
+.sp-photos img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;cursor:zoom-in}
+.sp-links{margin-top:6px;display:flex;flex-wrap:wrap;gap:4px 16px;font-size:13.5px}
+@media (max-width:520px){.spots{grid-template-columns:1fr 1fr;gap:8px}.spot summary{gap:8px;padding:10px;min-height:60px}.sp-ic{width:30px;height:30px;font-size:16px;border-radius:9px}.sp-t b{font-size:13.5px}.sp-t small{font-size:11px}.spot summary::after{font-size:15px}.sp-cam{display:none}}
+@media (prefers-reduced-motion:reduce){.sp-body{animation:none}}
 /* あゆみ(年表): 年ごとに開け閉め */
 .ay-lead{color:var(--muted);font-size:14px;margin-bottom:16px}
 .ayumi{display:grid;gap:10px}

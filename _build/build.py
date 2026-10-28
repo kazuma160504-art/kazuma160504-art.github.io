@@ -409,6 +409,29 @@ section{scroll-margin-top:110px}
 .conf-photo{max-width:640px;margin:26px auto 0}
 .conf-photo img{display:block;width:100%;border-radius:14px;cursor:zoom-in;box-shadow:0 14px 30px -18px rgba(30,51,34,.5)}
 .conf-photo figcaption{margin-top:8px;text-align:center;font-size:13px;color:var(--muted)}
+/* SCS: 場所ごとに開くボタン */
+.sp-lead{color:var(--muted);font-size:14px;margin:-8px 0 18px}
+.spots{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));grid-auto-flow:dense;gap:10px;align-items:start}
+.spot summary{display:flex;align-items:center;gap:10px;min-height:66px;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:14px;cursor:pointer;list-style:none;transition:border-color .2s,box-shadow .2s,transform .2s}
+.spot summary::-webkit-details-marker{display:none}
+.spot summary:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 10px 20px -14px rgba(30,51,34,.45)}
+.spot summary::after{content:"+";flex:none;font-size:18px;font-weight:700;color:var(--accent);transition:transform .25s ease}
+.sp-ic{flex:none;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#eef6e6;font-size:20px}
+.sp-t{flex:1;display:grid;line-height:1.35;min-width:0}
+.sp-t b{font-size:14.5px}
+.sp-t small{font-size:12px;color:var(--muted)}
+.sp-cam{font-style:normal;font-size:13px;opacity:.75}
+.spot[open]{grid-column:1/-1}
+.spot[open] summary{border-color:var(--accent);background:#f1f8ea;border-radius:14px 14px 0 0;transform:none;box-shadow:none}
+.spot[open] summary::after{transform:rotate(45deg)}
+.sp-body{background:#fff;border:1px solid var(--accent);border-top:0;border-radius:0 0 14px 14px;padding:14px 16px 16px;animation:sp-in .3s ease}
+@keyframes sp-in{from{opacity:0;transform:translateY(-6px)}}
+.sp-body p{font-size:14px;line-height:1.8}
+.sp-photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:12px}
+.sp-photos img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;cursor:zoom-in}
+.sp-links{margin-top:6px;display:flex;flex-wrap:wrap;gap:4px 16px;font-size:13.5px}
+@media (max-width:520px){.spots{grid-template-columns:1fr 1fr;gap:8px}.spot summary{gap:8px;padding:10px;min-height:60px}.sp-ic{width:30px;height:30px;font-size:16px;border-radius:9px}.sp-t b{font-size:13.5px}.sp-t small{font-size:11px}.spot summary::after{font-size:15px}.sp-cam{display:none}}
+@media (prefers-reduced-motion:reduce){.sp-body{animation:none}}
 /* あゆみ(年表): 年ごとに開け閉め */
 .ay-lead{color:var(--muted);font-size:14px;margin-bottom:16px}
 .ayumi{display:grid;gap:10px}
@@ -504,7 +527,7 @@ THEMES = [
     ('community', 'radio',         'COMMUNITY', 'バルーナーズDAO・ラジオ', 'DAOのモデレーター、えびすFMのラジオパーソナリティ。'),
     ('education', 'graduation-cap','OUTREACH',  '教育・発信',         '大阪・関西万博での登壇、中高生への出張授業、小学校の防煙教室、市民向けセミナーの講師。'),
     ('awards',    'trophy',        'AWARDS',    '実績・表彰',         'CSO志支援金、国際ソロプチミスト表彰、大臣からの手紙ほか。'),
-    ('media',     'newspaper',     'MEDIA',     'メディア・掲載',     'サガテレビでの放映、大学の公式発表、地域紙・ラジオ。'),
+    ('media',     'newspaper',     'MEDIA',     'メディア・掲載',     'サガテレビでの放映、大学の公式発表、新聞・ラジオ。'),
     ('hobbies',   'palette',       'HOBBIES',   '趣味・アート',       '切り絵(美術館展示)・詩吟1級・少林寺拳法(全国大会出場)・ピックルボール部の設立。'),
     ('creative',  'clapperboard',  'CREATIVE',  '動画編集・執筆',     'GREEN VIBES CHANNEL運営、ショート動画編集、Kindle・note。'),
     ('gallery',   'images',        'GALLERY',   'ギャラリー',         '団地のサロン、夏祭り、小学校、地域イベント。活動の写真集。'),
@@ -927,67 +950,79 @@ scs_intro = '''    <div class="act-lead fade">
     <div class="photo-row">
       <figure class="fade"><img src="assets/photos/salon-exercise.webp" alt="高齢者サロンで体操" loading="lazy"><figcaption>高齢者サロンで体操</figcaption></figure>
       <figure class="fade"><img src="assets/photos/scs-balloon-show.webp" alt="地域イベント" loading="lazy"><figcaption>地域イベント</figcaption></figure>
-      <figure class="fade"><img src="assets/photos/salon-newspaper.webp" alt="活動が地域紙に" loading="lazy"><figcaption>活動が地域紙に掲載</figcaption></figure>
-    </div>
-'''
-matsuri = '''    <p class="creative-lead fade" style="margin-top:-18px">医大北祭り・養生ふれあい祭りなど、地域のお祭りにSCSとして医療体験ブースを出店。血圧測定、心肺蘇生(CPR)体験、妊婦体験ジャケットなど、子どもから大人まで楽しみながら健康について学べる場をつくりました。</p>
-    <div class="photo-row">
-      <figure class="fade"><img src="assets/photos/drv-matsuri-cpr.webp" alt="心肺蘇生体験ブース" loading="lazy"><figcaption>心肺蘇生(CPR)体験</figcaption></figure>
-      <figure class="fade"><img src="assets/photos/drv-matsuri-bp.webp" alt="血圧測定" loading="lazy"><figcaption>血圧測定コーナー</figcaption></figure>
-      <figure class="fade"><img src="assets/photos/drv-matsuri-booth.webp" alt="健康ブース" loading="lazy"><figcaption>SCSの健康ブース</figcaption></figure>
-      <figure class="fade"><img src="assets/photos/drv-matsuri-team.webp" alt="地域の方と" loading="lazy"><figcaption>地域の方と一緒に</figcaption></figure>
-      <figure class="fade"><img src="assets/photos/drv-matsuri-yagura.webp" alt="夏祭りの会場" loading="lazy"><figcaption>夏祭りの会場</figcaption></figure>
-      <figure class="fade"><img src="assets/photos/drv-matsuri-selfie.webp" alt="SCSメンバーと" loading="lazy"><figcaption>SCSメンバーと</figcaption></figure>
+      <figure class="fade"><img src="assets/photos/ig-kids-place-1.webp" alt="子どもの居場所で" loading="lazy"><figcaption>子どもの居場所</figcaption></figure>
     </div>
 '''
 scs_g = '    <div class="gallery fade">\n' + '\n'.join(f for f in gal_figs if any(x in f for x in ['scs-', 'salon-', 'balloon-art', 'kids-tanabata'])) + '\n    </div>\n'
 scs_map = '<div class="chart-grid">' + chart_wrap('map', 'SCSの活動フィールド', '地域のさまざまな場所へ出向いています', orbit_html(('SCS', '学生地域交流の会'),
-        [('armchair', '団地サロン', '健康講話・体操・脳トレ', None, '#3c9a3f'), ('baby', '子どもの居場所', '宿題サポート・遊び', None, '#e07b24'),
-         ('mic', '健康講演', '公民館で熱中症予防など', None, '#2a9d8f'), ('tent', 'お祭り', '医療体験ブースを出店', None, '#e05264'),
-         ('school', '小学校', '性教育・防煙教室', 'education.html', '#2f7fc1'), ('heart-handshake', '地域イベント', 'バルーン・交流', 'gallery.html', '#8e44ad')])) + \
+        [('armchair', '高齢者サロン', '健康講話・体操・脳トレ', '#salon', '#3c9a3f'), ('baby', '子どもの居場所', '宿題サポート・子ども食堂', '#kids', '#e07b24'),
+         ('tent', 'イベント', 'お祭り・フェス・コンサート', '#events', '#e05264'), ('school', '小学校', '性教育・防煙教室', 'education.html', '#2f7fc1'),
+         ('mic', '健康講演', '公民館・認知症カフェ', 'education.html', '#8e44ad')])) + \
     chart_wrap('pie-chart', 'メンバー構成', '2025年5月時点・総勢27名', donut([('医学生', 23, G), ('薬学部・理工学部', 4, B)], '27', '名') +
         '<div class="legend" style="justify-content:center"><span><i style="background:#3c9a3f"></i>医学生 23名</span><span><i style="background:#4a6fd1"></i>薬学部・理工学部 4名</span></div>' +
         table([('医学生', '23名'), ('薬学部・理工学部', '4名')], ['所属', '人数'])) + '</div>'
-PLACES = '''    <div class="places">
-      <div class="place-group fade"><h3><i data-lucide="armchair"></i>サロン(12か所)</h3><div class="chips"><span>南川副</span><span>嘉瀬</span><span>医大北</span><span>医大東</span><span>鍋島</span><span>新栄</span><span>白石</span><span>西川町</span><span>本庄</span><span>北堀端</span><span>ケアポート靖寿</span><span>県営城北団地 集会所</span></div><p class="place-note">各地区の公民館(10か所)・ケアポート靖寿・県営城北団地の集会所で、健康講話・体操・脳トレのサロンを開いています。</p></div>
-      <div class="place-group fade"><h3><i data-lucide="book-open"></i>夏休みの宿題補助</h3><div class="chips"><span>西川副公民館</span><span>赤松公民館</span></div><p class="place-note">夏休みに、小学生の宿題をサポートしています。</p></div>
-      <div class="place-group fade"><h3><i data-lucide="hand-heart"></i>子どもの居場所・地域のカフェ</h3><div class="chips"><span>上高木公民館(子どもの居場所)</span><span>東高木公民館(ハッピーカフェ)</span><span>本庄公民館(サンドカフェ)</span><span>北堀端(カフェどこ吹く風)</span></div><p class="place-note">毎月の子どもの居場所づくりや、地域のカフェに参加しています。</p></div>
-    </div>
-'''
-page('scs', '団地のサロン、子どもの居場所、公民館。地域の「となり」にいる学生でありたい。',
+# SCSの活動場所: 3本柱(高齢者サロン・子どもの居場所・イベント)。場所をタップすると、くわしい内容が開く
+IG_URL = 'https://www.instagram.com/p/%s/'
+EXT = ' target="_blank" rel="noopener"'
+def spot(ic, name, sub, body, photos=(), links=()):
+    ph = ''.join(f'<img src="assets/photos/{p}.webp" alt="{a}" loading="lazy">' for p, a in photos)
+    ln = ''.join(f'<a class="il" href="{u}"{EXT if u.startswith("http") else ""}>{t} →</a>' for t, u in links)
+    return (f'      <details class="spot"><summary><span class="sp-ic" aria-hidden="true">{ic}</span><span class="sp-t"><b>{name}</b><small>{sub}</small></span>'
+            + ('<i class="sp-cam" title="写真あり">📷</i>' if photos else '') + '</summary><div class="sp-body">'
+            + (f'<div class="sp-photos">{ph}</div>' if ph else '') + f'<p>{body}</p>' + (f'<p class="sp-links">{ln}</p>' if ln else '') + '</div></details>')
+def spots(lead, items):
+    return f'    <p class="sp-lead fade">{lead}場所をタップすると、くわしく見られます。</p>\n    <div class="spots fade">\n' + '\n'.join(spot(*it) for it in items) + '\n    </div>\n'
+SALON_BASE = '公民館のサロンで、健康講話・体操・脳トレをしています。'
+SALONS = [
+    ('🏢', '県営城北団地 集会所', '毎月第1日曜・2023年〜', '押しボタンプロジェクトの研究チームとしても通う、団地のサロン。熱中症・紫外線対策のお話や脳トレ、コグニサイズ(後出しジャンケン)、部員の趣味紹介など。防災訓練や鏡開き、団地のお祭りにも参加しています。',
+     [('ig-johoku-heatstroke', '城北サロンで熱中症の話'), ('ig-johoku-cognicise', 'コグニサイズ'), ('ig-johoku-hobby-talk', '部員の趣味紹介')],
+     [('押しボタンプロジェクト', 'research.html'), ('Instagramの投稿', IG_URL % 'Dbj-19jET-h')]),
+    ('🏠', '材木町公民分館', '2026年〜', '2026年5月から通いはじめたサロン。熱中症をテーマに、健康講演をしました。',
+     [('ig-zaimoku-lecture', '材木町公民分館での健康講演')], [('Instagramの投稿', IG_URL % 'DYa_jAukwzG')]),
+    ('🏠', '高木瀬(辻公民館)', '毎月第3木曜・2024〜2025年', '辻公民館のサロンに、毎月通いました(2024年9月〜2025年11月)。新年の鏡開きにも参加しました。'),
+    ('🧡', 'ケアポート靖寿', 'オレンジカフェ', '認知症カフェ「オレンジカフェ」で、医学のミニ講話(2025年1月)や、フレイル予防のお話とコグニサイズ(2025年9月)をしました。'),
+    ('☕', '北堀端', 'カフェどこ吹く風・2024年〜', '地域のカフェ「どこ吹く風」に、2024年から毎月参加しています。'),
+    ('☕', '本庄', 'サンドカフェ・2024年〜', '本庄公民館の地域カフェ「サンドカフェ」に、毎月第3土曜に参加しています(2024年〜)。'),
+    ('🏠', '医大北', '公民館', SALON_BASE + '地域の医大北祭りでは、医療体験ブースも出しました。', (), [('イベント「地域のお祭り」', '#events')]),
+    ('🏠', '鍋島', '公民館', SALON_BASE + '2025年3月には、SCSの活動についてお話ししました。'),
+    ('🏠', '新栄', '公民館', SALON_BASE + '(2025年6月など)'),
+    ('🏠', '嘉瀬', '公民館', SALON_BASE + '(2025年10月など)'),
+    ('🏠', '西川町', '公民館', SALON_BASE + '(2026年10月など)'),
+    ('🏠', '南川副', '公民館', SALON_BASE),
+    ('🏠', '医大東', '公民館', SALON_BASE),
+    ('🏠', '白石', '公民館', SALON_BASE),
+]
+KIDS = [
+    ('🎒', '上高木公民館', '毎月・2024年〜', '毎月の「子どもの居場所づくり」をサポートしています。宿題のあとは、外でも中でも元気いっぱいに遊びます。クリスマス会やカレー会も。',
+     [('ig-kids-place-1', '上高木公民館での子どもの居場所'), ('ig-kids-place-2', '子どもの居場所(神社で)')],
+     [('Instagramの投稿 ①', IG_URL % 'DXdaoOQkUf8'), ('Instagramの投稿 ②', IG_URL % 'DZtk3PykbYb')]),
+    ('🍛', '東高木公民館', 'ハッピーカフェ', '地域の「ハッピーカフェ」に参加。楽器の演奏をしたり、子ども食堂でカレーをつくったりしています(2026年3月)。'),
+    ('✏️', '西川副公民館', '夏休みの宿題お助け隊', '夏休みに、小学生の宿題をサポートしています(2025年・2026年の夏)。'),
+    ('✏️', '赤松公民館', '夏休みの宿題補助', '夏休みに、小学生の宿題をサポートしています。公民館の避難訓練にも参加しました。'),
+    ('📚', 'green book', '学習サポートの会・2025年〜', '子どもたちの学習サポートの会に参加。金立教育キャンプ場での木育とスプラトゥーンごっこ(2025年10月)、立志式でのお話(2026年3月)、バルーナーズカフェ(2026年2月)など。'),
+    ('🎈', '地域のイベントで', 'バルーン・七夕', '地域のイベントで、バルーンショーやバルーンのプレゼント、七夕の飾りづくりなど、子どもたちと交流しました。',
+     [('scs-balloon-show', '地域イベントのバルーンショー'), ('scs-balloon-kid', 'バルーンのプレゼント'), ('kids-tanabata', '七夕イベント'), ('scs-kids-play', '子どもたちとの交流')]),
+]
+EVENTS = [
+    ('🏮', '地域のお祭り', '医大北祭り・養生ふれあい祭り', '地域のお祭りに、SCSとして医療体験ブースを出店。血圧測定、心肺蘇生(CPR)体験、妊婦体験ジャケット、聴診器体験など、子どもから大人まで楽しみながら健康について知ってもらいました(2025年10月ほか)。',
+     [('drv-matsuri-cpr', '心肺蘇生(CPR)体験'), ('drv-matsuri-bp', '血圧測定コーナー'), ('drv-matsuri-booth', 'SCSの健康ブース'), ('drv-matsuri-team', '地域の方と一緒に'), ('drv-matsuri-yagura', 'お祭りの会場'), ('drv-matsuri-selfie', 'SCSメンバーと')]),
+    ('🍙', '子ども食堂フェス', '2026年・共催', '子ども食堂フェスを、SCSとして共催しました。', (), [('Instagramの投稿', IG_URL % 'DZ9mxiqzruf')]),
+    ('🎻', '鹿島の音楽療法コンサート', '2026年3月', '鹿島で開かれた音楽療法のコンサートに、佐賀大学の室内楽部とともに、SCSとして協力しました。', (), [('Instagramの投稿', IG_URL % 'DVkx_ZEmrSq')]),
+    ('🎓', '佐賀大学同窓会フェス', '2025年11月・2026年11月', '佐賀大学の同窓会フェスに、SCSとしてブースを出展しました(2025年11月)。2026年11月も出展予定です。', (), [('佐賀大学のイベントページ', 'https://www.saga-u.ac.jp/koho/event/2025101538735')]),
+    ('🏛️', 'SAGAたてもの結び', '2025年・モラージュ佐賀', '「SAGAたてもの結び」に、SCSとしてモラージュ佐賀の会場で参加しました。', (),
+     [('佐賀大学の関連記事', 'https://sagadaipress.saga-u.ac.jp/archives/tag/saga%E3%81%9F%E3%81%A6%E3%82%82%E3%81%AE%E7%B5%90%E3%81%B3/'), ('Instagramの投稿', IG_URL % 'DOH5shvDxzG')]),
+    ('🩺', 'SAGAジュニアドクター', '2025年11月', '子どもたちが医療の仕事を体験するイベントに、学生スタッフとして参加しました。'),
+]
+def sid(html, i):
+    return re.sub(r'<section( class="alt")?>', lambda m: f'<section id="{i}"{m.group(1) or ""}>', html, count=1)
+page('scs', '高齢者サロン、子どもの居場所、地域のイベント。地域の「となり」にいる学生でありたい。',
      sec(scs_intro, 'SCS', 'SCS(佐賀大学学生地域交流の会)') +
-     sec(scs_map + PLACES, 'FIELD', '活動の全体像', alt=True) +
-     sec(matsuri, 'FESTIVAL', '地域のお祭りで医療体験ブース') +
-     sec('''    <div class="org-grid">
-      <div class="org fade" style="padding-top:26px">
-        <span class="tag">EVENT 2026</span>
-        <h4>子ども食堂フェスを共催</h4>
-        <p>子ども食堂フェスを共催しました。</p>
-        <span class="card-link"><a class="il" href="https://www.instagram.com/p/DZ9mxiqzruf/" target="_blank" rel="noopener">Instagramの投稿 →</a></span>
-      </div>
-      <div class="org fade" style="padding-top:26px">
-        <span class="tag">CONCERT 2026</span>
-        <h4>鹿島での音楽療法コンサート</h4>
-        <p>鹿島で開かれた音楽療法のコンサートに、佐賀大学の室内楽部とともに、SCSとして協力しました。</p>
-        <span class="card-link"><a class="il" href="https://www.instagram.com/p/DVkx_ZEmrSq/" target="_blank" rel="noopener">Instagramの投稿 →</a></span>
-      </div>
-      <div class="org fade" style="padding-top:26px">
-        <span class="tag">FES</span>
-        <h4>佐賀大学同窓会フェス</h4>
-        <p>佐賀大学の同窓会フェスに、SCSとしてブースを出展(2025年11月)。2026年11月も出展予定です。</p>
-        <span class="card-link"><a class="il" href="https://www.saga-u.ac.jp/koho/event/2025101538735" target="_blank" rel="noopener">佐賀大学のイベントページ →</a></span>
-      </div>
-      <div class="org fade" style="padding-top:26px">
-        <span class="tag">EVENT 2025</span>
-        <h4>SAGAたてもの結び(モラージュ佐賀会場)</h4>
-        <p>「SAGAたてもの結び」に、SCSとしてモラージュ佐賀の会場で参加しました。</p>
-        <span class="card-link"><a class="il" href="https://sagadaipress.saga-u.ac.jp/archives/tag/saga%E3%81%9F%E3%81%A6%E3%82%82%E3%81%AE%E7%B5%90%E3%81%B3/" target="_blank" rel="noopener">佐賀大学の関連記事 →</a></span>
-        <span class="card-link"><a class="il" href="https://www.instagram.com/p/DOH5shvDxzG/" target="_blank" rel="noopener">Instagramの投稿 →</a></span>
-      </div>
-    </div>
-''', 'EVENT', '地域のイベントへ', alt=True) +
-     sec(ig_html, 'INSTAGRAM', '最近の活動(Instagramより)') +
-     sec(scs_g, 'GALLERY', '活動の様子', alt=True))
+     sec(scs_map, 'FIELD', '活動の全体像', alt=True) +
+     sid(sec(spots('団地や公民館のサロンで、健康講話・体操・脳トレ。', SALONS), 'SALON', f'高齢者サロン({len(SALONS)}か所)'), 'salon') +
+     sid(sec(spots('子どもの居場所づくりや、夏休みの宿題のサポート。', KIDS), 'KIDS', '子どもの居場所', alt=True), 'kids') +
+     sid(sec(spots('お祭りやフェスに、医療体験ブースで参加。', EVENTS), 'EVENT', 'イベント'), 'events') +
+     sec(ig_html, 'INSTAGRAM', '最近の活動(Instagramより)', alt=True) +
+     sec(scs_g, 'GALLERY', '活動の様子'))
 
 # 4 コミュニティ
 podcast = """    <p class="fade" style="color:var(--muted);font-size:14px;margin-bottom:18px">えびすFMで放送した回を、Spotify のポッドキャストで配信しています。</p>
@@ -1239,16 +1274,14 @@ media = """    <div class="mini-grid">
       <a class="mini-card fade" href="http://www.city.nanyo.yamagata.jp/up/files/giyousei/kouhoukoucyo/siho/pdf/1373.txt" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="book-open"></i></span><div><h4>市報なんよう 2024年8月号(山形県南陽市)</h4><p>特集「知らないまま後悔しないで 子宮頸がんとHPVワクチン」でVcanの出張授業と講師として紹介</p></div></a>
       <a class="mini-card fade" href="https://www.saga-s.co.jp/articles/-/1245508" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="newspaper"></i></span><div><h4>佐賀新聞 掲載</h4><p>Vcanの「じぶんごとcafé」(第1回)が紹介されました</p></div></a>
       <div class="mini-card fade"><span class="ki"><i data-lucide="tv"></i></span><div><h4>唐津市のケーブルテレビ</h4><p>唐津市でのHPVワクチン啓発の取り組みが放送されました</p></div></div>
-      <div class="mini-card fade"><span class="ki"><i data-lucide="file-image"></i></span><div><h4>地域紙への掲載</h4><p>SCSのサロン活動が地域の新聞で紹介</p></div></div>
     </div>
 """
 video = """    <div class="video fade"><iframe src="https://www.youtube-nocookie.com/embed/Bt9TFAmHH0I" title="サガテレビ おはようボタン" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
     <div class="photo-row" style="margin-top:22px">
-      <figure class="fade"><img src="assets/photos/salon-newspaper.webp" alt="地域紙に掲載" loading="lazy"><figcaption>地域紙に掲載されたサロン活動</figcaption></figure>
       <figure class="fade"><img src="assets/photos/oshibotan-system.webp" alt="押しボタンの図解" loading="lazy"><figcaption>発表で使った見守りシステムの図解</figcaption></figure>
     </div>
 """
-page('media', 'テレビ・大学の公式発表・地域紙・ラジオで紹介された取り組み。', sec(media, 'MEDIA', '掲載・出演') + sec(video, 'VIDEO', 'サガテレビで紹介されました', alt=True))
+page('media', 'テレビ・大学の公式発表・新聞・ラジオで紹介された取り組み。', sec(media, 'MEDIA', '掲載・出演') + sec(video, 'VIDEO', 'サガテレビで紹介されました', alt=True))
 
 all_figs = list(dict.fromkeys(gal_figs + [f'      <figure><img src="assets/photos/{n}.webp" alt="{c}" loading="lazy"><figcaption>{c}</figcaption></figure>' for n, c in
     [('kirie-kenuki', '切り絵「歌舞伎十八番 毛抜」'), ('drv-matsuri-cpr', '夏祭りでCPR体験ブース'), ('drv-matsuri-bp', '夏祭りで血圧測定'), ('drv-matsuri-booth', 'SCSの健康ブース'), ('drv-matsuri-team', '地域の方と'), ('drv-nishiyoka-team', '西与賀小学校にて'),
@@ -1422,7 +1455,7 @@ js = '''// 共通スクリプト: メニュー・スクロールフェード・�
 })();
 (function(){
   var lb=document.getElementById('lightbox'); if(!lb) return; var im=lb.querySelector('img'), cap=lb.querySelector('figcaption');
-  document.querySelectorAll('.gallery img,.photo-row img,.org-img,.art-frame img,.org-posters img,.conf-photo img').forEach(function(el){
+  document.querySelectorAll('.gallery img,.photo-row img,.org-img,.art-frame img,.org-posters img,.conf-photo img,.sp-photos img').forEach(function(el){
     el.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();im.src=el.src;im.alt=el.alt;
       var fc=el.closest('figure')&&el.closest('figure').querySelector('figcaption'); cap.textContent=fc?fc.textContent:el.alt;
       lb.classList.add('open');});
@@ -1482,6 +1515,15 @@ js = '''// 共通スクリプト: メニュー・スクロールフェード・�
     });
   });
 })();
+// SCSの場所ボタン: 同じ欄では1つずつ開く。開いた場所が画面の外なら見えるところまでスクロール
+document.querySelectorAll('.spots').forEach(function(g){
+  g.addEventListener('toggle', function(e){
+    var d = e.target; if (!d.open) return;
+    g.querySelectorAll('details.spot[open]').forEach(function(o){ if (o !== d) o.open = false; });
+    var r = d.getBoundingClientRect();
+    if (r.top < 70 || r.top > innerHeight - 140) d.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, true);
+});
 // もりぞーを探せ: 各ページのどこかに、もりぞーが1人かくれている(見つけたページは端末に記録)
 (function(){
   var PAGES = {index:'トップ',%THEMES%game:'もりぞうクエスト'};
@@ -1492,7 +1534,7 @@ js = '''// 共通スクリプト: メニュー・スクロールフェード・�
   function save(){ try { localStorage.setItem('morizo-found', JSON.stringify(found)); } catch (e) {} }
   function count(){ return KEYS.filter(function(k){ return found[k]; }).length; }
   var SVG = '<svg viewBox="0 0 48 60" aria-hidden="true"><path d="M13 37 L8 47" stroke="#b0bec5" stroke-width="6" stroke-linecap="round"/><path d="M13 37 L8 47" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="7.6" cy="48" r="2.6" fill="#f6d2b0"/><path d="M35 36 L42 25" stroke="#b0bec5" stroke-width="6" stroke-linecap="round"/><path d="M35 36 L42 25" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="42.6" cy="23.6" r="2.8" fill="#f6d2b0"/><path d="M19 52 L18 58 M29 52 L30 58" stroke="#33415c" stroke-width="5" stroke-linecap="round"/><rect x="12" y="31" width="24" height="23" rx="7" fill="#fff" stroke="#b0bec5" stroke-width="1.5"/><path d="M20 31 L28 31 L24 39 Z" fill="#3c9a3f"/><path d="M19 37 a5 5 0 0 0 10 0" fill="none" stroke="#2f7fc1" stroke-width="1.6"/><circle cx="24" cy="43" r="1.7" fill="#2f7fc1"/><circle cx="24" cy="18" r="12.5" fill="#f6d2b0"/><path d="M11.5 18 C11 8 18 4.5 25 5 C32 5.5 37 10 36.5 17 C33 12.5 27 11 21 13 C17 14 14 16 11.5 18 Z" fill="#2b2b2b"/><circle cx="19.5" cy="19.5" r="1.7" fill="#2b2b2b"/><circle cx="28.5" cy="19.5" r="1.7" fill="#2b2b2b"/><path d="M20.5 24 Q24 27.5 27.5 24" stroke="#b5543c" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="16.5" cy="23.5" r="2" fill="#f08080" fill-opacity=".45"/><circle cx="31.5" cy="23.5" r="2" fill="#f08080" fill-opacity=".45"/></svg>';
-  var cands = [].slice.call(document.querySelectorAll('main .theme, .theme-grid .theme, a.kpi, .org, .mini-card, .award, .rnow, .hobby, .place-group, .chart, .str, .hub-col, .gm-help li, .art-frame, .contact-box, .news, .gallery figure, .pn a'))
+  var cands = [].slice.call(document.querySelectorAll('main .theme, .theme-grid .theme, a.kpi, .org, .mini-card, .award, .rnow, .hobby, .place-group, .chart, .str, .hub-col, .spots, .gm-help li, .art-frame, .contact-box, .news, .gallery figure, .pn a'))
     .filter(function(el){ var r = el.getBoundingClientRect(); return r.width > 140 && r.height > 70; });
   if (!cands.length) return;
   var host = cands[Math.floor(Math.random() * cands.length)], cs = getComputedStyle(host);

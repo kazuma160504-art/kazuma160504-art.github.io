@@ -19,7 +19,7 @@
 })();
 (function(){
   var lb=document.getElementById('lightbox'); if(!lb) return; var im=lb.querySelector('img'), cap=lb.querySelector('figcaption');
-  document.querySelectorAll('.gallery img,.photo-row img,.org-img,.art-frame img,.org-posters img,.conf-photo img').forEach(function(el){
+  document.querySelectorAll('.gallery img,.photo-row img,.org-img,.art-frame img,.org-posters img,.conf-photo img,.sp-photos img').forEach(function(el){
     el.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();im.src=el.src;im.alt=el.alt;
       var fc=el.closest('figure')&&el.closest('figure').querySelector('figcaption'); cap.textContent=fc?fc.textContent:el.alt;
       lb.classList.add('open');});
@@ -79,6 +79,15 @@
     });
   });
 })();
+// SCSの場所ボタン: 同じ欄では1つずつ開く。開いた場所が画面の外なら見えるところまでスクロール
+document.querySelectorAll('.spots').forEach(function(g){
+  g.addEventListener('toggle', function(e){
+    var d = e.target; if (!d.open) return;
+    g.querySelectorAll('details.spot[open]').forEach(function(o){ if (o !== d) o.open = false; });
+    var r = d.getBoundingClientRect();
+    if (r.top < 70 || r.top > innerHeight - 140) d.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, true);
+});
 // もりぞーを探せ: 各ページのどこかに、もりぞーが1人かくれている(見つけたページは端末に記録)
 (function(){
   var PAGES = {index:'トップ',profile:'プロフィール',research:'研究:押しボタンPJ',publications:'論文・学会発表',scs:'SCS 地域交流',community:'バルーナーズDAO・ラジオ',education:'教育・発信',awards:'実績・表彰',media:'メディア・掲載',hobbies:'趣味・アート',creative:'動画編集・執筆',gallery:'ギャラリー',contact:'連絡先・SNS',game:'もりぞうクエスト'};
@@ -89,7 +98,7 @@
   function save(){ try { localStorage.setItem('morizo-found', JSON.stringify(found)); } catch (e) {} }
   function count(){ return KEYS.filter(function(k){ return found[k]; }).length; }
   var SVG = '<svg viewBox="0 0 48 60" aria-hidden="true"><path d="M13 37 L8 47" stroke="#b0bec5" stroke-width="6" stroke-linecap="round"/><path d="M13 37 L8 47" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="7.6" cy="48" r="2.6" fill="#f6d2b0"/><path d="M35 36 L42 25" stroke="#b0bec5" stroke-width="6" stroke-linecap="round"/><path d="M35 36 L42 25" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="42.6" cy="23.6" r="2.8" fill="#f6d2b0"/><path d="M19 52 L18 58 M29 52 L30 58" stroke="#33415c" stroke-width="5" stroke-linecap="round"/><rect x="12" y="31" width="24" height="23" rx="7" fill="#fff" stroke="#b0bec5" stroke-width="1.5"/><path d="M20 31 L28 31 L24 39 Z" fill="#3c9a3f"/><path d="M19 37 a5 5 0 0 0 10 0" fill="none" stroke="#2f7fc1" stroke-width="1.6"/><circle cx="24" cy="43" r="1.7" fill="#2f7fc1"/><circle cx="24" cy="18" r="12.5" fill="#f6d2b0"/><path d="M11.5 18 C11 8 18 4.5 25 5 C32 5.5 37 10 36.5 17 C33 12.5 27 11 21 13 C17 14 14 16 11.5 18 Z" fill="#2b2b2b"/><circle cx="19.5" cy="19.5" r="1.7" fill="#2b2b2b"/><circle cx="28.5" cy="19.5" r="1.7" fill="#2b2b2b"/><path d="M20.5 24 Q24 27.5 27.5 24" stroke="#b5543c" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="16.5" cy="23.5" r="2" fill="#f08080" fill-opacity=".45"/><circle cx="31.5" cy="23.5" r="2" fill="#f08080" fill-opacity=".45"/></svg>';
-  var cands = [].slice.call(document.querySelectorAll('main .theme, .theme-grid .theme, a.kpi, .org, .mini-card, .award, .rnow, .hobby, .place-group, .chart, .str, .hub-col, .gm-help li, .art-frame, .contact-box, .news, .gallery figure, .pn a'))
+  var cands = [].slice.call(document.querySelectorAll('main .theme, .theme-grid .theme, a.kpi, .org, .mini-card, .award, .rnow, .hobby, .place-group, .chart, .str, .hub-col, .spots, .gm-help li, .art-frame, .contact-box, .news, .gallery figure, .pn a'))
     .filter(function(el){ var r = el.getBoundingClientRect(); return r.width > 140 && r.height > 70; });
   if (!cands.length) return;
   var host = cands[Math.floor(Math.random() * cands.length)], cs = getComputedStyle(host);
