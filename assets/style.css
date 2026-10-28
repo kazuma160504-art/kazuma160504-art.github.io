@@ -746,6 +746,8 @@ section{scroll-margin-top:110px}
 .confetti{position:fixed;top:-12px;z-index:170;width:8px;height:12px;border-radius:2px;pointer-events:none;animation:cf-fall 2.6s linear forwards}
 @keyframes cf-fall{to{transform:translateY(105vh) rotate(720deg);opacity:.8}}
 @media (prefers-reduced-motion:reduce){.morizo,.morizo.jump{animation:none}.morizo.hint{outline:3px solid #ffb300;outline-offset:4px;border-radius:8px}}
+.radio-new{margin-top:22px;background:#fff;border:1px dashed var(--line);border-radius:14px;padding:12px 16px;font-size:14px;line-height:1.7}
+.radio-new b{display:inline-block;margin-right:8px;padding:1px 8px;border-radius:999px;background:#e07b24;color:#fff;font-size:11px;letter-spacing:.1em}
 /* あゆみ(年表): 年ごとに開け閉め */
 .ay-lead{color:var(--muted);font-size:14px;margin-bottom:16px}
 .ayumi{display:grid;gap:10px}

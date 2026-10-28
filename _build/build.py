@@ -404,6 +404,8 @@ section{scroll-margin-top:110px}
 .confetti{position:fixed;top:-12px;z-index:170;width:8px;height:12px;border-radius:2px;pointer-events:none;animation:cf-fall 2.6s linear forwards}
 @keyframes cf-fall{to{transform:translateY(105vh) rotate(720deg);opacity:.8}}
 @media (prefers-reduced-motion:reduce){.morizo,.morizo.jump{animation:none}.morizo.hint{outline:3px solid #ffb300;outline-offset:4px;border-radius:8px}}
+.radio-new{margin-top:22px;background:#fff;border:1px dashed var(--line);border-radius:14px;padding:12px 16px;font-size:14px;line-height:1.7}
+.radio-new b{display:inline-block;margin-right:8px;padding:1px 8px;border-radius:999px;background:#e07b24;color:#fff;font-size:11px;letter-spacing:.1em}
 /* あゆみ(年表): 年ごとに開け閉め */
 .ay-lead{color:var(--muted);font-size:14px;margin-bottom:16px}
 .ayumi{display:grid;gap:10px}
@@ -827,6 +829,7 @@ AYUMI = [
               ('11', 'プレコンセプションケアのセミナーや高校の授業に協力', 'education'),
               ('11', '佐賀市市民活動プラザ「交流ゼミナール」で講師', 'education'),
               ('11', '佐賀大学同窓会フェスにブース出展', 'scs'),
+              ('11', 'BLSサークルSILSとして、佐賀県と一緒に県内6市町で両親学級(〜2026年1月)', 'education'),
               ('11', '北海道の「べてるの家」を訪問', None),
               ('12', '永和システムマネジメント(福井)を訪ね、新型ボタンの共同開発を協議', 'research')]),
     ('2026', [('01', '北川副小学校で防煙教室', 'education'),
@@ -850,7 +853,8 @@ AYUMI = [
               ('09', 'アバンセで、フレイル予防の健康セミナーの講師', 'education'),
               ('09', '肝臓の国際共同研究(メタ解析)に参加', 'publications'),
               ('10', '第85回 日本公衆衛生学会総会(東京)で口演(10月30日)', 'publications')]),
-    ('これから', [('2026.11', '佐賀大学同窓会フェスに、2年続けて出展', 'scs'),
+    ('これから', [('2026.11', '新しいラジオ番組「がばいっこ、よかよか、ラジオ」がスタート', 'community'),
+                  ('2026.11', '佐賀大学同窓会フェスに、2年続けて出展', 'scs'),
                   ('2026.11', '吟剣詩舞道大会に、合吟で出場', 'hobbies'),
                   ('2026.12', '感染症の学会(高知)で口演発表', 'publications'),
                   ('2027.03', '日本プライマリ・ケア連合学会 九州支部の学術大会(佐賀)で、学生企画を担当', None)]),
@@ -986,6 +990,7 @@ page('scs', '団地のサロン、子どもの居場所、公民館。地域の�
 podcast = """    <p class="fade" style="color:var(--muted);font-size:14px;margin-bottom:18px">えびすFMで放送した回を、Spotify のポッドキャストで配信しています。</p>
     <div class="podcast fade"><iframe src="https://open.spotify.com/embed/show/033UwsWpxAEcai2mrsEVtm" title="バルーナーズDAO おとなりさんラジオ(Spotify)" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
     <p style="margin-top:16px"><a class="btn btn-ghost" href="https://open.spotify.com/show/033UwsWpxAEcai2mrsEVtm" target="_blank" rel="noopener">Spotify で開く</a></p>
+    <p class="radio-new fade"><b>NEW</b>新番組「がばいっこ、よかよか、ラジオ」が2026年11月にスタート。毎月第1・第3水曜の18:00〜19:00に放送します。</p>
 """
 page('community', 'スポーツの力で地域課題に挑む。ファンコミュニティとラジオで、人と人をつなぐ。',
      sec(community, 'BALLOONERS DAO', '佐賀バルーナーズDAO') + sec(podcast, 'PODCAST', 'おとなりさんラジオを聴く', alt=True))
@@ -1036,6 +1041,11 @@ edu = f'''    <div class="org-grid">
         <span class="card-link"><a class="il" href="https://vcan-hpv.org/activity/8/" target="_blank" rel="noopener">Vcanの活動ページ ① →</a></span>
         <span class="card-link"><a class="il" href="https://vcan-hpv.org/activity/1/" target="_blank" rel="noopener">Vcanの活動ページ ② →</a></span>
         <span class="card-link"><a class="il" href="https://www.saga-s.co.jp/articles/-/1245508" target="_blank" rel="noopener">佐賀新聞の記事(第1回) →</a></span>
+      </div>
+      <div class="org fade" style="padding-top:26px">
+        <span class="tag">BLS</span>
+        <h4>佐賀県の両親学級(2025年11月〜2026年1月)</h4>
+        <p>BLS(一次救命処置)のサークル「SILS」として、佐賀県と一緒に、鹿島・伊万里・多久・唐津・みやき・神埼の6市町で両親学級を開きました。</p>
       </div>
       <div class="org fade" style="padding-top:26px">
         <span class="tag">PRECONCEPTION</span>
@@ -1098,7 +1108,7 @@ edu = f'''    <div class="org-grid">
 # カードの見出しから分類(複数可): hpv=HPVワクチン啓発 / school=学校・子ども / talk=講演・発表 / local=地域
 EDU_CATS = [('万博', 'hpv talk'), ('中高ツアー', 'hpv school'), ('同志社', 'hpv school'), ('西与賀', 'school'), ('地域での健康講演', 'local talk'), ('交流ゼミナール', 'local talk'),
             ('じぶんごとcafé', 'hpv local'), ('市役所', 'hpv local'), ('春フェス', 'hpv local'), ('防煙教室', 'school'), ('Student Researcher', 'talk'),
-            ('医療人へのとびら', 'school'), ('メディカルラリー', 'school local'), ('本庄小学校', 'school'), ('人生手術室', 'talk'), ('プレコンセプション', 'school local')]
+            ('医療人へのとびら', 'school'), ('メディカルラリー', 'school local'), ('本庄小学校', 'school'), ('人生手術室', 'talk'), ('プレコンセプション', 'school local'), ('両親学級', 'local')]
 def edu_cat(m):
     h4 = re.search(r'<h4>(.*?)</h4>', edu[m.end():]).group(1)
     cat = next((c for k, c in EDU_CATS if k in h4), 'local')
