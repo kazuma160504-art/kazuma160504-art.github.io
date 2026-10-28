@@ -19,7 +19,7 @@
 })();
 (function(){
   var lb=document.getElementById('lightbox'); if(!lb) return; var im=lb.querySelector('img'), cap=lb.querySelector('figcaption');
-  document.querySelectorAll('.gallery img,.photo-row img,.org-img,.art-frame img,.org-posters img').forEach(function(el){
+  document.querySelectorAll('.gallery img,.photo-row img,.org-img,.art-frame img,.org-posters img,.conf-photo img').forEach(function(el){
     el.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();im.src=el.src;im.alt=el.alt;
       var fc=el.closest('figure')&&el.closest('figure').querySelector('figcaption'); cap.textContent=fc?fc.textContent:el.alt;
       lb.classList.add('open');});
