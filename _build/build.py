@@ -7,6 +7,10 @@ import io, os, re, json
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = 'https://kazuma160504-art.github.io/'
+# アクセス解析(Google アナリティクス 4)の測定ID(G-から始まる)。空のあいだは解析タグを出さない
+GA_ID = ''
+GA_TAG = (f'<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>\n'
+          f"<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA_ID}');</script>\n") if GA_ID else ''
 src = io.open(os.path.join(ROOT, '_build', 'source.html'), encoding='utf-8').read()
 
 # ---------------------------------------------------------------- アイコン
@@ -432,6 +436,8 @@ section{scroll-margin-top:110px}
 .sp-links{margin-top:6px;display:flex;flex-wrap:wrap;gap:4px 16px;font-size:13.5px}
 @media (max-width:520px){.spots{grid-template-columns:1fr 1fr;gap:8px}.spot summary{gap:8px;padding:10px;min-height:60px}.sp-ic{width:30px;height:30px;font-size:16px;border-radius:9px}.sp-t b{font-size:13.5px}.sp-t small{font-size:11px}.spot summary::after{font-size:15px}.sp-cam{display:none}}
 @media (prefers-reduced-motion:reduce){.sp-body{animation:none}}
+.ga-note{margin-top:30px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:13.5px;color:var(--muted);line-height:1.8}
+.ga-note h3{font-size:14.5px;color:var(--text);margin-bottom:4px}
 /* あゆみ(年表): 年ごとに開け閉め */
 .ay-lead{color:var(--muted);font-size:14px;margin-bottom:16px}
 .ayumi{display:grid;gap:10px}
@@ -571,7 +577,7 @@ def head(title, desc, path='', cur='', extra=''):
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 <noscript><style>.fade{{opacity:1;transform:none}}</style></noscript>
-{extra}</head>
+{GA_TAG}{extra}</head>
 <body>
 <header>
   <nav class="nav">
@@ -589,7 +595,7 @@ def head(title, desc, path='', cur='', extra=''):
 '''
 
 FOOT = '''<footer>
-  <div class="mini">''' + ''.join(f'<a href="{k}.html">{t}</a>' for k, _, _, t, _ in THEMES) + '''<a href="game.html">ゲーム</a></div>
+  <div class="mini">''' + ''.join(f'<a href="{k}.html">{t}</a>' for k, _, _, t, _ in THEMES) + '''<a href="game.html">ゲーム</a>''' + ('<a href="contact.html#analytics">アクセス解析について</a>' if GA_ID else '') + '''</div>
   © 2026 Mori Kazuma — Medical Student / Researcher / Community
 </footer>
 <div class="lightbox" id="lightbox"><figure><img alt=""><figcaption></figcaption></figure></div>
@@ -1296,7 +1302,9 @@ qr = """    <div class="qr fade"><img src="assets/qr-site.svg" alt="このサイ
 hub_icons = hub.replace('<h3>SNS</h3>', '<h3><i data-lucide="share-2"></i>SNS</h3>').replace('<h3>CREATIVE</h3>', '<h3><i data-lucide="clapperboard"></i>CREATIVE</h3>').replace('<h3>PROJECT / PROFILE</h3>', '<h3><i data-lucide="sprout"></i>PROJECT / PROFILE</h3>')
 hub_icons = hub_icons.replace('<a href="#works">動画編集の実績<small>このページ内</small></a>', '<a href="creative.html">動画編集の実績<small>CREATIVE</small></a>')
 hub_icons = hub_icons.replace('        <a href="https://scs-website-ten.vercel.app/contacts"', '        <a href="https://www.instagram.com/scs.official2025/" target="_blank" rel="noopener">SCS Instagram<small>@scs.official2025</small></a>\n        <a href="https://scs-website-ten.vercel.app/contacts"')
-page('contact', '研究・地域活動、講演・取材、制作のご依頼など、お気軽にご連絡ください。', sec(contact_box + hub_icons + qr, 'CONTACT', '連絡先・リンク'))
+analytics_note = '''    <div class="ga-note fade" id="analytics"><h3>アクセス解析について</h3><p>このサイトでは、より見やすいサイトにするために Google アナリティクスを使って、どのページがどれくらい見られているかを調べています。Cookie を使いますが、名前など個人を特定する情報は集めていません。くわしくは <a class="il" href="https://policies.google.com/technologies/partner-sites?hl=ja" target="_blank" rel="noopener">Google のポリシー</a> をご覧ください。</p></div>
+''' if GA_ID else ''
+page('contact', '研究・地域活動、講演・取材、制作のご依頼など、お気軽にご連絡ください。', sec(contact_box + hub_icons + qr + analytics_note, 'CONTACT', '連絡先・リンク'))
 
 # ---------------------------------------------------------------- トップ
 hero = take('<section class="hero" id="top">', '</section>') + '</section>\n'
@@ -1435,6 +1443,8 @@ write('robots.txt', f'User-agent: *\nAllow: /\n\nSitemap: {SITE}sitemap.xml\n')
 
 io.open(os.path.join(ROOT, 'assets', 'style.css'), 'w', encoding='utf-8', newline='\n').write(css_new.strip() + '\n')
 js = '''// 共通スクリプト: メニュー・スクロールフェード・写真の拡大表示
+// アクセス解析: サイト内の動き(ゲームのクリアなど)をイベントとして記録。解析タグがないときは何もしない
+window.mzTrack = function (name, params) { try { if (window.gtag) gtag('event', name, params || {}); } catch (e) {} };
 // スマホ用メニューの開閉
 (function(){
   var btn=document.querySelector('.menu-btn'), menu=document.getElementById('menu'); if(!btn||!menu) return;
@@ -1506,6 +1516,7 @@ js = '''// 共通スクリプト: メニュー・スクロールフェード・�
       var n = f === 'all' ? cards.length : cards.filter(function(c){ return (' ' + (c.getAttribute('data-cat') || '') + ' ').indexOf(' ' + f + ' ') >= 0; }).length;
       var sm = document.createElement('small'); sm.textContent = n; b.appendChild(sm);
       b.addEventListener('click', function(){
+        mzTrack('filter_click', { filter: f });
         bar.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
         cards.forEach(function(c){
           var show = f === 'all' || (' ' + (c.getAttribute('data-cat') || '') + ' ').indexOf(' ' + f + ' ') >= 0;
@@ -1515,11 +1526,15 @@ js = '''// 共通スクリプト: メニュー・スクロールフェード・�
     });
   });
 })();
+document.querySelectorAll('.ay-year').forEach(function(d){
+  d.addEventListener('toggle', function(){ if (d.open) mzTrack('history_year_open', { year: d.querySelector('summary b').textContent }); });
+});
 // SCSの場所ボタン: 同じ欄では1つずつ開く。開いた場所が画面の外なら見えるところまでスクロール
 document.querySelectorAll('.spots').forEach(function(g){
   g.addEventListener('toggle', function(e){
     var d = e.target; if (!d.open) return;
     g.querySelectorAll('details.spot[open]').forEach(function(o){ if (o !== d) o.open = false; });
+    mzTrack('scs_place_open', { place: (d.querySelector('summary b') || {}).textContent || '' });
     var r = d.getBoundingClientRect();
     if (r.top < 70 || r.top > innerHeight - 140) d.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, true);
@@ -1568,6 +1583,7 @@ document.querySelectorAll('.spots').forEach(function(g){
         m.classList.remove('hint'); void m.offsetWidth; m.classList.add('hint');
         setTimeout(function(){ m.classList.remove('hint'); }, 4600);
         say('このあたりに、もりぞーがいるよ!');
+        mzTrack('morizo_hint', { page: key });
       });
     }
     badge.innerHTML = SVG + 'もりぞー ' + count() + '/' + KEYS.length;
@@ -1585,6 +1601,7 @@ document.querySelectorAll('.spots').forEach(function(g){
   function hit(e){
     e.preventDefault(); e.stopPropagation();
     var first = !found[key]; found[key] = 1; save();
+    if (first) mzTrack('morizo_found', { page: key, found_count: count() });
     m.classList.remove('jump'); void m.offsetWidth; m.classList.add('jump', 'done');
     var n = count(), N = KEYS.length;
     say(first ? (n === N ? '🎉 コンプリート! 全ページのもりぞーを見つけました!' : 'もりぞーを見つけた! (' + n + '/' + N + 'ページ)') : 'このページのもりぞーは、もう見つけたよ (' + n + '/' + N + ')');

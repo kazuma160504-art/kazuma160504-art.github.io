@@ -1,4 +1,6 @@
 // 共通スクリプト: メニュー・スクロールフェード・写真の拡大表示
+// アクセス解析: サイト内の動き(ゲームのクリアなど)をイベントとして記録。解析タグがないときは何もしない
+window.mzTrack = function (name, params) { try { if (window.gtag) gtag('event', name, params || {}); } catch (e) {} };
 // スマホ用メニューの開閉
 (function(){
   var btn=document.querySelector('.menu-btn'), menu=document.getElementById('menu'); if(!btn||!menu) return;
@@ -70,6 +72,7 @@
       var n = f === 'all' ? cards.length : cards.filter(function(c){ return (' ' + (c.getAttribute('data-cat') || '') + ' ').indexOf(' ' + f + ' ') >= 0; }).length;
       var sm = document.createElement('small'); sm.textContent = n; b.appendChild(sm);
       b.addEventListener('click', function(){
+        mzTrack('filter_click', { filter: f });
         bar.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
         cards.forEach(function(c){
           var show = f === 'all' || (' ' + (c.getAttribute('data-cat') || '') + ' ').indexOf(' ' + f + ' ') >= 0;
@@ -79,11 +82,15 @@
     });
   });
 })();
+document.querySelectorAll('.ay-year').forEach(function(d){
+  d.addEventListener('toggle', function(){ if (d.open) mzTrack('history_year_open', { year: d.querySelector('summary b').textContent }); });
+});
 // SCSの場所ボタン: 同じ欄では1つずつ開く。開いた場所が画面の外なら見えるところまでスクロール
 document.querySelectorAll('.spots').forEach(function(g){
   g.addEventListener('toggle', function(e){
     var d = e.target; if (!d.open) return;
     g.querySelectorAll('details.spot[open]').forEach(function(o){ if (o !== d) o.open = false; });
+    mzTrack('scs_place_open', { place: (d.querySelector('summary b') || {}).textContent || '' });
     var r = d.getBoundingClientRect();
     if (r.top < 70 || r.top > innerHeight - 140) d.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, true);
@@ -132,6 +139,7 @@ document.querySelectorAll('.spots').forEach(function(g){
         m.classList.remove('hint'); void m.offsetWidth; m.classList.add('hint');
         setTimeout(function(){ m.classList.remove('hint'); }, 4600);
         say('このあたりに、もりぞーがいるよ!');
+        mzTrack('morizo_hint', { page: key });
       });
     }
     badge.innerHTML = SVG + 'もりぞー ' + count() + '/' + KEYS.length;
@@ -149,6 +157,7 @@ document.querySelectorAll('.spots').forEach(function(g){
   function hit(e){
     e.preventDefault(); e.stopPropagation();
     var first = !found[key]; found[key] = 1; save();
+    if (first) mzTrack('morizo_found', { page: key, found_count: count() });
     m.classList.remove('jump'); void m.offsetWidth; m.classList.add('jump', 'done');
     var n = count(), N = KEYS.length;
     say(first ? (n === N ? '🎉 コンプリート! 全ページのもりぞーを見つけました!' : 'もりぞーを見つけた! (' + n + '/' + N + 'ページ)') : 'このページのもりぞーは、もう見つけたよ (' + n + '/' + N + ')');

@@ -117,6 +117,7 @@
   function quizEnd() {
     var best = +store('morizo-quiz-best') || 0, isBest = quiz.score > best;
     if (isBest) store('morizo-quiz-best', quiz.score);
+    window.mzTrack && mzTrack('quiz_finish', { score: quiz.score, correct: quiz.right });
     var r = quiz.right, title = r === 10 ? '🎓 もりぞう博士' : r >= 7 ? '🩺 もりぞう通' : r >= 4 ? '🌱 もりぞうファン' : '📖 これから知っていこう';
     qBox.innerHTML = '<p class="mg-kicker">RESULT</p><h2>' + r + ' / 10 問 正解</h2>' +
       '<p class="mg-big">★ ' + quiz.score + '</p>' + (isBest ? '<p class="mg-best">🎉 ハイスコア更新!</p>' : (best ? '<p class="mg-best">ハイスコア ★ ' + best + '</p>' : '')) +
@@ -184,6 +185,7 @@
     clearInterval(mem.tick);
     var sec = Math.floor((Date.now() - mem.t0) / 1000), key = 'morizo-mem-best-' + mem.pairs, best = +store(key) || 0, isBest = !best || mem.moves < best;
     if (isBest) store(key, mem.moves);
+    window.mzTrack && mzTrack('memory_finish', { pairs: mem.pairs, moves: mem.moves, seconds: sec });
     var perfect = mem.moves === mem.pairs;
     mBox.innerHTML = '<p class="mg-kicker">CLEAR!</p><h2>' + (perfect ? '🌟 パーフェクト!' : 'ぜんぶそろった!') + '</h2>' +
       '<p class="mg-big">' + mem.moves + ' 手 ／ ' + sec + ' 秒</p>' +

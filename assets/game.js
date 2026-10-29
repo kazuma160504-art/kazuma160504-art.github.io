@@ -210,6 +210,7 @@
   function startStage(s, sameCourse) {
     if (!sameCourse) stageSeed = 1 + Math.floor(Math.random() * 2147483000);
     stage = s; build(s); onPlat = null;
+    window.mzTrack && mzTrack('game_stage_start', { stage: STAGES[s].year, retry: !!sameCourse });
     px = 0; py = 0; vy = 0; jumps = 0; inv = 0; stageT = 0; parts = []; floats = [];
     airT = 0; bufT = 0; squash = 0; shake = 0; dash = 0; combo = 0; comboT = 0;
     speed = 260 + s * 42;
@@ -594,6 +595,7 @@
   function closeModal() { modal.hidden = true; }
 
   function finishStage() {
+    window.mzTrack && mzTrack('game_stage_clear', { stage: STAGES[stage].year, score: score });
     state = 'card'; root.classList.remove('running');
     var st = STAGES[stage], n = 0;
     st.items.forEach(function (_, k) { if (got[stage + '-' + k]) n++; });
@@ -612,6 +614,7 @@
   }
 
   function gameOver() {
+    window.mzTrack && mzTrack('game_over', { stage: STAGES[stage].year });
     state = 'card'; root.classList.remove('running');
     openModal('<p class="gm-kicker">GAME OVER</p><h2>ちょっとひと休み…</h2>' +
       '<p class="gm-sub">でも「まずやってみる」(活発性)が森一真の持ち味。<br>' + esc(STAGES[stage].year) + ' の最初から、もう一度!</p>' +
@@ -620,6 +623,7 @@
 
   function ending(bonus) {
     var n = countGot(), prev = bestScore(), isBest = score > prev;
+    window.mzTrack && mzTrack('game_complete', { score: score, memories: n });
     if (isBest) store('morizo-best-score', score);
     sfx('clear');
     var rank = n === TOTAL ? '🌟 伝説のもりぞう(コンプリート!)' : n >= TOTAL * 0.8 ? '🩺 地域をつなぐ医学生' : n >= TOTAL * 0.5 ? '🔘 見守りボタンの研究員' : '🌱 まずやってみる活発性';
