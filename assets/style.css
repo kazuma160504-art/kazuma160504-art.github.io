@@ -200,6 +200,10 @@ section{padding:88px 20px}
 .kindle-body{padding:24px 24px 22px;display:flex;flex-direction:column;gap:10px}
 .kindle-body h4{font-size:17px;font-weight:700;line-height:1.55;font-family:"Zen Kaku Gothic New",sans-serif}
 .kindle-body .meta{color:var(--muted);font-size:13px}
+.kindle-body .desc{font-size:13px;line-height:1.85}
+.kindle-card+.kindle-card{margin-top:16px}
+.kindle-card.soon:hover{border-color:var(--line);transform:none}
+.kindle-card.soon:hover .kindle-cover img{transform:none}
 /* note list */
 .note-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px 20px;counter-reset:noteidx}
 .note-item{

@@ -221,6 +221,10 @@ section{padding:88px 20px}
 .kindle-body{padding:24px 24px 22px;display:flex;flex-direction:column;gap:10px}
 .kindle-body h4{font-size:17px;font-weight:700;line-height:1.55;font-family:"Zen Kaku Gothic New",sans-serif}
 .kindle-body .meta{color:var(--muted);font-size:13px}
+.kindle-body .desc{font-size:13px;line-height:1.85}
+.kindle-card+.kindle-card{margin-top:16px}
+.kindle-card.soon:hover{border-color:var(--line);transform:none}
+.kindle-card.soon:hover .kindle-cover img{transform:none}
 /* note list */
 .note-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px 20px;counter-reset:noteidx}
 .note-item{
@@ -776,7 +780,19 @@ footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;colo
       </div>
     </div>
 
-    <h3 class="works-sub fade">Kindle出版</h3>
+    <h3 class="works-sub fade">書籍</h3>
+    <div class="kindle-card soon fade">
+      <div class="kindle-cover">
+        <img src="assets/books/ohayou-machi.webp" alt="『「おはよう」でつながるまち』書影" loading="lazy" width="400" height="640">
+      </div>
+      <div class="kindle-body">
+        <span class="tag" style="align-self:flex-start">NEW・近日発売</span>
+        <h4>「おはよう」でつながるまち:<br>医学生が佐賀で続ける、見守りと地域交流の記録</h4>
+        <p class="meta">活動記録 / Kindle・ペーパーバック(2026年11月発売予定)</p>
+        <p class="desc">佐賀の団地で10年続く見守り「おはようボタン」の研究、SCSでの地域交流、授業や講演、学会発表まで。2023〜2026年の活動を、写真とデータ、医学生のミニ解説とともにまとめました。</p>
+        <span class="card-link disabled">Amazonで発売準備中</span>
+      </div>
+    </div>
     <a class="kindle-card fade" href="https://www.amazon.co.jp/%E3%81%BC%E3%82%93%E3%82%84%E3%82%8A%E3%80%81%E3%81%84%E3%81%84%E3%81%98%E3%82%83%E3%81%AA%E3%81%84-%E3%81%AA%E3%82%93%E3%81%A7%E3%82%82%E3%81%AA%E3%81%84%E6%97%A5%E3%81%AE%E5%87%A6%E6%96%B9%E7%AE%8B-%E3%82%82%E3%82%8A%E3%81%9E%E3%83%BC-ebook/dp/B0DRD3P1L3/" target="_blank" rel="noopener">
       <div class="kindle-cover">
         <img src="https://images-na.ssl-images-amazon.com/images/P/B0DRD3P1L3.01.LZZZZZZZ.jpg" alt="『ぼんやり、いいじゃない』書影" loading="lazy">
@@ -870,6 +886,7 @@ footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;colo
         <li>YouTubeショート動画の編集(カット・テロップ・BGM)</li>
         <li>Instagramリール動画の編集</li>
         <li>Kindle出版『ぼんやり、いいじゃない: なんでもない日の処方箋』</li>
+        <li>活動記録『「おはよう」でつながるまち』(Kindle・ペーパーバック、2026年11月発売予定)</li>
         <li>note記事執筆(全11記事)</li>
         <li>ポートフォリオ: <a href="https://kazuma160504-art.github.io/creative.html">https://kazuma160504-art.github.io/creative.html</a></li>
       </ul>
