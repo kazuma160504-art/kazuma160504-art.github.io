@@ -1034,10 +1034,25 @@ page('scs', '高齢者サロン、子どもの居場所、地域のイベント�
 podcast = """    <p class="fade" style="color:var(--muted);font-size:14px;margin-bottom:18px">えびすFMで放送した回を、Spotify のポッドキャストで配信しています。</p>
     <div class="podcast fade"><iframe src="https://open.spotify.com/embed/show/033UwsWpxAEcai2mrsEVtm" title="バルーナーズDAO おとなりさんラジオ(Spotify)" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
     <p style="margin-top:16px"><a class="btn btn-ghost" href="https://open.spotify.com/show/033UwsWpxAEcai2mrsEVtm" target="_blank" rel="noopener">Spotify で開く</a></p>
-    <p class="radio-new fade"><b>NEW</b>新番組「がばい よかよか ラジオ」が2026年11月にスタート。毎月第1・第3水曜の18:00〜18:55に放送します。</p>
+    <p class="radio-new fade"><b>NEW</b>新番組「がばい よかよか ラジオ」が2026年11月にスタート。<a class="il" href="#gabayoka">番組の紹介を見る</a></p>
+"""
+gabayoka = """    <div class="org-grid">
+      <div class="org fade">
+        <span class="tag">NEW PROGRAM</span>
+        <h4>「がばい よかよか ラジオ」パーソナリティ</h4>
+        <p>ふだんはえびすFMで番組の裏方(PA)をしている佐賀大学の学生3人(医学部・農学部・芸術地域デザイン学部)で、2026年11月から自分たちの番組をスタート。県外出身の3人が、佐賀とえびすFMへの愛を込めて「佐賀の推し活」をしながら、ラジオを通していろんなヒトやコトがつながる場所をつくっていきます。</p>
+        <p style="font-size:12px">アプリ「FM++(エフエムプラプラ)」で全国から聴取できます。</p>
+      </div>
+      <div class="org fade">
+        <span class="tag">ON AIR</span>
+        <h4>毎月 第1・第3水曜日 18:00〜18:55</h4>
+        <p>えびすFM 89.6MHz。初回は2026年11月4日(水)。第1水曜日はゲストをお迎えする回、第3水曜日は3人のフリートーク回です。</p>
+      </div>
+    </div>
 """
 page('community', 'スポーツの力で地域課題に挑む。ファンコミュニティとラジオで、人と人をつなぐ。',
-     sec(community, 'BALLOONERS DAO', '佐賀バルーナーズDAO') + sec(podcast, 'PODCAST', 'おとなりさんラジオを聴く', alt=True))
+     sec(community, 'BALLOONERS DAO', '佐賀バルーナーズDAO') + sec(podcast, 'PODCAST', 'おとなりさんラジオを聴く', alt=True) +
+     sid(sec(gabayoka, 'EBISU FM', 'えびすFM「がばい よかよか ラジオ」'), 'gabayoka'))
 
 # 5 教育・発信
 other_orgs = other_orgs.replace('<p>山形県南陽市立赤湯中学校で出張授業(2024年1月・7月の2回)。</p>',
@@ -1275,6 +1290,7 @@ media = """    <div class="mini-grid">
       <a class="mini-card fade" href="https://www.saga-s.co.jp/articles/-/1659890" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="newspaper"></i></span><div><h4>佐賀新聞 掲載</h4><p>SCSの国際ソロプチミスト佐賀有明からの表彰(2026年2月)が紹介されました</p></div></a>
       <a class="mini-card fade" href="https://www.sagatv.co.jp/news/archives/2026052223359" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="tv"></i></span><div><h4>サガテレビ 取材</h4><p>2026年2月 ／ 住民向け説明会の様子が取材されました</p></div></a>
       <a class="mini-card fade" href="https://youtu.be/Bt9TFAmHH0I" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="tv"></i></span><div><h4>サガテレビ 放映</h4><p>2025年3月 ／ 地域での活動が紹介されました</p></div></a>
+      <a class="mini-card fade" href="community.html#gabayoka" style="color:inherit"><span class="ki"><i data-lucide="radio"></i></span><div><h4>えびすFM「がばい よかよか ラジオ」</h4><p>2026年11月〜 ／ 学生3人の新番組でパーソナリティ(毎月第1・第3水曜)</p></div></a>
       <a class="mini-card fade" href="community.html" style="color:inherit"><span class="ki"><i data-lucide="radio"></i></span><div><h4>えびすFM「バルーナーズDAOおとなりさんラジオ」</h4><p>2026年5月〜 ／ パーソナリティとして出演・Spotify でも配信</p></div></a>
       <a class="mini-card fade" href="https://www.suric.saga-u.ac.jp/saga_project_map/" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="map-pin"></i></span><div><h4>佐賀大学 地域連携紹介マップ</h4><p>2024年9月 ／ プロジェクトが掲載</p></div></a>
       <a class="mini-card fade" href="http://www.city.nanyo.yamagata.jp/up/files/giyousei/kouhoukoucyo/siho/pdf/1373.txt" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="book-open"></i></span><div><h4>市報なんよう 2024年8月号(山形県南陽市)</h4><p>特集「知らないまま後悔しないで 子宮頸がんとHPVワクチン」でVcanの出張授業と講師として紹介</p></div></a>
@@ -1329,6 +1345,7 @@ tiles = '    <div class="theme-grid">\n' + '\n'.join(
     for n, (k, ic, en, t, d) in enumerate(THEMES, 1)) + '\n    </div>\n'
 
 news = '''    <div class="news fade">
+      <a href="community.html#gabayoka"><time>2026.11</time><span>えびすFMの新番組「がばい よかよか ラジオ」でパーソナリティに(11月4日スタート)</span><i data-lucide="chevron-right"></i></a>
       <a href="publications.html"><time>2026.10</time><span>第85回日本公衆衛生学会総会で、押しボタンを使った災害時の安否確認訓練について口演発表(10月30日)</span><i data-lucide="chevron-right"></i></a>
       <a href="publications.html"><time>2026.08</time><span>共著論文が The American Journal of Cardiology に掲載</span><i data-lucide="chevron-right"></i></a>
       <a href="awards.html"><time>2026.07</time><span>SCSとして佐賀県CSO"志"支援金に採択されました</span><i data-lucide="chevron-right"></i></a>
