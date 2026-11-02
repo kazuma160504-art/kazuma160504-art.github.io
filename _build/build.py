@@ -885,7 +885,7 @@ AYUMI = [
               ('09', 'アバンセで、フレイル予防の健康セミナーの講師', 'education'),
               ('09', '肝臓の国際共同研究(メタ解析)に参加', 'publications'),
               ('10', '第85回 日本公衆衛生学会総会(東京)で口演(10月30日)', 'publications')]),
-    ('これから', [('2026.11', '新しいラジオ番組「がばいっこ、よかよか、ラジオ」がスタート', 'community'),
+    ('これから', [('2026.11', '新しいラジオ番組「がばい よかよか ラジオ」がスタート', 'community'),
                   ('2026.11', '佐賀大学同窓会フェスに、2年続けて出展', 'scs'),
                   ('2026.11', '吟剣詩舞道大会に、合吟で出場', 'hobbies'),
                   ('2026.12', '感染症の学会(高知)で口演発表', 'publications'),
@@ -1034,7 +1034,7 @@ page('scs', '高齢者サロン、子どもの居場所、地域のイベント�
 podcast = """    <p class="fade" style="color:var(--muted);font-size:14px;margin-bottom:18px">えびすFMで放送した回を、Spotify のポッドキャストで配信しています。</p>
     <div class="podcast fade"><iframe src="https://open.spotify.com/embed/show/033UwsWpxAEcai2mrsEVtm" title="バルーナーズDAO おとなりさんラジオ(Spotify)" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
     <p style="margin-top:16px"><a class="btn btn-ghost" href="https://open.spotify.com/show/033UwsWpxAEcai2mrsEVtm" target="_blank" rel="noopener">Spotify で開く</a></p>
-    <p class="radio-new fade"><b>NEW</b>新番組「がばいっこ、よかよか、ラジオ」が2026年11月にスタート。毎月第1・第3水曜の18:00〜19:00に放送します。</p>
+    <p class="radio-new fade"><b>NEW</b>新番組「がばい よかよか ラジオ」が2026年11月にスタート。毎月第1・第3水曜の18:00〜18:55に放送します。</p>
 """
 page('community', 'スポーツの力で地域課題に挑む。ファンコミュニティとラジオで、人と人をつなぐ。',
      sec(community, 'BALLOONERS DAO', '佐賀バルーナーズDAO') + sec(podcast, 'PODCAST', 'おとなりさんラジオを聴く', alt=True))
