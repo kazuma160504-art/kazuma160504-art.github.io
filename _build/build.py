@@ -885,7 +885,7 @@ AYUMI = [
               ('09', 'アバンセで、フレイル予防の健康セミナーの講師', 'education'),
               ('09', '肝臓の国際共同研究(メタ解析)に参加', 'publications'),
               ('10', '第85回 日本公衆衛生学会総会(東京)で口演(10月30日)', 'publications')]),
-    ('これから', [('2026.11', '活動の記録をまとめた本『「おはよう」でつながるまち』を出版(Kindle・ペーパーバック)', 'creative'),
+    ('これから', [('2026.11', '活動の記録をまとめた本『となりの医学生』を出版(Kindle・ペーパーバック)', 'creative'),
                   ('2026.11', '新しいラジオ番組「がばいっこ、よかよか、ラジオ」がスタート', 'community'),
                   ('2026.11', '佐賀大学同窓会フェスに、2年続けて出展', 'scs'),
                   ('2026.11', '吟剣詩舞道大会に、合吟で出場', 'hobbies'),
@@ -1330,7 +1330,7 @@ tiles = '    <div class="theme-grid">\n' + '\n'.join(
     for n, (k, ic, en, t, d) in enumerate(THEMES, 1)) + '\n    </div>\n'
 
 news = '''    <div class="news fade">
-      <a href="creative.html"><time>2026.11</time><span>活動の記録をまとめた本『「おはよう」でつながるまち』を、Kindle・ペーパーバックで発売予定</span><i data-lucide="chevron-right"></i></a>
+      <a href="creative.html"><time>2026.11</time><span>活動の記録をまとめた本『となりの医学生』を、Kindle・ペーパーバックで発売予定</span><i data-lucide="chevron-right"></i></a>
       <a href="publications.html"><time>2026.10</time><span>第85回日本公衆衛生学会総会で、押しボタンを使った災害時の安否確認訓練について口演発表(10月30日)</span><i data-lucide="chevron-right"></i></a>
       <a href="publications.html"><time>2026.08</time><span>共著論文が The American Journal of Cardiology に掲載</span><i data-lucide="chevron-right"></i></a>
       <a href="awards.html"><time>2026.07</time><span>SCSとして佐賀県CSO"志"支援金に採択されました</span><i data-lucide="chevron-right"></i></a>
