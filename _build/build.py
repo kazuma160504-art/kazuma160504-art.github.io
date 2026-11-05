@@ -410,7 +410,8 @@ section{scroll-margin-top:110px}
 @media (prefers-reduced-motion:reduce){.morizo,.morizo.jump{animation:none}.morizo.hint{outline:3px solid #ffb300;outline-offset:4px;border-radius:8px}}
 .radio-new{margin-top:22px;background:#fff;border:1px dashed var(--line);border-radius:14px;padding:12px 16px;font-size:14px;line-height:1.7}
 .radio-new b{display:inline-block;margin-right:8px;padding:1px 8px;border-radius:999px;background:#e07b24;color:#fff;font-size:11px;letter-spacing:.1em}
-.conf-photo{max-width:640px;margin:26px auto 0}
+.conf-photos{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:26px;align-items:start}
+.conf-photo{max-width:640px;margin:0 auto;width:100%}
 .conf-photo img{display:block;width:100%;border-radius:14px;cursor:zoom-in;box-shadow:0 14px 30px -18px rgba(30,51,34,.5)}
 .conf-photo figcaption{margin-top:8px;text-align:center;font-size:13px;color:var(--muted)}
 /* SCS: 場所ごとに開くボタン */
@@ -1254,7 +1255,10 @@ confs = """    <div class="mini-grid">
       <a class="mini-card fade" href="https://www.suric.saga-u.ac.jp/event/contents-12075/" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="lightbulb"></i></span><div><h4>佐賀TSUNAGIコンベンション</h4><p>2026年3月 ／ 研究成果の発表・展示</p></div></a>
       <a class="mini-card fade" href="https://joint-jea-ieawpr2026.jp/home_jp/" target="_blank" rel="noopener" style="color:inherit"><span class="ki"><i data-lucide="users"></i></span><div><h4>第36回 日本疫学会学術総会(長崎)</h4><p>2026年1月 ／ ポスター発表(P2-146・筆頭演者) ／ 喫煙の状況・量・期間とエピゲノム年齢の加速の関連(英語) ／ 国際疫学会 西太平洋地域との合同学術集会</p></div></a>
     </div>
-    <figure class="conf-photo fade"><img src="assets/photos/jea2026-poster.webp" alt="日本疫学会学術総会で、自分のポスターの横に立つ森一真" loading="lazy"><figcaption>第36回 日本疫学会学術総会でのポスター発表(2026年1月・長崎)</figcaption></figure>
+    <div class="conf-photos">
+      <figure class="conf-photo fade"><img src="assets/photos/jsph85-oral.webp" alt="第85回日本公衆衛生学会総会で、演台に立って口演する森一真" loading="lazy"><figcaption>第85回 日本公衆衛生学会総会での口演(2026年10月・東京)</figcaption></figure>
+      <figure class="conf-photo fade"><img src="assets/photos/jea2026-poster.webp" alt="日本疫学会学術総会で、自分のポスターの横に立つ森一真" loading="lazy"><figcaption>第36回 日本疫学会学術総会でのポスター発表(2026年1月・長崎)</figcaption></figure>
+    </div>
 """
 # いま取り組んでいる研究(5分野)
 RESEARCH = [('heart-pulse', '心臓血管外科', '冠動脈バイパスの長期開存', '#e05264', ['冠動脈バイパス術後の長期開存率']),
