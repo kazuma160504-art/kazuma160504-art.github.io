@@ -535,7 +535,7 @@ THEMES = [
     ('education', 'graduation-cap','OUTREACH',  '教育・発信',         '大阪・関西万博での登壇、中高生への出張授業、小学校の防煙教室、市民向けセミナーの講師。'),
     ('awards',    'trophy',        'AWARDS',    '実績・表彰',         'CSO志支援金、国際ソロプチミスト表彰、大臣からの手紙ほか。'),
     ('media',     'newspaper',     'MEDIA',     'メディア・掲載',     'サガテレビでの放映、大学の公式発表、新聞・ラジオ。'),
-    ('hobbies',   'palette',       'HOBBIES',   '趣味・アート',       '切り絵(美術館展示)・詩吟1級・少林寺拳法(全国大会出場)・ピックルボール部の設立。'),
+    ('hobbies',   'palette',       'HOBBIES',   '趣味・アート',       '切り絵(美術館展示)・詩吟(吟道摂楠流1級)・少林寺拳法(全国大会出場)・ピックルボール部の設立。'),
     ('creative',  'clapperboard',  'CREATIVE',  '動画編集・執筆',     'GREEN VIBES CHANNEL運営、ショート動画編集、Kindle・note。'),
     ('gallery',   'images',        'GALLERY',   'ギャラリー',         '団地のサロン、夏祭り、小学校、地域イベント。活動の写真集。'),
     ('contact',   'mail',          'CONTACT',   '連絡先・SNS',        'メール・SNS・各種サイトへのリンクと、このページのQRコード。'),
@@ -965,7 +965,7 @@ scs_map = '<div class="chart-grid">' + chart_wrap('map', 'SCSの活動フィー�
         [('armchair', '高齢者サロン', '健康講話・体操・脳トレ', '#salon', '#3c9a3f'), ('baby', '子どもの居場所', '宿題サポート・子ども食堂', '#kids', '#e07b24'),
          ('tent', 'イベント', 'お祭り・フェス・コンサート', '#events', '#e05264'), ('school', '小学校', '性教育・防煙教室', 'education.html', '#2f7fc1'),
          ('mic', '健康講演', '公民館・認知症カフェ', 'education.html', '#8e44ad')])) + \
-    chart_wrap('pie-chart', 'メンバー構成', '2025年5月時点・総勢27名', donut([('医学生', 23, G), ('薬学部・理工学部', 4, B)], '27', '名') +
+    chart_wrap('pie-chart', 'メンバー構成(2025年5月時点)', 'その後も仲間が増え、2026年11月時点で総勢33名になりました', donut([('医学生', 23, G), ('薬学部・理工学部', 4, B)], '27', '名') +
         '<div class="legend" style="justify-content:center"><span><i style="background:#3c9a3f"></i>医学生 23名</span><span><i style="background:#4a6fd1"></i>薬学部・理工学部 4名</span></div>' +
         table([('医学生', '23名'), ('薬学部・理工学部', '4名')], ['所属', '人数'])) + '</div>'
 # SCSの活動場所: 3本柱(高齢者サロン・子どもの居場所・イベント)。場所をタップすると、くわしい内容が開く
