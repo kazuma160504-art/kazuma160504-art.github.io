@@ -1229,9 +1229,14 @@ yt = '''    <div class="yt-card fade">
       </div>
     </div>
 '''
+pf_video = '''    <h3 class="works-sub fade">ポートフォリオ動画(デモリール)</h3>
+    <p class="act-lead fade" style="margin-bottom:18px">対応できる編集を82秒にまとめたデモ映像。モザイク処理・名前テロップ・グラフアニメーション・縦型ショート・カラーグレーディング・速度ランプを収録しています。</p>
+    <div class="video fade"><video controls preload="metadata" playsinline poster="" style="position:absolute;inset:0;width:100%;height:100%;background:#000" src="assets/portfolio-demo.mp4">お使いのブラウザでは動画を再生できません。</video></div>
+    <div style="height:48px"></div>
+'''
 page('creative', '医療の知識を活かして、伝わる動画と文章を。YouTubeチャンネルも運営中。',
      sec(yt + '<div style="height:40px"></div>\n' + skills) +
-     sec(works, 'WORKS', '制作実績', alt=True) +
+     sec(pf_video + works, 'WORKS', '制作実績', alt=True) +
      sec(services, 'SERVICES', '対応可能な業務') +
      sec('<div class="chart-grid">' + chart_wrap('pen-line', 'note の執筆本数', '年ごとの公開記事数(全11記事)', columns([('2025', 10, '2025年: 10記事'), ('2026', 1, '2026年: 1記事')], w=360, unit='本'),
          table([('2025', '10本'), ('2026', '1本')], ['年', '本数'])) +
