@@ -11,6 +11,15 @@ SITE = 'https://kazuma160504-art.github.io/'
 GA_ID = ''
 GA_TAG = (f'<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>\n'
           f"<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA_ID}');</script>\n") if GA_ID else ''
+# Google タグマネージャー(GTM)のコンテナID。GA4などの計測はGTMの管理画面で設定する
+GTM_ID = 'GTM-PNG7V8FL'
+GTM_HEAD = ("<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});"
+            "var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;"
+            "j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);"
+            f"}})(window,document,'script','dataLayer','{GTM_ID}');</script>\n") if GTM_ID else ''
+GTM_BODY = (f'<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={GTM_ID}" height="0" width="0" '
+            'style="display:none;visibility:hidden"></iframe></noscript>\n') if GTM_ID else ''
+ANALYTICS = bool(GA_ID or GTM_ID)
 src = io.open(os.path.join(ROOT, '_build', 'source.html'), encoding='utf-8').read()
 
 # ---------------------------------------------------------------- アイコン
@@ -578,9 +587,9 @@ def head(title, desc, path='', cur='', extra=''):
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 <noscript><style>.fade{{opacity:1;transform:none}}</style></noscript>
-{GA_TAG}{extra}</head>
+{GTM_HEAD}{GA_TAG}{extra}</head>
 <body>
-<header>
+{GTM_BODY}<header>
   <nav class="nav">
     <a class="logo" href="index.html"><i data-lucide="leaf"></i><b>MORI<span>.</span>KAZUMA</b></a>
     <ul>
@@ -596,7 +605,7 @@ def head(title, desc, path='', cur='', extra=''):
 '''
 
 FOOT = '''<footer>
-  <div class="mini">''' + ''.join(f'<a href="{k}.html">{t}</a>' for k, _, _, t, _ in THEMES) + '''<a href="game.html">ゲーム</a>''' + ('<a href="contact.html#analytics">アクセス解析について</a>' if GA_ID else '') + '''</div>
+  <div class="mini">''' + ''.join(f'<a href="{k}.html">{t}</a>' for k, _, _, t, _ in THEMES) + '''<a href="game.html">ゲーム</a>''' + ('<a href="contact.html#analytics">アクセス解析について</a>' if ANALYTICS else '') + '''</div>
   © 2026 Mori Kazuma — Medical Student / Researcher / Community
 </footer>
 <div class="lightbox" id="lightbox"><figure><img alt=""><figcaption></figcaption></figure></div>
@@ -1314,8 +1323,8 @@ qr = """    <div class="qr fade"><img src="assets/qr-site.svg" alt="このサイ
 hub_icons = hub.replace('<h3>SNS</h3>', '<h3><i data-lucide="share-2"></i>SNS</h3>').replace('<h3>CREATIVE</h3>', '<h3><i data-lucide="clapperboard"></i>CREATIVE</h3>').replace('<h3>PROJECT / PROFILE</h3>', '<h3><i data-lucide="sprout"></i>PROJECT / PROFILE</h3>')
 hub_icons = hub_icons.replace('<a href="#works">動画編集の実績<small>このページ内</small></a>', '<a href="creative.html">動画編集の実績<small>CREATIVE</small></a>')
 hub_icons = hub_icons.replace('        <a href="https://scs-website-ten.vercel.app/contacts"', '        <a href="https://www.instagram.com/scs.official2025/" target="_blank" rel="noopener">SCS Instagram<small>@scs.official2025</small></a>\n        <a href="https://scs-website-ten.vercel.app/contacts"')
-analytics_note = '''    <div class="ga-note fade" id="analytics"><h3>アクセス解析について</h3><p>このサイトでは、より見やすいサイトにするために Google アナリティクスを使って、どのページがどれくらい見られているかを調べています。Cookie を使いますが、名前など個人を特定する情報は集めていません。くわしくは <a class="il" href="https://policies.google.com/technologies/partner-sites?hl=ja" target="_blank" rel="noopener">Google のポリシー</a> をご覧ください。</p></div>
-''' if GA_ID else ''
+analytics_note = '''    <div class="ga-note fade" id="analytics"><h3>アクセス解析について</h3><p>このサイトでは、より見やすいサイトにするために Google タグマネージャーと Google アナリティクスを使って、どのページがどれくらい見られているかを調べています。Cookie を使いますが、名前など個人を特定する情報は集めていません。くわしくは <a class="il" href="https://policies.google.com/technologies/partner-sites?hl=ja" target="_blank" rel="noopener">Google のポリシー</a> をご覧ください。</p></div>
+''' if ANALYTICS else ''
 page('contact', '研究・地域活動、講演・取材、制作のご依頼など、お気軽にご連絡ください。', sec(contact_box + hub_icons + qr + analytics_note, 'CONTACT', '連絡先・リンク'))
 
 # ---------------------------------------------------------------- トップ
@@ -1456,7 +1465,7 @@ write('robots.txt', f'User-agent: *\nAllow: /\n\nSitemap: {SITE}sitemap.xml\n')
 io.open(os.path.join(ROOT, 'assets', 'style.css'), 'w', encoding='utf-8', newline='\n').write(css_new.strip() + '\n')
 js = '''// 共通スクリプト: メニュー・スクロールフェード・写真の拡大表示
 // アクセス解析: サイト内の動き(ゲームのクリアなど)をイベントとして記録。解析タグがないときは何もしない
-window.mzTrack = function (name, params) { try { if (window.gtag) gtag('event', name, params || {}); } catch (e) {} };
+window.mzTrack = function (name, params) { try { if (window.gtag) { gtag('event', name, params || {}); } else if (window.dataLayer) { var o = { event: name }; for (var k in (params || {})) o[k] = params[k]; dataLayer.push(o); } } catch (e) {} };
 // スマホ用メニューの開閉
 (function(){
   var btn=document.querySelector('.menu-btn'), menu=document.getElementById('menu'); if(!btn||!menu) return;

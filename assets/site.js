@@ -1,6 +1,6 @@
 // 共通スクリプト: メニュー・スクロールフェード・写真の拡大表示
 // アクセス解析: サイト内の動き(ゲームのクリアなど)をイベントとして記録。解析タグがないときは何もしない
-window.mzTrack = function (name, params) { try { if (window.gtag) gtag('event', name, params || {}); } catch (e) {} };
+window.mzTrack = function (name, params) { try { if (window.gtag) { gtag('event', name, params || {}); } else if (window.dataLayer) { var o = { event: name }; for (var k in (params || {})) o[k] = params[k]; dataLayer.push(o); } } catch (e) {} };
 // スマホ用メニューの開閉
 (function(){
   var btn=document.querySelector('.menu-btn'), menu=document.getElementById('menu'); if(!btn||!menu) return;
