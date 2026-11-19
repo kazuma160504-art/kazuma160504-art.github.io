@@ -8,7 +8,7 @@ import io, os, re, json
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = 'https://kazuma160504-art.github.io/'
 # アクセス解析(Google アナリティクス 4)の測定ID(G-から始まる)。空のあいだは解析タグを出さない
-GA_ID = ''
+GA_ID = 'G-Y8VSGD9P2F'
 GA_TAG = (f'<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>\n'
           f"<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA_ID}');</script>\n") if GA_ID else ''
 # Google タグマネージャー(GTM)のコンテナID。GA4などの計測はGTMの管理画面で設定する
